@@ -1,0 +1,84 @@
+/*** Generiek ***/
+body {
+  padding: 0;
+  width: 50em;
+  margin: auto;
+}
+
+button {
+  background-color: #2F4F4F; 
+  color: white;
+}
+
+#menu {
+  float: left;
+  width: 25%;
+  background-color: #DCDCDC; 
+}
+
+#main {
+  float: right;
+  width: 70%;
+  background-color: white;
+  padding-left: 2%;
+  margin-left: 2%;
+}
+
+#header {
+  background-color: #2F4F4F; 
+  color: white;  
+}
+
+#header, h2 {
+  text-align: center;
+}
+
+/*** Navigatie ***/
+.nav li {
+  list-style-type: none;
+  margin-left: 0.2em;
+  margin-right: 0.2em;
+  padding: 0.2em;
+  color: white;  
+}
+
+ul.nav a {
+  text-decoration: none;
+  color: white;
+}
+
+ul.nav a:hover {
+  color: yellow; 
+}
+
+ul.nav li {
+  background-color: #2F4F4F;
+  border: 0.0625em solid #000000;
+  margin: 0.2em;
+  padding: 0.2em;
+}
+/*** Speciale componenten ***/
+
+#mySnakeCanvas {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border: 0.0625em solid #000000;
+}
+
+#snakeButtons {
+ /* Describe how inline-level content of a block container is aligned*/
+ text-align:center;   
+}
+
+#startSnake, #stopSnake {
+  width: 5em;
+  margin: 0.5em auto;
+
+  
+
+}
+
+
+
+ 

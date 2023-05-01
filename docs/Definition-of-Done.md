@@ -2,6 +2,7 @@
 
 * The feature has 100% test coverage and 100% branch coverage.
 * The feature is tested manually.
+* All console errors and warnings have been evaluated
 * The code is fully documented.
 * The code has been peer-reviewed. (Note: no longer possible)
 * The code is isolated on a separate branch and a pull request has been created.

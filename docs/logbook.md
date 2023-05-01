@@ -45,4 +45,22 @@ ADRs toegevoegd: trello, adr, logbook, DoD, Git en Git flow.
 
 Definition of done draft gemaakt.
 
-[ ] fix de login van GitHub (again).
+
+### 2023-03-04
+
+[v] fix de login van GitHub (again).
+Structuur van de repo is iets vervuild, door het herhaaldelijk proberen om de remote en de local repo's te hersynchroniseren.
+
+
+### 2023-05-01
+
+[v] login op Trello (again)
+https://trello.com/b/djHvyLDG/ib1902-webapplicaties-opdracht-2
+gebruikt joost.papendorp
+
+[v] merge 004
+
+005 QUnit
+https://qunitjs.com/
+
+updated npm to 9.6.5

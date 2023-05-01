@@ -1,84 +1,89 @@
 /*** Generiek ***/
-body {
-  padding: 0;
-  width: 50em;
-  margin: auto;
+
+p {
+    margin-top: 1em;
 }
 
-button {
-  background-color: #2F4F4F; 
-  color: white;
+header {
+    text-align: center;
+    padding: 0.25em;
 }
 
-#menu {
-  float: left;
-  width: 25%;
-  background-color: #DCDCDC; 
+article {
+    display:block;
 }
 
-#main {
-  float: right;
-  width: 70%;
-  background-color: white;
-  padding-left: 2%;
-  margin-left: 2%;
+aside {
+    float: left;
+    background-color: rgb(212, 212, 212);
+    width: 10em;
+    padding: 0 1em 1em 1em;
+    margin-right: 2em;
 }
 
-#header {
-  background-color: #2F4F4F; 
-  color: white;  
+h1 {
+    font-size: 1.5em;
 }
 
-#header, h2 {
-  text-align: center;
+h2 {
+    font-size: 1.3em;
 }
 
-/*** Navigatie ***/
-.nav li {
-  list-style-type: none;
-  margin-left: 0.2em;
-  margin-right: 0.2em;
-  padding: 0.2em;
-  color: white;  
+.link-button:hover {    
+    background-color: rgb(0, 100, 0);
 }
 
-ul.nav a {
-  text-decoration: none;
-  color: white;
-}
-
-ul.nav a:hover {
-  color: yellow; 
-}
-
-ul.nav li {
-  background-color: #2F4F4F;
-  border: 0.0625em solid #000000;
-  margin: 0.2em;
-  padding: 0.2em;
-}
-/*** Speciale componenten ***/
-
-#mySnakeCanvas {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  border: 0.0625em solid #000000;
-}
-
-#snakeButtons {
- /* Describe how inline-level content of a block container is aligned*/
- text-align:center;   
-}
-
-#startSnake, #stopSnake {
-  width: 5em;
-  margin: 0.5em auto;
-
-  
-
+input[type="submit"] {
+    border-style: outset;
+    border-width: 0.25em;
+    border-color:rgb(212, 212, 212);
+    background-color: green;
+    color: white;
+    width: 5em;
 }
 
 
 
- 
+
+/*** Specifiek ***/
+
+.top {
+    background-color: green;
+    color: white;
+    margin-bottom: 1em;
+}
+
+.aside-titel {
+    text-align: center;
+    margin: 1.5em auto;   
+}
+
+.article-titel {
+    margin-top: 1.25em;
+}
+
+.section-1 {
+    margin-top: 1.5em;
+}
+
+li {
+    margin: 0.25em 0;
+    background-color: green;
+    color: white;
+    padding: 0.5em 0.25em;
+}
+
+ul li:hover {
+    background-color: rgb(0, 100, 0);
+}
+
+canvas[id="mySnakeCanvas"] {
+    border: solid 0.1em;
+    display: block;
+    margin: 0.5em auto;
+}
+
+.mySnakeCanvas {
+    text-align: center;
+    margin-top: 1.5em;
+}

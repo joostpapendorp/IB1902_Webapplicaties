@@ -1,42 +1,47 @@
 <!DOCTYPE html>
-
 <html lang="nl">
-
 <head>
-  <title>Mijn spelletjes site</title>
-  <link href="spelletjes.css" type="text/css" rel="stylesheet" />
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="jcanvas.min.js"></script>
-  <script src="snake_student.js"></script>  
+    <title>Mijn spelletjessite</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Opdracht 1: website over spelletjes, 
+    Open Universiteit, November 2022">
+    <meta name="author" content="Rinaldo Bertossa">
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="stijl.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="jcanvas.min.js"></script>
+    <script src="snake_student.js"></script>
 </head>
-
 <body>
-
-<header>
-  <h1>Mijn Spelletjessite</h1>
-</header>
-
-<nav>
-  <h2>Mijn spelletjes</h2>
-  <ul>
-    <li><a href = "index.html">Welkom</a></li>
-	<li>Inloggen</li>
-	<li><a href = "snake.html">Snake</a></li>
-	<li>Boter-kaas-eieren</li>
-	<li>Sudoku</li>
-	<li>Mastermind</li>
-	<li>Galgje</li>
-	<li>Cryptogram</li>
-  </ul>
-</nav>
-
-<article>
-  <h2>Welkom</h2>
-  <p>Welkom op mijn spelletjes site.</p>
-  <p>In het menu links vindt u alle spelletjes.</p>
-  <p>Et cetera.</p>
-</article>
-
+    <header class="top">
+        <h1>Mijn Spelletjessite</h1>
+    </header>
+    <aside>
+        <nav>
+            <h2 class="aside-titel">Mijn spelletjes</h2>
+            <ul class="aside">
+                <li>Welkom</li>
+                <li>Inloggen</li>
+                <a href="snake.html">
+                    <li>Snake</li>
+                </a>
+                <li>Boter-kaas-eieren</li>
+                <li>Sudoku</li>
+                <li>Master mind</li>
+                <li>Galgje</li>
+                <li>Cryptogramm</li>
+            </ul>
+        </nav>
+    </aside>
+    <article>
+        <header>
+            <h2 class="article-titel">Welkom</h2>
+        </header>
+        <section class="section-1">
+            <p>Welkom op mijn spelletjes site.</p>
+            <p>In het menu links vindt u alle spelletjes.</p>
+            <p>Et cetera et cetera.</p>
+        </section>
+    </article>
 </body>
-
 </html>

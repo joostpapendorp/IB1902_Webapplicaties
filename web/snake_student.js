@@ -5,9 +5,6 @@ const SNAKE_BODY_ELEMENT_COLOR = "DarkRed";
 const FOOD_ELEMENT_COLOR = "Olive";
 const SNAKE_HEAD_ELEMENT_COLOR = "DarkOrange";
 
-var canvasWidth;
-var canvasHeight;
-
 
 $(document).ready(function() {
 	$("#startSnake").click(init);
@@ -24,7 +21,7 @@ function init() {
 }
 
 function stop() {
-	$("#mySnakeCanvas").clearCanvas();
+	snakeCanvas.clear();
 	console.log("game stopped");
 }
 
@@ -33,11 +30,8 @@ function stop() {
   @desc Teken de slang en het voedsel
 */
 function draw() {
-	console.log( "drawing...");
-	var canvas = $("#mySnakeCanvas").clearCanvas();
-	var element = new Element(ELEMENT_RADIUS, 360 / 2, 360 / 2, SNAKE_BODY_ELEMENT_COLOR);
-	drawElement(canvas, element);
-	console.log(element);
+	let element = new Element(ELEMENT_RADIUS, 360 / 2, 360 / 2, SNAKE_BODY_ELEMENT_COLOR);
+	snakeCanvas.drawElement(element);
 }
 
 /**
@@ -48,26 +42,8 @@ function draw() {
    @param {string} color kleur van het element
 */
 function Element(radius, x, y, color) {
-		return {
-			radius: radius,
-			x: x,
-			y: y,
-			color: color
-		};
-}
-
-/**
-  @function drawElement(element, canvas) -> void
-  @desc Een element tekenen
-  @param {Element} element een Element object
-  @param  {dom object} canvas het tekenveld
-*/
-function drawElement(canvas, element) {
-	canvas.drawArc({
-		draggable : false,
-		fillStyle : element.color,
-		x : element.x,
-		y : element.y,
-		radius : element.radius
-	});
+		this.radius = radius,
+		this.x = x,
+		this.y = y,
+		this.color = color
 }

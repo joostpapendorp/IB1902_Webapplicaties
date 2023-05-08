@@ -100,3 +100,18 @@ templates are incomplete? (no stop)
 (Pomodoro 2)
 
 Ik weet niet hoe ik dit oplos, het kost tijd en is niet essentieel: Revert JCanvas to cloudfare source; dit werkt wel.
+
+(Pomodoro 3)
+
+[  ] import js module of via html?
+    LEH 7 pp 163
+
+(Pomodoro 4)
+
+$("#mySnakeCanvas").clearCanvas() violates Demeter; no chaining in assignments.
+
+(Pomodoro 5)
+
+$("#mySnakeCanvas") geeft leeg jquery object na verplaatsing naar module object in snake_canvas.js --> onDocumentReady? lazy?
+
+(Pomodoro 6)

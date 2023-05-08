@@ -1,48 +1,51 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <title>Mijn spelletjessite</title>
+	<title>Mijn spelletjessite</title>
 
-    <meta charset="UTF-8">
-    <meta name="description" content="Opdracht 1: website over spelletjes, Open Universiteit, November 2022">
-    <meta name="author" content="Rinaldo Bertossa">
+	<meta charset="UTF-8">
+	<meta name="description" content="Opdracht 1: website over spelletjes, Open Universiteit, November 2022">
+	<meta name="author" content="Rinaldo Bertossa">
 
-    <link rel="stylesheet" href="reset.css">
-    <link rel="stylesheet" href="stijl.css">
+	<link rel="stylesheet" href="reset.css">
+	<link rel="stylesheet" href="stijl.css">
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jcanvas/21.0.1/min/jcanvas.min.js"></script>
-    <script src="uitgangscode.js"></script>
-    <script src="snake_student.js"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jcanvas/21.0.1/min/jcanvas.min.js"></script>
+
+	<script src="snake_canvas.js"></script>
+	<script src="snake_student.js"></script>
 </head>
 <body>
-    <header class="top">
-        <h1>Mijn Spelletjessite</h1>
-    </header>
-    <aside>
-        <nav>
-            <h2 class="aside-titel">Mijn spelletjes</h2>
-            <ul class="aside">
-                <a href="index.html"><li>Welkom</li></a>
-                <li>Inloggen</li>
-                <li>Snake</li>
-                <li>Boter-kaas-eieren</li>
-                <li>Sudoku</li>
-                <li>Master mind</li>
-                <li>Galgje</li>
-                <li>Cryptogramm</li>
-            </ul>
-        </nav>
-    </aside>
-    <article>
-        <header>
-            <h2 class="article-titel">Snake</h2>
-        </header>
-        <section class="mySnakeCanvas">
-            <input id="startSnake" class="link-button" type="submit" value="Start">
-            <input id="stopSnake" class="link-button" type="submit" value="Stop">
-            <canvas id="mySnakeCanvas" width="360" height="360"></canvas>
-        </section>
-    </article>
+<header class="top">
+	<h1>Mijn Spelletjessite</h1>
+</header>
+<aside>
+	<nav>
+		<h2 class="aside-titel">Mijn spelletjes</h2>
+		<ul class="aside">
+			<a href="index.html">
+				<li>Welkom</li>
+			</a>
+			<li>Inloggen</li>
+			<li>Snake</li>
+			<li>Boter-kaas-eieren</li>
+			<li>Sudoku</li>
+			<li>Master mind</li>
+			<li>Galgje</li>
+			<li>Cryptogramm</li>
+		</ul>
+	</nav>
+</aside>
+<article>
+	<header>
+		<h2 class="article-titel">Snake</h2>
+	</header>
+	<section class="mySnakeCanvas">
+		<input id="startSnake" class="link-button" type="submit" value="Start">
+		<input id="stopSnake" class="link-button" type="submit" value="Stop">
+		<canvas id="mySnakeCanvas" width="360" height="360"></canvas>
+	</section>
+</article>
 </body>
 </html>

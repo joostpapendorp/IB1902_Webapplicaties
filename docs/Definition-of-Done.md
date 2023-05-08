@@ -7,7 +7,7 @@
 * The code has been peer-reviewed. (Note: no longer possible)
 * The code is isolated on a separate branch and a pull request has been created.
 * The code adheres to modularity principles.
-* The code is clean.
+* The code is clean and styled.
 * Decisions have been recorded, log book has been updated.
 
 

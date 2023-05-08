@@ -25,17 +25,6 @@ var snake,
 	ymax,                     // maximale waarde van y = height - R
 	direction = UP;
 	
-$(document).ready(function() {
-	$("#startSnake").click(init);  
-	$("#stopSnake").click(stop);
-});
-
-/**
-  @function init() -> void
-  @desc Haal eventueel bestaand voedsel en een bestaande slang weg, cre\"eer een slang, genereer voedsel, en teken alles
-*/
-function init() {		
-}
 
 /**
   @function move(direction) -> void
@@ -53,14 +42,6 @@ function move(direction) {
 	}
 }
 
-/**
-  @function draw() -> void
-  @desc Teken de slang en het voedsel
-*/
-function draw() {
-	var canvas = $("#mySnakeCanvas").clearCanvas();
-	/* in te vullen */
-}
 /***************************************************************************
  **                 Constructors                                          **
  ***************************************************************************/
@@ -71,16 +52,7 @@ function draw() {
 */ 
 function Snake(segments) {
 	/* in te vullen */}
-/**
-   @constructor Element
-   @param radius straal
-   @param {number} x x-coordinaat middelpunt
-   @param {number} y y-coordinaat middelpunt
-   @param {string} color kleur van het element
-*/ 
-function Element(radius, x, y, color) {
-		/* in te vullen */
-}
+
 /***************************************************************************
  **                 Hulpfuncties                                          **
  ***************************************************************************/

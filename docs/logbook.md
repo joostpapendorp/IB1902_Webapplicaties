@@ -83,9 +83,20 @@ Index.html heeft geen js nodig, stond fout in templates. Ik denk dat het deze is
 
 https://projects.calebevans.me/jcanvas/docs/
 
-In de min versie via cloudfare komt Caleb Evans ook terug als auteur; inmiddels raad de site van hem zelf aan om de min
-via GitHub te downloaden: https://projects.calebevans.me/jcanvas/downloads/
+In de min versie via cloudfare komt Caleb Evans ook terug als auteur; inmiddels raad de site van hem zelf aan om de min via GitHub te downloaden: https://projects.calebevans.me/jcanvas/downloads/
 
 Laatste versie is gelijk: 21.0.1. Support the author, dus via de site zelf.
 
 templates are incomplete? (no stop)
+
+(Pomodoro 1)
+
+    As a side note, you cannot accurately set a canvas’s width and height via CSS; you can only do so through the canvas element’s width and height attributes.
+
+    The resource from “https://raw.githubusercontent.com/caleb531/jcanvas/v21.0.1/dist/min/jcanvas.min.js” was blocked due to MIME type (“text/plain”) mismatch (X-Content-Type-Options: nosniff).
+
+    How to Perform a Hard Refresh in Your Browser: Chrome, Firefox, or Edge for Windows: Press Ctrl+F5 (If that doesn’t work, try Shift+F5 or Ctrl+Shift+R).
+
+(Pomodoro 2)
+
+Ik weet niet hoe ik dit oplos, het kost tijd en is niet essentieel: Revert JCanvas to cloudfare source; dit werkt wel.

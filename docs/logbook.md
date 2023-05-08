@@ -49,18 +49,43 @@ Definition of done draft gemaakt.
 ### 2023-03-04
 
 [v] fix de login van GitHub (again).
+
 Structuur van de repo is iets vervuild, door het herhaaldelijk proberen om de remote en de local repo's te hersynchroniseren.
 
 
 ### 2023-05-01
 
 [v] login op Trello (again)
+
 https://trello.com/b/djHvyLDG/ib1902-webapplicaties-opdracht-2
+
 gebruikt joost.papendorp
 
 [v] merge 004
 
 005 QUnit
+
 https://qunitjs.com/
 
 updated npm to 9.6.5
+
+
+### 2023-05-8
+
+006 - Something on the screen
+
+[  ] styling choices --> ADR
+
+[  ] copy code to clean file when needed, clearing the template slowly.
+
+#### ??? Waar komt jcanvas vandaan? 
+Index.html heeft geen js nodig, stond fout in templates. Ik denk dat het deze is (???) 
+
+https://projects.calebevans.me/jcanvas/docs/
+
+In de min versie via cloudfare komt Caleb Evans ook terug als auteur; inmiddels raad de site van hem zelf aan om de min
+via GitHub te downloaden: https://projects.calebevans.me/jcanvas/downloads/
+
+Laatste versie is gelijk: 21.0.1. Support the author, dus via de site zelf.
+
+templates are incomplete? (no stop)

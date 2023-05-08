@@ -1,13 +1,13 @@
 # Definition of Done
 
-* The feature has 100% test coverage and 100% branch coverage.
+* Feature has been fully unit tested.
 * The feature is tested manually.
 * All console errors and warnings have been evaluated
 * The code is fully documented.
 * The code has been peer-reviewed. (Note: no longer possible)
 * The code is isolated on a separate branch and a pull request has been created.
 * The code adheres to modularity principles.
-* The code is clean.
+* The code is clean and styled.
 * Decisions have been recorded, log book has been updated.
 
 

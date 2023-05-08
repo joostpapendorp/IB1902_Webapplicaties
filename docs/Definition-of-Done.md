@@ -1,6 +1,6 @@
 # Definition of Done
 
-* The feature has 100% test coverage and 100% branch coverage.
+* Feature has been fully unit tested.
 * The feature is tested manually.
 * All console errors and warnings have been evaluated
 * The code is fully documented.

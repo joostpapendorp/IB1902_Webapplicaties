@@ -47,18 +47,18 @@ QUnit.test("Stop clears the screen.",
 
 function MockCanvas()
 {
-		this.recorder = {
-			drawElement : new Invocation(),
-			clear: new Invocation()
-		};
+	this.recorder = {
+		drawElement : new Invocation(),
+		clear: new Invocation()
+	};
 
-		this.drawElement = function(element){
-			this.recorder.drawElement.invoked = true;
-			this.recorder.drawElement.element = element;
-		};
-		this.clear = function(){
-			this.recorder.clear.invoked = true;
-		};
+	this.drawElement = function(element){
+		this.recorder.drawElement.invoked = true;
+		this.recorder.drawElement.element = element;
+	};
+	this.clear = function(){
+		this.recorder.clear.invoked = true;
+	};
 }
 
 function Invocation(){

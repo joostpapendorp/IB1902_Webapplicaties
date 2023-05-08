@@ -74,9 +74,7 @@ updated npm to 9.6.5
 
 006 - Something on the screen
 
-[  ] styling choices --> ADR
-
-[  ] copy code to clean file when needed, clearing the template slowly.
+[ v ] copy code to clean file when needed, clearing the template slowly.
 
 #### ??? Waar komt jcanvas vandaan? 
 Index.html heeft geen js nodig, stond fout in templates. Ik denk dat het deze is (???) 
@@ -115,3 +113,15 @@ $("#mySnakeCanvas").clearCanvas() violates Demeter; no chaining in assignments.
 $("#mySnakeCanvas") geeft leeg jquery object na verplaatsing naar module object in snake_canvas.js --> onDocumentReady? lazy?
 
 (Pomodoro 6)
+
+linting is out of scope for this story, split it off into its own.
+
+(Pomodoro 7)
+
+Mocking manually for now. deepEqual werkt niet als constructor gebruikt is; propEqual doet wel duck typing. Pag 151.
+
+(Pomodoro 8)
+
+### TODO
+
+[  ] styling choices --> ADR

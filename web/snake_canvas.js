@@ -4,28 +4,28 @@ var snakeCanvas;
 $(document).ready(function() {
 	snakeCanvas = (function(mySnakeCanvas){
 		return {
-		  /**
-		    @function drawElement(element, canvas) -> void
-		    @desc Tekent een element op het canvas
-		    @param {Element} element een Element object
-		  */
-		  drawElement : function(element) {
-		    mySnakeCanvas.drawArc({
-		      draggable : false,
-		      fillStyle : element.color,
-		      x : element.x,
-		      y : element.y,
-		      radius : element.radius
-		    });
-		  },
+			/**
+				@function drawElement(element, canvas) -> void
+				@desc Tekent een element op het canvas
+				@param {Element} element een Element object
+			*/
+			drawElement : function(element) {
+				mySnakeCanvas.drawArc({
+					draggable : false,
+					fillStyle : element.color,
+					x : element.x,
+					y : element.y,
+					radius : element.radius
+				});
+			},
 
-		  /**
-		    @function clear() -> void
-		    @desc Schoont het canvas.
-		  */
-		  clear : function() {
-		    mySnakeCanvas.clearCanvas();
-		  }
+			/**
+				@function clear() -> void
+				@desc Schoont het canvas.
+			*/
+			clear : function() {
+				mySnakeCanvas.clearCanvas();
+			}
 		};
 	}($("#mySnakeCanvas")));
 });

@@ -81,7 +81,7 @@ Index.html heeft geen js nodig, stond fout in templates. Ik denk dat het deze is
 
 https://projects.calebevans.me/jcanvas/docs/
 
-In de min versie via cloudfare komt Caleb Evans ook terug als auteur; inmiddels raad de site van hem zelf aan om de min via GitHub te downloaden: https://projects.calebevans.me/jcanvas/downloads/
+In de min versie via cloudfare komt Caleb Evans ook terug als auteur; inmiddels raadt de site van hem zelf aan om de min via GitHub te downloaden: https://projects.calebevans.me/jcanvas/downloads/
 
 Laatste versie is gelijk: 21.0.1. Support the author, dus via de site zelf.
 
@@ -101,7 +101,7 @@ Ik weet niet hoe ik dit oplos, het kost tijd en is niet essentieel: Revert JCanv
 
 (Pomodoro 3)
 
-[  ] import js module of via html?
+[ v ] import js module of via html?
     LEH 7 pp 163
 
 (Pomodoro 4)
@@ -122,6 +122,14 @@ Mocking manually for now. deepEqual werkt niet als constructor gebruikt is; prop
 
 (Pomodoro 8)
 
-### TODO
+### 2023-05-09
 
-[  ] styling choices --> ADR
+[ V ] styling choices --> ADR
+
+(Pomodoro 1)
+
+    1:5  error  'snakeCanvas' is assigned a value but never used  no-unused-vars
+
+e.v. Blijkbaar kan de linter niet in de .html kijken. Pleit voor modules. Rest is logisch als gevolg van w.i.p.
+
+### TODO

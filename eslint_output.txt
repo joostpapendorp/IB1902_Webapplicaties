@@ -1,0 +1,43 @@
+
+E:\files\studie\OU\Webapplicaties\Opdrachten\Opdracht2\IB1902_Webapplicaties\web\snake_canvas.js
+   1:5  error  'snakeCanvas' is assigned a value but never used  no-unused-vars
+   4:1  error  '$' is not defined                                no-undef
+  30:4  error  '$' is not defined                                no-undef
+
+E:\files\studie\OU\Webapplicaties\Opdrachten\Opdracht2\IB1902_Webapplicaties\web\snake_elements.js
+   2:7   error  'ELEMENT_DIAMETER' is assigned a value but never used  no-unused-vars
+  11:10  error  'Element' is defined but never used                    no-unused-vars
+
+E:\files\studie\OU\Webapplicaties\Opdrachten\Opdracht2\IB1902_Webapplicaties\web\snake_student.js
+   3:7   error  'FOOD_ELEMENT_COLOR' is assigned a value but never used        no-unused-vars
+   4:7   error  'SNAKE_HEAD_ELEMENT_COLOR' is assigned a value but never used  no-unused-vars
+   6:1   error  '$' is not defined                                             no-undef
+   7:2   error  '$' is not defined                                             no-undef
+   8:2   error  '$' is not defined                                             no-undef
+  21:2   error  'snakeCanvas' is not defined                                   no-undef
+  30:28  error  'ELEMENT_RADIUS' is not defined                                no-undef
+  31:2   error  'snakeCanvas' is not defined                                   no-undef
+
+E:\files\studie\OU\Webapplicaties\Opdrachten\Opdracht2\IB1902_Webapplicaties\web\uitgangscode.js
+    2:7   error  'STEP' is assigned a value but never used       no-unused-vars
+    4:7   error  'LEFT' is assigned a value but never used       no-unused-vars
+    5:7   error  'RIGHT' is assigned a value but never used      no-unused-vars
+    7:7   error  'DOWN' is assigned a value but never used       no-unused-vars
+   13:1   error  Mixed spaces and tabs                           no-mixed-spaces-and-tabs
+   14:1   error  Mixed spaces and tabs                           no-mixed-spaces-and-tabs
+   14:4   error  'SLEEPTIME' is assigned a value but never used  no-unused-vars
+   18:1   error  Mixed spaces and tabs                           no-mixed-spaces-and-tabs
+   18:4   error  'HEAD' is assigned a value but never used       no-unused-vars
+   25:2   error  'ymax' is defined but never used                no-unused-vars
+   26:2   error  'direction' is assigned a value but never used  no-unused-vars
+   35:10  error  'move' is defined but never used                no-unused-vars
+   38:3   error  'draw' is not defined                           no-undef
+   53:16  error  'segments' is defined but never used            no-unused-vars
+   66:10  error  'createStartSnake' is defined but never used    no-unused-vars
+   68:1   error  Mixed spaces and tabs                           no-mixed-spaces-and-tabs
+   97:11  error  'drawElement' is defined but never used         no-unused-vars
+  123:10  error  'createFoods' is defined but never used         no-unused-vars
+  128:77  error  'yMax' is not defined                           no-undef
+
+✖ 32 problems (32 errors, 0 warnings)
+

@@ -8,6 +8,7 @@ We will apply uniform simple styling to the project. We will lint te project usi
 * *html* http://validator.w3.org/
 * *css* http://jigsaw.w3.org/css-validator/ en http://csslint.net/
 * *javascript* ESLint https://eslint.org/docs/latest/
+Run using _"npx eslint ./web > eslint_output.txt"_
 
 ## Context
 
@@ -19,7 +20,7 @@ material for the html and css components.
 ## Alternatives considered
 The HTML and CSS checkers and the CSS linters are adopted from the [course site](https://youlearn.ou.nl/web/ib1902222322b/cursus/-/coursenavigator/361088016?_nl_ou_dlwo_courseview_WAR_nloudlwocourseplanportlet__facesViewIdRender=%2Fxhtml%2Fviewer%2FcourseNavigator.xhtml).
 
-The recommended linter for javascript is [JSLint](https://www.jslint.com/). This linter is considered outdated. With permission from Sylvia Stuurman (mail dd. 2022-12-07), we replaced this with ESLint:
+The course recommended [JSLint](https://www.jslint.com/) for Javascript. This linter is considered outdated. With permission from Sylvia Stuurman (mail dd. 2022-12-07), we replaced this with ESLint:
 
     *** JSLint ***
     Linting is een inherent goed iets, voor elke taal. Alleen ben ik het eens met meneer Internet (m/v/x) als die stelt dat JSLint verouderd is.

@@ -128,5 +128,8 @@ Mocking manually for now. deepEqual werkt niet als constructor gebruikt is; prop
 
 (Pomodoro 1)
 
+    1:5  error  'snakeCanvas' is assigned a value but never used  no-unused-vars
+
+e.v. Blijkbaar kan de linter niet in de .html kijken. Pleit voor modules. Rest is logisch als gevolg van w.i.p.
 
 ### TODO

@@ -1,7 +1,6 @@
-
-const SNAKE_BODY_ELEMENT_COLOR = "DarkRed";
 const FOOD_ELEMENT_COLOR = "Olive";
-const SNAKE_HEAD_ELEMENT_COLOR = "DarkOrange";
+
+var snake;
 
 $(document).ready(function() {
 	$("#startSnake").click(init);
@@ -14,6 +13,8 @@ $(document).ready(function() {
 */
 function init() {
 	console.log("game started");
+	snake = createStartSnake();
+	console.log("snake created");
 	draw();
 }
 
@@ -27,6 +28,5 @@ function stop() {
   @desc Teken de slang en het voedsel
 */
 function draw() {
-	let element = new Element(ELEMENT_RADIUS, 360 / 2, 360 / 2, SNAKE_BODY_ELEMENT_COLOR);
-	snakeCanvas.drawElement(element);
+	snake.draw();
 }

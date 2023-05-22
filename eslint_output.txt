@@ -1,22 +1,41 @@
 
 E:\files\studie\OU\Webapplicaties\Opdrachten\Opdracht2\IB1902_Webapplicaties\web\snake_canvas.js
-   1:5  error  'snakeCanvas' is assigned a value but never used  no-unused-vars
-   4:1  error  '$' is not defined                                no-undef
-  30:4  error  '$' is not defined                                no-undef
+   2:5  error  'snakeCanvas' is assigned a value but never used  no-unused-vars
+   4:5  error  'width' is assigned a value but never used        no-unused-vars
+   5:5  error  'height' is assigned a value but never used       no-unused-vars
+   8:1  error  '$' is not defined                                no-undef
+  34:4  error  '$' is not defined                                no-undef
 
 E:\files\studie\OU\Webapplicaties\Opdrachten\Opdracht2\IB1902_Webapplicaties\web\snake_elements.js
-   2:7   error  'ELEMENT_DIAMETER' is assigned a value but never used  no-unused-vars
-  11:10  error  'Element' is defined but never used                    no-unused-vars
+   4:7   error  'HORIZONTAL_GRID_SIZE' is assigned a value but never used  no-unused-vars
+   4:41  error  'width' is not defined                                     no-undef
+   5:7   error  'VERTICAL_GRID_SIZE' is assigned a value but never used    no-unused-vars
+   5:39  error  'height' is not defined                                    no-undef
+  16:10  error  'createElement' is defined but never used                  no-unused-vars
+  31:5   error  'snakeCanvas' is not defined                               no-undef
+
+E:\files\studie\OU\Webapplicaties\Opdrachten\Opdracht2\IB1902_Webapplicaties\web\snake_snake.js
+   9:10  error  'createStartSnake' is defined but never used  no-unused-vars
+  10:32  error  'HORIZONTAL_GRID_SIZE' is not defined         no-undef
+  11:32  error  'VERTICAL_GRID_SIZE' is not defined           no-undef
+  26:3   error  'createElement' is not defined                no-undef
+  27:19  error  'ELEMENT_DIAMETER' is not defined             no-undef
+  27:38  error  'ELEMENT_RADIUS' is not defined               no-undef
+  28:19  error  'ELEMENT_DIAMETER' is not defined             no-undef
+  28:38  error  'ELEMENT_RADIUS' is not defined               no-undef
+  30:3   error  'createElement' is not defined                no-undef
+  31:25  error  'ELEMENT_DIAMETER' is not defined             no-undef
+  31:44  error  'ELEMENT_RADIUS' is not defined               no-undef
+  32:19  error  'ELEMENT_DIAMETER' is not defined             no-undef
+  32:38  error  'ELEMENT_RADIUS' is not defined               no-undef
 
 E:\files\studie\OU\Webapplicaties\Opdrachten\Opdracht2\IB1902_Webapplicaties\web\snake_student.js
-   3:7   error  'FOOD_ELEMENT_COLOR' is assigned a value but never used        no-unused-vars
-   4:7   error  'SNAKE_HEAD_ELEMENT_COLOR' is assigned a value but never used  no-unused-vars
-   6:1   error  '$' is not defined                                             no-undef
-   7:2   error  '$' is not defined                                             no-undef
-   8:2   error  '$' is not defined                                             no-undef
-  21:2   error  'snakeCanvas' is not defined                                   no-undef
-  30:28  error  'ELEMENT_RADIUS' is not defined                                no-undef
-  31:2   error  'snakeCanvas' is not defined                                   no-undef
+   1:7   error  'FOOD_ELEMENT_COLOR' is assigned a value but never used  no-unused-vars
+   5:1   error  '$' is not defined                                       no-undef
+   6:2   error  '$' is not defined                                       no-undef
+   7:2   error  '$' is not defined                                       no-undef
+  16:10  error  'createStartSnake' is not defined                        no-undef
+  22:2   error  'snakeCanvas' is not defined                             no-undef
 
 E:\files\studie\OU\Webapplicaties\Opdrachten\Opdracht2\IB1902_Webapplicaties\web\uitgangscode.js
     2:7   error  'STEP' is assigned a value but never used       no-unused-vars
@@ -26,18 +45,18 @@ E:\files\studie\OU\Webapplicaties\Opdrachten\Opdracht2\IB1902_Webapplicaties\web
    13:1   error  Mixed spaces and tabs                           no-mixed-spaces-and-tabs
    14:1   error  Mixed spaces and tabs                           no-mixed-spaces-and-tabs
    14:4   error  'SLEEPTIME' is assigned a value but never used  no-unused-vars
+   16:7   error  'SNAKE' is assigned a value but never used      no-unused-vars
    18:1   error  Mixed spaces and tabs                           no-mixed-spaces-and-tabs
    18:4   error  'HEAD' is assigned a value but never used       no-unused-vars
+   22:2   error  'width' is defined but never used               no-unused-vars
+   23:2   error  'height' is defined but never used              no-unused-vars
    25:2   error  'ymax' is defined but never used                no-unused-vars
    26:2   error  'direction' is assigned a value but never used  no-unused-vars
    35:10  error  'move' is defined but never used                no-unused-vars
    38:3   error  'draw' is not defined                           no-undef
-   53:16  error  'segments' is defined but never used            no-unused-vars
-   66:10  error  'createStartSnake' is defined but never used    no-unused-vars
-   68:1   error  Mixed spaces and tabs                           no-mixed-spaces-and-tabs
-   97:11  error  'drawElement' is defined but never used         no-unused-vars
-  123:10  error  'createFoods' is defined but never used         no-unused-vars
-  128:77  error  'yMax' is not defined                           no-undef
+   71:11  error  'drawElement' is defined but never used         no-unused-vars
+   97:10  error  'createFoods' is defined but never used         no-unused-vars
+  102:77  error  'yMax' is not defined                           no-undef
 
-✖ 32 problems (32 errors, 0 warnings)
+✖ 49 problems (49 errors, 0 warnings)
 

@@ -45,39 +45,13 @@ function move(direction) {
 /***************************************************************************
  **                 Constructors                                          **
  ***************************************************************************/
-/**
-   @constructor Snake
-   @param {[Element] segments een array met aaneengesloten slangsegmenten
-                   Het laatste element van segments wordt de kop van de slang 
-*/ 
-function Snake(segments) {
-	/* in te vullen */}
 
 /***************************************************************************
  **                 Hulpfuncties                                          **
  ***************************************************************************/
  
-/**
-  @function createStartSnake() -> Snake
-  @desc Slang creëren, bestaande uit  twee segmenten, 
-        in het midden van het veld
-  @return: slang volgens specificaties
-*/
-function createStartSnake() {
-	var segments   = [createSegment(R + width/2, R + height/2), 
-	                  createSegment(R + width/2, height/2 - R)];
-    snake = new Snake(segments);  
-}
-/**
-  @function createSegment(x,y) -> Element
-  @desc Slangsegment creeren op een bepaalde plaats
-  @param {number} x x-coordinaat middelpunt
-  @param {number} y y-coordinaart middelpunt
-  @return: {Element} met straal R en color SNAKE
-*/
-function createSegment(x, y) {
-	return new Element(R, x, y, SNAKE);
-}
+
+
 /**
   @function createFood(x,y) -> Element
   @desc Voedselelement creeren op een bepaalde plaats

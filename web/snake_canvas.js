@@ -1,6 +1,9 @@
 const SNAKE_CANVAS_ID = "#mySnakeCanvas"
 var snakeCanvas;
 
+var width = 360;
+var height = 360;
+
 // note: we MUST use onDocumentReady here, since the canvas might not be initialized otherwise, resulting in an empty jQuery object
 $(document).ready(function() {
 	snakeCanvas = (function(mySnakeCanvas){

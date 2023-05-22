@@ -13,13 +13,13 @@ $(document).ready(function() {
 				@desc Tekent een element op het canvas
 				@param {Element} element een Element object
 			*/
-			drawElement : function(element) {
+			drawElement : function(radius, x, y, color) {
 				mySnakeCanvas.drawArc({
 					draggable : false,
-					fillStyle : element.color,
-					x : element.x,
-					y : element.y,
-					radius : element.radius
+					fillStyle : color,
+					x : x,
+					y : y,
+					radius : radius
 				});
 			},
 

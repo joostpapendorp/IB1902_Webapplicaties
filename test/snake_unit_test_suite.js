@@ -54,7 +54,7 @@ QUnit.test("Init draws the head of the snake right of the center.",
 		init();
 
 		let recorder = recorders.drawElement;
-		let expected = new Invocation([new Element( 10, GRID_COORDINATE_9, GRID_COORDINATE_8, "DarkOrange")]);
+		let expected = new Invocation([10, GRID_COORDINATE_9, GRID_COORDINATE_8, "DarkOrange"]);
 
 		assert.propEqual(
 			recorder.invocations[1],
@@ -73,7 +73,7 @@ QUnit.test("Init draws a body segment left of the center.",
 		init();
 
 		let recorder = recorders.drawElement;
-		let expected = new Invocation([new Element(10, GRID_COORDINATE_8, GRID_COORDINATE_8, "DarkRed")]);
+		let expected = new Invocation([10, GRID_COORDINATE_8, GRID_COORDINATE_8, "DarkRed"]);
 
 		assert.propEqual(
 			recorder.invocations[0],
@@ -106,8 +106,8 @@ function MockCanvas() {
 		clear: new Recorder("clear")
 	};
 
-	this.drawElement = function(element){
-		this.recorders.drawElement.invokedWith([element]);
+	this.drawElement = function(radius, x, y, color){
+		this.recorders.drawElement.invokedWith([radius, x, y, color]);
 	};
 
 	this.clear = function(){

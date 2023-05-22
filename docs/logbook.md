@@ -166,7 +166,7 @@ with (360,360) canvas size, this amounts to a grid of 360/20 = 18x18 spaces, ind
     body (8, 8) and
     head (9, 8).
 
-Coordinate 8 amounts to (8xDIAMETER+RADIUS) = (8*20+10) = 17*10 = 170. And 9, analogue to 190. So, final central coordinates are:
+Coordinate 8 amounts to (8 * DIAMETER + RADIUS) = (8 * 20 + 10) = 17 * 10 = 170. And 9 analogue to 190. So, final central coordinates are:
 
     BODY = (8,8) = (170, 170)
     HEAD = (9,8) = (190, 170)

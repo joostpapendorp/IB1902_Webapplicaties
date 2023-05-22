@@ -23,6 +23,7 @@ function Snake(segments) {
 function createStartSnake() {
 	let centralXTile = Math.floor(HORIZONTAL_GRID_SIZE/2)-1;
 	let centralYTile = Math.floor(VERTICAL_GRID_SIZE/2)-1;
+
 	var segments = [
 		createSegment(
 			centralXTile * ELEMENT_DIAMETER + ELEMENT_RADIUS,

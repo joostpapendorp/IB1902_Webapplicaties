@@ -132,4 +132,43 @@ Mocking manually for now. deepEqual werkt niet als constructor gebruikt is; prop
 
 e.v. Blijkbaar kan de linter niet in de .html kijken. Pleit voor modules. Rest is logisch als gevolg van w.i.p.
 
+
+### 2023-05-22
+
+(Pomodoro 1 +2 + 3)
+
+Story *8 - Make a snake*
+
+[ v ] multiple invocations of same mock overrides values
+
+Create a recorder that lists invocations
+
+(Pomodoro 4)
+
+_array.forEach( function )_ apparently creates a closure over the given function only, _even while_ it is part of an object. Thus, _this_ referenced from within this function is no longer its object, but _Window_. Goody.
+
+(Pomodoro 5 + 6)
+
+#### center of the screen.
+Calculations given by example result in 170, but 360/2 = 180.
+
+?? What constitutes the coordinates given to _drawArc_? Is that the upper left corner of the box around the arc, or the center of the arc?
+
+Docs don't specify https://projects.calebevans.me/jcanvas/docs/arcs/
+
+==> draw a circle at Origin to find out: drawArc uses (x,y) as the center of the circle.  The canvas consists of a grid of
+
+    (width, height) ==> lower right corner of canvas
+    (width / ELEMENT_DIAMETER, height/ELEMENT_DIAMETER) ==> width/height in number of boxes on the canvas
+
+with (360,360) canvas size, this amounts to a grid of 360/20 = 18x18 spaces, indexed [0..17]. So there _is no_ central box. Putting the snake in the closest central positions, facing east, would be at
+
+    body (8, 8) and
+    head (9, 8).
+
+Coordinate 8 amounts to (8xDIAMETER+RADIUS) = (8*20+10) = 17*10 = 170. And 9, analogue to 190. So, final central coordinates are:
+
+    BODY = (8,8) = (170, 170)
+    HEAD = (9,8) = (190, 170)
+
 ### TODO

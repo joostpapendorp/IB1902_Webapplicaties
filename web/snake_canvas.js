@@ -1,3 +1,4 @@
+const SNAKE_CANVAS_ID = "#mySnakeCanvas"
 var snakeCanvas;
 
 // note: we MUST use onDocumentReady here, since the canvas might not be initialized otherwise, resulting in an empty jQuery object
@@ -27,5 +28,5 @@ $(document).ready(function() {
 				mySnakeCanvas.clearCanvas();
 			}
 		};
-	}($("#mySnakeCanvas")));
+	}($(SNAKE_CANVAS_ID)));
 });

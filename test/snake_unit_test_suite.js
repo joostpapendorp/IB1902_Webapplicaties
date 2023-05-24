@@ -1,3 +1,5 @@
+const FIXTURE_ELEMENT_ID = "fixture-element";
+
 QUnit.module("General properties");
 
 QUnit.test("Constant values",
@@ -7,7 +9,7 @@ QUnit.test("Constant values",
 	  assert.equal( ELEMENT_RADIUS, 10, "size of the element radius is 10." )
 	  assert.equal( ELEMENT_DIAMETER, 20, "size of a  step is the diameter of one element" );
 
-	  assert.equal( SNAKE_CANVAS_ID, "#mySnakeCanvas", "Element id of the canvas uses that of the HTML" );
+	  assert.equal( SNAKE_CANVAS_ID, "mySnakeCanvas", "Element id of the canvas uses that of the HTML" );
 	}
 );
 
@@ -34,13 +36,12 @@ QUnit.test("Starting snake is two segments long",
 	assert => {
 		assert.expect(1);
 
-		snakeCanvas = new MockCanvas();
-		let recorders = snakeCanvas.recorders;
+		withCanvasMocked(recorders => {
+			init();
 
-		init();
-
-		let recorder = recorders.drawElement;
-		assert.equal(recorder.timesInvoked(), 2, "Invoked drawElement twice");
+			let recorder = recorders.drawElement;
+			assert.equal(recorder.timesInvoked(), 2, "Invoked drawElement twice");
+		});
 	}
 );
 
@@ -48,18 +49,17 @@ QUnit.test("Init draws the head of the snake right of the center.",
 	assert => {
 		assert.expect(1);
 
-		snakeCanvas = new MockCanvas();
-		let recorders = snakeCanvas.recorders;
+		withCanvasMocked(recorders => {
+			init();
 
-		init();
+			let recorder = recorders.drawElement;
+			let expected = new Invocation([10, GRID_COORDINATE_9, GRID_COORDINATE_8, "DarkOrange"]);
 
-		let recorder = recorders.drawElement;
-		let expected = new Invocation([10, GRID_COORDINATE_9, GRID_COORDINATE_8, "DarkOrange"]);
-
-		assert.propEqual(
-			recorder.invocations[1],
-			expected,
-			"Invoked DrawElement with dark orange element at center.")
+			assert.propEqual(
+				recorder.invocations[1],
+				expected,
+				"Invoked DrawElement with dark orange element at center.")
+		});
 	}
 );
 
@@ -67,18 +67,17 @@ QUnit.test("Init draws a body segment left of the center.",
 	assert => {
 		assert.expect(1);
 
-		snakeCanvas = new MockCanvas();
-		let recorders = snakeCanvas.recorders;
-
-		init();
+		withCanvasMocked(recorders => {
+			init();
 
 		let recorder = recorders.drawElement;
 		let expected = new Invocation([10, GRID_COORDINATE_8, GRID_COORDINATE_8, "DarkRed"]);
 
-		assert.propEqual(
-			recorder.invocations[0],
-			expected,
-			"Invoked DrawElement with dark red element left of the center.")
+			assert.propEqual(
+				recorder.invocations[0],
+				expected,
+				"Invoked DrawElement with dark red element left of the center.")
+		});
 	}
 );
 
@@ -89,16 +88,61 @@ QUnit.test("Stop clears the screen.",
 	assert => {
 		assert.expect(1);
 
-		snakeCanvas = new MockCanvas();
-		let recorders = snakeCanvas.recorders;
+		withCanvasMocked(recorders => {
+			stop();
 
-		stop();
-
-		let recorder = recorders.clear;
-		assert.equal(recorder.timesInvoked(), 1, "Invoked clear");
+			let recorder = recorders.clear;
+			assert.equal(recorder.timesInvoked(), 1, "Invoked clear");
+		});
 	}
 );
 
+
+QUnit.module("Board and canvas");
+
+QUnit.test("Canvas size is taken from .html",
+	assert => {
+		assert.expect(2);
+
+		let expectedWidth = 1;
+		let expectedHeight = 2;
+
+		withHTMLCanvasUsing( { width : expectedWidth, height : expectedHeight },
+			canvas => {
+				// call document-ready function
+				loadCanvasFromHTML();
+
+				assert.equal(snakeCanvas.width(), expectedWidth);
+				assert.equal(snakeCanvas.height(), expectedHeight);
+			}
+		);
+	}
+);
+
+
+// loan pattern to isolate html-fixture setup and tear down
+function withHTMLCanvasUsing(props, testFunction){
+		let mockCanvas  = $(document.createElement("canvas")).
+			prop("id", props.id || SNAKE_CANVAS_ID).
+			prop("width", props.width || 0).
+			prop("height", props.height || 0);
+
+		$("#"+FIXTURE_ELEMENT_ID).append(mockCanvas);
+
+		testFunction(mockCanvas);
+
+		mockCanvas.remove();
+}
+
+// loan pattern to isolate setup and tear down of mock canvas. We don't have injection, so we must overwrite globals.
+function withCanvasMocked(testFunction){
+	let temp = snakeCanvas;
+	snakeCanvas = new MockCanvas();
+
+	testFunction(snakeCanvas.recorders);
+
+	snakeCanvas = temp;
+};
 
 function MockCanvas() {
 	this.recorders = {

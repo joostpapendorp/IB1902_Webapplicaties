@@ -171,4 +171,19 @@ Coordinate 8 amounts to (8 * DIAMETER + RADIUS) = (8 * 20 + 10) = 17 * 10 = 170.
     BODY = (8,8) = (170, 170)
     HEAD = (9,8) = (190, 170)
 
+
+### 2023-05-24
+
+story _009-Define_playing_field_
+
+Formalize the above: split the canvas size and the board grid into separate entities
+
+Append/remove dom elements via Javascript: pp. 213
+
+(Pomodoro 1+2)
+
+introduce loan pattern to isolate tests.
+
+(Pomodoro 3+4)
+
 ### TODO

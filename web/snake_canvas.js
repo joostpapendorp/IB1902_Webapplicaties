@@ -1,12 +1,19 @@
-const SNAKE_CANVAS_ID = "#mySnakeCanvas"
+const SNAKE_CANVAS_ID = "mySnakeCanvas"
+
 var snakeCanvas;
 
 var width = 360;
 var height = 360;
 
 // note: we MUST use onDocumentReady here, since the canvas might not be initialized otherwise, resulting in an empty jQuery object
-$(document).ready(function() {
+$(document).ready(loadCanvasFromHTML);
+
+function loadCanvasFromHTML() {
 	snakeCanvas = (function(mySnakeCanvas){
+
+		let width = mySnakeCanvas.prop("width");
+		let height = mySnakeCanvas.prop("height");
+
 		return {
 			/**
 				@function drawElement(element, canvas) -> void
@@ -29,7 +36,15 @@ $(document).ready(function() {
 			*/
 			clear : function() {
 				mySnakeCanvas.clearCanvas();
+			},
+
+			width : function(){
+				return width;
+			},
+
+			height : function(){
+				return height;
 			}
 		};
-	}($(SNAKE_CANVAS_ID)));
-});
+	}($("#"+SNAKE_CANVAS_ID)));
+};

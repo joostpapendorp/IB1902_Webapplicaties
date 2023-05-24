@@ -197,8 +197,16 @@ Maakt dat element een internal van board? ===> ja, wel zelfde package, exports a
 
 Dit lost ook de plaatsing van de constanten E_R, E_D en H_G_S/ V_G_S op.
 
-(Pomodoro 6)
+(Pomodoro 6 + 7)
 
-(Pomodoro 7)
+(Pomodoro 8 + 9)
+
+[v] move ondocready to main
+[v] redirect from element to board
+[v] remove old constants
+
+wederom een closure dat *_niet_* de omgeving meeneemt??? ===> nee. Referencing a function van een object neemt zijn context niet over, waardoor die waarden NaN zijn. In plaats daarvan juist wel een closure over de aanroep gebruiken. Geen foutmelding, echter, want javascript
+
 
 ### TODO
+[ ] harden tests with new situation

@@ -1,12 +1,5 @@
 const BOARD_SIZE = 18;
 
-const ELEMENT_RADIUS = 10;
-const ELEMENT_DIAMETER = 2 * ELEMENT_RADIUS;
-
-const HORIZONTAL_GRID_SIZE = Math.floor(width / ELEMENT_DIAMETER);
-const VERTICAL_GRID_SIZE = Math.floor(height / ELEMENT_DIAMETER);
-
-
 function createBoard(canvas){
 	board = new Board();
 
@@ -22,11 +15,15 @@ function createBoard(canvas){
 
 		this.drawElement = function(x,y,color){
 			canvas.drawArc(
-				board.elementRadius,
-				board.toPixels(x),
-				board.toPixels(y),
+				this.elementRadius,
+				this.toPixels(x),
+				this.toPixels(y),
 				color
 			);
+		}
+
+		this.clear = function(){
+			canvas.clear();
 		}
 	}
 
@@ -44,8 +41,12 @@ function createBoard(canvas){
 		createElement : function(x, y, color){
 			let element = new Element(x,y,color);
 
-			return { draw : element.draw };
-		}
+			return {
+				draw : () => element.draw()
+			};
+		},
+
+		clear : () => board.clear()
 	};
 }
 
@@ -53,7 +54,7 @@ function createBoard(canvas){
   @function createSegment(x,y) -> Element
   @desc Slangsegment creeren op een bepaalde plaats
   @param {number} x x-coordinaat middelpunt
-  @param {number} y y-coordinaart middelpunt
+  @param {number} y y-coordinaat middelpunt
   @param {color} kleur v/h element
   @return: {Element} met straal ELEMENT_RADIUS
 */

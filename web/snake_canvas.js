@@ -20,7 +20,7 @@ function loadCanvasFromHTML() {
 				@desc Tekent een element op het canvas
 				@param {Element} element een Element object
 			*/
-			drawElement : function(radius, x, y, color) {
+			drawArc : function(radius, x, y, color) {
 				mySnakeCanvas.drawArc({
 					draggable : false,
 					fillStyle : color,

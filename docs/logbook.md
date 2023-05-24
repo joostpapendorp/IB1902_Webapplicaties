@@ -182,8 +182,23 @@ Append/remove dom elements via Javascript: pp. 213
 
 (Pomodoro 1+2)
 
-introduce loan pattern to isolate tests.
+Introduce loan pattern to isolate tests (story _010-Mocking_and_modularize_testing_).
 
-(Pomodoro 3+4)
+(Pomodoro 3+4+5)
+
+Create a board and inject the canvas.
+
+? Moet een element een referentie hebben naar het board, of moet het tekenen van het element het board meekrijgen?
+===> Een element wordt altijd gecreerd op het board, dus laat het board de elementen maken. 
+
+    "No elements possible without a board, yet an empty board has no elements."
+
+Maakt dat element een internal van board? ===> ja, wel zelfde package, exports alleen de gecreeerde elements. 
+
+Dit lost ook de plaatsing van de constanten E_R, E_D en H_G_S/ V_G_S op.
+
+(Pomodoro 6)
+
+(Pomodoro 7)
 
 ### TODO

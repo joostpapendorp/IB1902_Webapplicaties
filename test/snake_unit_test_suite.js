@@ -4,7 +4,9 @@ QUnit.module("General properties");
 
 QUnit.test("Constant values",
 	assert => {
-	  assert.expect(3);
+	  assert.expect(4);
+
+	  assert.equal( BOARD_SIZE, 18, "size of the board is 18x18 tiles." );
 
 	  assert.equal( ELEMENT_RADIUS, 10, "size of the element radius is 10." )
 	  assert.equal( ELEMENT_DIAMETER, 20, "size of a  step is the diameter of one element" );
@@ -36,11 +38,11 @@ QUnit.test("Starting snake is two segments long",
 	assert => {
 		assert.expect(1);
 
-		withCanvasMocked(recorders => {
+		withCanvasMocked(function(mockCanvas, recorders){
 			init();
 
-			let recorder = recorders.drawElement;
-			assert.equal(recorder.timesInvoked(), 2, "Invoked drawElement twice");
+			let recorder = recorders.drawArc;
+			assert.equal(recorder.timesInvoked(), 2, "Invoked drawArc twice");
 		});
 	}
 );
@@ -49,10 +51,10 @@ QUnit.test("Init draws the head of the snake right of the center.",
 	assert => {
 		assert.expect(1);
 
-		withCanvasMocked(recorders => {
+		withCanvasMocked(function(mockCanvas, recorders){
 			init();
 
-			let recorder = recorders.drawElement;
+			let recorder = recorders.drawArc;
 			let expected = new Invocation([10, GRID_COORDINATE_9, GRID_COORDINATE_8, "DarkOrange"]);
 
 			assert.propEqual(
@@ -67,10 +69,10 @@ QUnit.test("Init draws a body segment left of the center.",
 	assert => {
 		assert.expect(1);
 
-		withCanvasMocked(recorders => {
+		withCanvasMocked(function(mockCanvas, recorders){
 			init();
 
-		let recorder = recorders.drawElement;
+		let recorder = recorders.drawArc;
 		let expected = new Invocation([10, GRID_COORDINATE_8, GRID_COORDINATE_8, "DarkRed"]);
 
 			assert.propEqual(
@@ -88,7 +90,7 @@ QUnit.test("Stop clears the screen.",
 	assert => {
 		assert.expect(1);
 
-		withCanvasMocked(recorders => {
+		withCanvasMocked(function(mockCanvas, recorders){
 			stop();
 
 			let recorder = recorders.clear;
@@ -112,13 +114,43 @@ QUnit.test("Canvas size is taken from .html",
 				// call document-ready function
 				loadCanvasFromHTML();
 
-				assert.equal(snakeCanvas.width(), expectedWidth);
-				assert.equal(snakeCanvas.height(), expectedHeight);
+				assert.equal(snakeCanvas.width(), expectedWidth, "with should come from .html");
+				assert.equal(snakeCanvas.height(), expectedHeight, "height should come from .html");
 			}
 		);
 	}
 );
 
+QUnit.test("Tile size is calculated from the smallest canvas dimension",
+	assert => {
+		assert.expect(2);
+
+		withCanvasMocked( function(mockCanvas, recorders){
+			const expectedTileSize = 4;
+
+			let smallestDimension = expectedTileSize * BOARD_SIZE;
+			let largestDimension = (expectedTileSize + 2) * BOARD_SIZE;
+
+			mockCanvas.width = () => smallestDimension;
+			mockCanvas.height = () => largestDimension;
+
+			let subject = createBoard(mockCanvas);
+			let element = subject.createElement(0,0,"DarkRed");
+			element.draw();
+
+			let recorder = recorders.drawArc;
+			assert.equal(recorder.timesInvoked(), 1, "Board converts the drawElement into a drawArc");
+
+			let invocation = recorder.invocations[0];
+			let actualRadius = invocation.arguments[0];
+
+			assert.equal(
+				actualRadius,
+				expectedTileSize / 2,
+				"Radius of arc drawn should be half the tile size");
+		});
+	}
+);
 
 // loan pattern to isolate html-fixture setup and tear down
 function withHTMLCanvasUsing(props, testFunction){
@@ -139,23 +171,33 @@ function withCanvasMocked(testFunction){
 	let temp = snakeCanvas;
 	snakeCanvas = new MockCanvas();
 
-	testFunction(snakeCanvas.recorders);
+	testFunction(snakeCanvas, snakeCanvas.recorders);
 
 	snakeCanvas = temp;
 };
 
 function MockCanvas() {
 	this.recorders = {
-		drawElement : new Recorder("drawElement"),
-		clear: new Recorder("clear")
+		drawArc : new Recorder("drawArc"),
+		clear: new Recorder("clear"),
+		width: new Recorder("width"),
+		height: new Recorder("height")
 	};
 
-	this.drawElement = function(radius, x, y, color){
-		this.recorders.drawElement.invokedWith([radius, x, y, color]);
+	this.drawArc = function(radius, x, y, color){
+		this.recorders.drawArc.invokedWith([radius, x, y, color]);
 	};
 
 	this.clear = function(){
 		this.recorders.clear.invoked();
+	};
+
+	this.width = function(){
+		this.recorders.width.invoked();
+	};
+
+	this.height = function(){
+		this.recorders.height.invoked();
 	};
 }
 

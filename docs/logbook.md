@@ -122,6 +122,7 @@ Mocking manually for now. deepEqual werkt niet als constructor gebruikt is; prop
 
 (Pomodoro 8)
 
+
 ### 2023-05-09
 
 [ V ] styling choices --> ADR
@@ -149,7 +150,9 @@ _array.forEach( function )_ apparently creates a closure over the given function
 
 (Pomodoro 5 + 6)
 
+
 #### center of the screen.
+
 Calculations given by example result in 170, but 360/2 = 180.
 
 ?? What constitutes the coordinates given to _drawArc_? Is that the upper left corner of the box around the arc, or the center of the arc?
@@ -208,5 +211,12 @@ Dit lost ook de plaatsing van de constanten E_R, E_D en H_G_S/ V_G_S op.
 wederom een closure dat *_niet_* de omgeving meeneemt??? ===> nee. Referencing a function van een object neemt zijn context niet over, waardoor die waarden NaN zijn. In plaats daarvan juist wel een closure over de aanroep gebruiken. Geen foutmelding, echter, want javascript
 
 
+### 2023-05-25
+
+stories _009-Define_playing_field_ and _010-Mocking_and_modularize_testing_
+
+(Pomodoro 1)
+
 ### TODO
+
 [ ] harden tests with new situation

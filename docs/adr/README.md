@@ -7,3 +7,5 @@
 * [5. use-git](0005-use-git.md)
 * [6. use-simple-branching-model](0006-use-simple-branching-model.md)
 * [7. code-is-neatly-styled.](0007-code-is-neatly-styled..md)
+* [8. decisions-deviating-from-assignment-requirements](0008-decisions-deviating-from-assignment-requirements.md)
+* [9. we-use-first-for-unit-testing-and-write-our-own-scaffolds](0009-we-use-first-for-unit-testing-and-write-our-own-scaffolds.md)

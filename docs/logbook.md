@@ -122,6 +122,7 @@ Mocking manually for now. deepEqual werkt niet als constructor gebruikt is; prop
 
 (Pomodoro 8)
 
+
 ### 2023-05-09
 
 [ V ] styling choices --> ADR
@@ -149,7 +150,9 @@ _array.forEach( function )_ apparently creates a closure over the given function
 
 (Pomodoro 5 + 6)
 
+
 #### center of the screen.
+
 Calculations given by example result in 170, but 360/2 = 180.
 
 ?? What constitutes the coordinates given to _drawArc_? Is that the upper left corner of the box around the arc, or the center of the arc?
@@ -171,4 +174,49 @@ Coordinate 8 amounts to (8 * DIAMETER + RADIUS) = (8 * 20 + 10) = 17 * 10 = 170.
     BODY = (8,8) = (170, 170)
     HEAD = (9,8) = (190, 170)
 
+
+### 2023-05-24
+
+story _009-Define_playing_field_
+
+Formalize the above: split the canvas size and the board grid into separate entities
+
+Append/remove dom elements via Javascript: pp. 213
+
+(Pomodoro 1+2)
+
+Introduce loan pattern to isolate tests (story _010-Mocking_and_modularize_testing_).
+
+(Pomodoro 3+4+5)
+
+Create a board and inject the canvas.
+
+? Moet een element een referentie hebben naar het board, of moet het tekenen van het element het board meekrijgen?
+===> Een element wordt altijd gecreerd op het board, dus laat het board de elementen maken. 
+
+    "No elements possible without a board, yet an empty board has no elements."
+
+Maakt dat element een internal van board? ===> ja, wel zelfde package, exports alleen de gecreeerde elements. 
+
+Dit lost ook de plaatsing van de constanten E_R, E_D en H_G_S/ V_G_S op.
+
+(Pomodoro 6 + 7)
+
+(Pomodoro 8 + 9)
+
+[v] move ondocready to main
+[v] redirect from element to board
+[v] remove old constants
+
+wederom een closure dat *_niet_* de omgeving meeneemt??? ===> nee. Referencing a function van een object neemt zijn context niet over, waardoor die waarden NaN zijn. In plaats daarvan juist wel een closure over de aanroep gebruiken. Geen foutmelding, echter, want javascript
+
+
+### 2023-05-25
+
+stories _009-Define_playing_field_ and _010-Mocking_and_modularize_testing_
+
+(Pomodoro 1)
+
 ### TODO
+
+[ ] harden tests with new situation

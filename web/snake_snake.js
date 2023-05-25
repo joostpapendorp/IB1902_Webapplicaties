@@ -22,14 +22,14 @@ function createStartSnake(board) {
 	}
 
 	let bodySegment = board.createElement(
-	  centralTile,
-	  centralTile,
-	  SNAKE_BODY_COLOR);
+		centralTile,
+		centralTile,
+		SNAKE_BODY_COLOR);
 
 	let headSegment = board.createElement(
-	  centralTile + 1,
-	  centralTile,
-	  SNAKE_HEAD_COLOR);
+		centralTile + 1,
+		centralTile,
+		SNAKE_HEAD_COLOR);
 
 	let snake = new Snake([bodySegment, headSegment]);
 

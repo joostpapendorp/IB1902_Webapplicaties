@@ -1,3 +1,5 @@
+"use strict";
+
 QUnit.module("Board");
 
 QUnit.test("Constant values",
@@ -22,7 +24,7 @@ QUnit.test("Tile size is calculated from the smallest canvas dimension",
 		mockCanvas.height = () => largestDimension;
 
 		let subject = createBoard(mockCanvas);
-		let element = subject.createElement(0,0,"DarkRed");
+		let element = subject.createElement(createLocation(0,0),"DarkRed");
 		element.draw();
 
 		let recorder = mockCanvas.recorders.drawArc;
@@ -50,5 +52,21 @@ QUnit.test("Clearing the board means clearing the canvas",
 
 		let recorder = mockCanvas.recorders.clear;
 		assert.equal(recorder.timesInvoked(), 1, "Board delegates clear to canvas");
+	}
+);
+
+QUnit.test("Elements know their location on the board",
+	assert => {
+		assert.expect(1);
+		let expected = createLocation(1,2);
+
+		let subject = createBoard(new MockCanvas());
+		let element = subject.createElement(expected,"DarkRed");
+
+		assert.propEqual(
+			element.location(),
+			expected,
+			"Element knows its location"
+		);
 	}
 );

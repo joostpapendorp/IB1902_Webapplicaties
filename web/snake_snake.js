@@ -1,3 +1,5 @@
+"use strict";
+
 const SNAKE_HEAD_COLOR = "DarkOrange";
 const SNAKE_BODY_COLOR = "DarkRed";
 
@@ -22,13 +24,11 @@ function createStartSnake(board) {
 	}
 
 	let bodySegment = board.createElement(
-		centralTile,
-		centralTile,
+		createLocation(centralTile, centralTile),
 		SNAKE_BODY_COLOR);
 
 	let headSegment = board.createElement(
-		centralTile + 1,
-		centralTile,
+		createLocation(centralTile + 1, centralTile),
 		SNAKE_HEAD_COLOR);
 
 	let snake = new Snake([bodySegment, headSegment]);

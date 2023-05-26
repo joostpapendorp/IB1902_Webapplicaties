@@ -1,3 +1,5 @@
+"use strict";
+
 QUnit.module("Snake");
 
 QUnit.test("Constant values",
@@ -24,13 +26,13 @@ QUnit.test("Starting snake is two segments long, ending in the head",
 
 		assert.propEqual(
 			recorder.invocations[0],
-			new Invocation([8, 8, "DarkRed"]),
+			new Invocation([createLocation(8, 8), "DarkRed"]),
 			"The body is created first, at the top left of the center of the board."
 		);
 
 		assert.propEqual(
 			recorder.invocations[1],
-			new Invocation([9, 8, "DarkOrange"]),
+			new Invocation([createLocation(9, 8), "DarkOrange"]),
 			"The head is created last, at the top right of the center of the board."
 		);
 	}

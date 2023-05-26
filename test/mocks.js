@@ -32,8 +32,8 @@ function MockBoard(){
 		clear : new Recorder("clear"),
 	};
 
-	this.createElement = function(x, y, color){
-		this.recorders.createElement.invokedWith( [x,y,color]);
+	this.createElement = function(location, color){
+		this.recorders.createElement.invokedWith([location,color]);
 	}
 
 	this.clear = function(){

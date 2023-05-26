@@ -30,6 +30,7 @@ function MockBoard(){
 	this.recorders = {
 		createElement : new Recorder("createElement"),
 		clear : new Recorder("clear"),
+		redraw : new Recorder("redraw")
 	};
 
 	this.createElement = function(location, color){
@@ -38,6 +39,10 @@ function MockBoard(){
 
 	this.clear = function(){
 		this.recorders.clear.invoked();
+	}
+
+	this.redraw = function(){
+		this.recorders.redraw.invoked();
 	}
 }
 

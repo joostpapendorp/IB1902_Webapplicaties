@@ -49,11 +49,10 @@ QUnit.test("Location is immutable",
 
 		let subject = createLocation(1,2);
 
-		assert.throws( function(){
-				subject.x = 2;
-			},
+		assert.throws(
+			() => subject.x = 2,
 			new TypeError("\"x\" is read-only"),
 			"Coordinate cannot be changed."
-		)
+		);
 	}
 );

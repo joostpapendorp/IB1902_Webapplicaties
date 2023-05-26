@@ -210,13 +210,47 @@ Dit lost ook de plaatsing van de constanten E_R, E_D en H_G_S/ V_G_S op.
 
 wederom een closure dat *_niet_* de omgeving meeneemt??? ===> nee. Referencing a function van een object neemt zijn context niet over, waardoor die waarden NaN zijn. In plaats daarvan juist wel een closure over de aanroep gebruiken. Geen foutmelding, echter, want javascript
 
+[v] harden tests with new situation
+
 
 ### 2023-05-25
 
 stories _009-Define_playing_field_ and _010-Mocking_and_modularize_testing_
 
-(Pomodoro 1)
+(Pomodoro 1 + 2)
+
+story _011-move_a_snake_
+
+? reuse elements while moving? of drop elements? gc?
+
+javascript heeft gc: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management
+
+Zijn de references unreachable als ik ze uit de snake array tief? ==> _let_ is local, maar closure!
+
+?? Worden alleen de _in de closure gebruikte_ variabelen in de closure gestopt? of is de closure over de hele scope??
+
+    Bewegen
+    Figuur 1.3 maakt duidelijk hoe we de slang eenvoudig DOWN
+    kunnen laten bewegen. Er wordt een extra segment toegevoegd aan het
+    einde, en het eerste segment verdwijnt. Bovendien krijgt het nieuwe
+    segment de kleur van de kop, terwijl de originele kop verandert in een
+    ‘gewoon’ segment.
+
+dus wel gewoon nieuwe segmenten maken.
+
+    De richting waarin de slang beweegt bij de start van het spel is omhoog.
+
+oepsie. aanpassen.
+
+(Pomodoro 3)
+
+
+### 2023-05-26
+
+story _011-move_a_snake_
+
+location should be explicit
+
+(Pomodoro 1+2)
 
 ### TODO
-
-[ ] harden tests with new situation

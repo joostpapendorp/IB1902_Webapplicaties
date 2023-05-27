@@ -260,4 +260,6 @@ HT vs Map: https://www.freecodecamp.org/news/javascript-hash-table-associative-a
 
 (Pomodoro 1+2)
 
+Use factory pattern for snake.
+
 ### TODO

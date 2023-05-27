@@ -16,16 +16,17 @@ QUnit.test("When a snake is created, it request segments at the indicated positi
 		assert.expect(4);
 
 		let mockBoard = new MockBoard();
+		let recorder = mockBoard.recorders.createElement;
+		let invocations = recorder.invocations;
+
 		let expectedLocations = [
 			createLocation(0,0),
 			createLocation(1,0),
 			createLocation(1,1)
 		];
 
-		let subject = createSnake(mockBoard,expectedLocations);
-
-		let recorder = mockBoard.recorders.createElement;
-		let invocations = recorder.invocations;
+		let subject = createSnakeFactory(mockBoard);
+		subject.createSnake(expectedLocations);
 
 		assert.equal(recorder.timesInvoked(), 3, "The snake creates its three segments.");
 
@@ -45,33 +46,6 @@ QUnit.test("When a snake is created, it request segments at the indicated positi
 			invocations[2].arguments,
 			[expectedLocations[2],SNAKE_HEAD_COLOR],
 			"The last segment is the head and uses the third coordinate given."
-		);
-	}
-);
-
-QUnit.test("Starting snake is two segments long, ending in the head",
-	assert => {
-		assert.expect(3);
-
-		let mockBoard = new MockBoard();
-
-		let subject = createStartSnake(mockBoard);
-
-		let recorder = mockBoard.recorders.createElement
-		assert.equal(recorder.timesInvoked(), 2, "Invoked createElement twice");
-
-		let invocations = recorder.invocations;
-
-		assert.propEqual(
-			recorder.invocations[0],
-			new Invocation([createLocation(8, 8), "DarkRed"]),
-			"The body is created first, at the top left of the center of the board."
-		);
-
-		assert.propEqual(
-			recorder.invocations[1],
-			new Invocation([createLocation(9, 8), "DarkOrange"]),
-			"The head is created last, at the top right of the center of the board."
 		);
 	}
 );

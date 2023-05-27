@@ -47,6 +47,17 @@ function MockBoard(){
 }
 
 
+function MockSnakeFactory(){
+	this.recorders = {
+		createSnake : new Recorder("createSnake")
+	};
+
+	this.createSnake = function(locations){
+		this.recorders.createSnake.invokedWith([locations]);
+	}
+}
+
+
 function Recorder(name){
 	this.name = name;
 	this.invocations = [];

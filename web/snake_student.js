@@ -17,9 +17,11 @@ function buildInjectionContext(){
 	let canvasDOMElement = $("#"+SNAKE_CANVAS_ID);
 	let canvas = createCanvas(canvasDOMElement);
 	let board = createBoard(canvas);
+	let snakeFactory = createSnakeFactory(board);
 
 	return {
-		board : board
+		board : board,
+		snakeFactory : snakeFactory
 	};
 }
 
@@ -29,7 +31,7 @@ function buildInjectionContext(){
 */
 function init() {
 	console.log("game started");
-	snake = createStartSnake(game.board);
+	snake = createStartSnake(game.snakeFactory);
 	console.log("snake created");
 	draw();
 }
@@ -37,6 +39,21 @@ function init() {
 function stop() {
 	game.board.clear();
 	console.log("game stopped");
+}
+
+/**
+	@function createStartSnake() -> Snake
+	@desc Slang creëren, bestaande uit  twee segmenten, in het midden van het veld
+	@return: slang volgens specificaties
+*/
+function createStartSnake(snakeFactory) {
+	let centralTile = Math.floor(BOARD_SIZE / 2) - 1;
+	let locations = [
+		createLocation(centralTile, centralTile + 1),
+		createLocation(centralTile, centralTile)
+	];
+
+	return snakeFactory.createSnake(locations);
 }
 
 /**

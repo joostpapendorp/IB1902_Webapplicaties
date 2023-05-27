@@ -44,5 +44,5 @@ function stop() {
   @desc Teken de slang en het voedsel
 */
 function draw() {
-	snake.draw();
+	game.board.redraw();
 }

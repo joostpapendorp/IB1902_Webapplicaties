@@ -256,4 +256,8 @@ location should be explicit
 HT vs Map: https://www.freecodecamp.org/news/javascript-hash-table-associative-array-hashing-in-js/
 
 
+### 2023-05-27
+
+(Pomodoro 1+2)
+
 ### TODO

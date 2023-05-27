@@ -10,32 +10,38 @@ const SNAKE_BODY_COLOR = "DarkRed";
 */
 function createStartSnake(board) {
 	let centralTile = Math.floor(BOARD_SIZE / 2) - 1;
+	let locations = [
+		createLocation(centralTile, centralTile),
+		createLocation(centralTile + 1, centralTile)
+	];
 
+	return createSnake(board, locations);
+}
+
+function createSnake(board, locations){
 	/**
 		@constructor Snake
 		@param {[Element] segments een array met aaneengesloten slangsegmenten Het laatste element van segments wordt de kop van de slang
 	*/
 	function Snake(segments) {
 		this.segments = segments;
-
-		this.draw = function(){
-      segments.forEach( element => element.draw() );
-    };
 	}
 
-	let bodySegment = board.createElement(
-		createLocation(centralTile, centralTile),
-		SNAKE_BODY_COLOR);
+	let elements = [];
+	for(let i = 0; i < locations.length - 1; i++ ){
+		let bodyElement = board.createElement(
+			locations[i],
+			SNAKE_BODY_COLOR);
+		elements.push(bodyElement);
+	}
 
-	let headSegment = board.createElement(
-		createLocation(centralTile + 1, centralTile),
+	let headElement = board.createElement(
+		locations[ locations.length -1],
 		SNAKE_HEAD_COLOR);
+	elements.push(headElement)
 
-	let snake = new Snake([bodySegment, headSegment]);
+	let snake = new Snake(elements);
 
   return {
-    draw: function(){
-      snake.draw();
-    }
   };
 }

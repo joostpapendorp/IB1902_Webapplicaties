@@ -258,8 +258,70 @@ HT vs Map: https://www.freecodecamp.org/news/javascript-hash-table-associative-a
 
 ### 2023-05-27
 
+Use factory pattern for snake.
+
 (Pomodoro 1+2)
 
-Use factory pattern for snake.
+    
+WTF? function reference werkt _toch wel_ met een closure over het board argument??
+
+    return{
+        createSnake : createSnake
+    };
+
+(Pomodoro 3)
+
+Om te testen of snake de elementen manipuleert, moet het board mocks terug gaan geven van de elementen. Deep mocking is 
+frowned upon:
+
+    "when a mock returns a mock, a fairy dies."
+
+Maar element is onderdeel van het board. Dit board is effectief de element factory, dus splitsing heeft weinig zin.
+Toch zijn board en element conceptueel verschillende dingen.
+
+Ze zijn verbonden vanwege de integriteit van het board: de manipulaties van element verlopen via het board, omdat deze de
+referenties beheert. Moving an element is replacing an element b/c of immutability.
+
+==> on that note: is board niet gewoon ook de factory voor snake?? ==> Nee. Board interactions worden afgetest.
+==> kunnen we dan niet hetzelfde truukje uithalen voor element? e.g:
+    
+    createElementFactory(board).createElement(location, color)
+
+Vergelijk het gebruik van de snake in game: 
+    
+    function createStartSnake(snakeFactory)
+    ...
+	    return snakeFactory.createSnake(locations);
+
+dit is gemocked als:
+    
+    createStartSnake(mockSnakeFactory);
+
+in essentie is de createElementFactory gelijk aan createBoard. Het probleem gaat daar ook ontstaan als we aankomen bij
+het aftesten van snake.move. de snake is dan de mock teruggegeven door snakeFactory. mocks door mocks. dead fairy.
+
+https://softwareengineering.stackexchange.com/questions/406146/how-to-avoid-mock-returning-mock-when-using-factory-pattern
+
+==> split from story, double-mock for now.
+
+
+### 2023-06-05
+
+(P 1,2)
+
+Normaal zou de test local access hebben in Snake, zodat het de factory omzeilt. Uiteraard kan ook dat niet in Javascript.
+
+
+(P 3, 4, 5)
+
+[v] partially mock board?
+
+(P 6, 7)
+
+[v] updating the snake array
+[v] implementing new board functions
+
+(P 8)
+[v] move manually in game
 
 ### TODO

@@ -8,25 +8,25 @@ QUnit.test("Constants",
 
 		assert.propEqual(
 			UP,
-			{x: 0, y : -1},
+			createLocation(0, -1),
 			"UP moves negative y"
 		);
 
 		assert.propEqual(
 			DOWN,
-			{x: 0, y : 1},
+			createLocation(0, 1),
 			"UP moves positive y"
 		);
 
 		assert.propEqual(
 			LEFT,
-			{x: -1, y : 0},
+			createLocation(-1, 0),
 			"LEFT moves negative x"
 		);
 
 		assert.propEqual(
 			RIGHT,
-			{x: 1, y : 0},
+			createLocation(1, 0),
 			"LEFT moves positive x"
 		);
 	}
@@ -53,6 +53,35 @@ QUnit.test("Location is immutable",
 			() => subject.x = 2,
 			new TypeError("\"x\" is read-only"),
 			"Coordinate cannot be changed."
+		);
+	}
+);
+
+QUnit.test("Coordinates of a translated location are the sum of the origin and the translation.",
+	assert => {
+		assert.expect(1);
+
+		let subject = createLocation(1,2);
+		let translation = createLocation(3,4);
+
+		let actual = subject.translated(translation);
+
+		assert.propEqual(
+			actual,
+			createLocation(4,6),
+			"Translating (1,2) by (3,4) yields (2,6)"
+		)
+	}
+);
+
+QUnit.test("Coordinates have a string description.",
+	assert => {
+		assert.expect(1);
+
+		assert.equal(
+			createLocation(1,2).describe(),
+			"(1,2)",
+			"coordinate at x=1, y=2 describes as (1,2)"
 		);
 	}
 );

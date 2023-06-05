@@ -4,9 +4,9 @@ QUnit.module("Board");
 
 QUnit.test("Constant values",
 	assert => {
-	  assert.expect(1);
+		assert.expect(1);
 
-	  assert.equal( BOARD_SIZE, 18, "size of the board is 18x18 tiles." );
+		assert.equal( BOARD_SIZE, 18, "size of the board is 18x18 tiles." );
 	}
 );
 
@@ -23,7 +23,7 @@ QUnit.test("Tile size is calculated from the smallest canvas dimension",
 		mockCanvas.width = () => smallestDimension;
 		mockCanvas.height = () => largestDimension;
 
-		let subject = createBoard(mockCanvas);
+		let subject = createBoard(mockCanvas, createElementFactory());
 		let el = subject.createElement(createLocation(0,0),"DarkRed");
 		subject.redraw();
 
@@ -47,7 +47,7 @@ QUnit.test("Clearing the board means clearing the canvas",
 
 		let mockCanvas = new MockCanvas();
 
-		let subject = createBoard(mockCanvas);
+		let subject = createBoard(mockCanvas, createElementFactory());
 		subject.clear();
 
 		let recorder = mockCanvas.recorders.clear;
@@ -60,7 +60,7 @@ QUnit.test("Redraw clears the board, then draws all elements",
 		assert.expect(2);
 
 		let mockCanvas = new MockCanvas();
-		let subject = createBoard(mockCanvas);
+		let subject = createBoard(mockCanvas, createElementFactory());
 
 		// el1 and el2 values are ignored
 		let el1 = subject.createElement(createLocation(0,0));
@@ -74,11 +74,103 @@ QUnit.test("Redraw clears the board, then draws all elements",
 	}
 );
 
+QUnit.test("Board records its elements",
+	assert => {
+		assert.expect(1);
+		let subject = createBoard(new MockCanvas(), createElementFactory());
+
+		let location = createLocation(0,0);
+		let expected = subject.createElement(location, "DarkRed");
+
+		let actual = subject.elementAt(location);
+
+		assert.propEqual(actual, expected, "Element at location should be the created element");
+	}
+);
+
+QUnit.test("Empty positions are undefined",
+	assert => {
+		assert.expect(1);
+		let subject = createBoard(new MockCanvas(), createElementFactory());
+
+		let actual = subject.elementAt(createLocation(0,0));
+
+		assert.propEqual(actual, undefined, "Element at location should be the created element");
+	}
+);
+
+QUnit.test("Cant remove element not on the board",
+	assert => {
+		assert.expect(1);
+		let elementFactory = createElementFactory();
+		let subject = createBoard(new MockCanvas(), elementFactory);
+
+		let location = createLocation(0,0);
+		let element = elementFactory.createElement(location, "DarkRed");
+
+		assert.throws(
+			() => subject.remove(element),
+			new Error("No element at (0,0)"),
+			"Removing when nothing present throws an error"
+		);
+	}
+);
+
+QUnit.test("Remove element removes an element from the given position",
+	assert => {
+		assert.expect(1);
+		let subject = createBoard(new MockCanvas(), createElementFactory());
+
+		let location = createLocation(0,0);
+		let element = subject.createElement(location, "DarkRed");
+
+		subject.remove(element);
+		let actual = subject.elementAt(location);
+
+		assert.propEqual(actual, undefined, "Element at location should not be on the board");
+	}
+);
+
+QUnit.test("Board replaces an element with another at the same location",
+	assert => {
+		assert.expect(1);
+		let elementFactory = createElementFactory();
+		let location = createLocation(0,0);
+		let expected = elementFactory.createElement(location, "DarkOrange");
+
+		let subject = createBoard(new MockCanvas(), elementFactory);
+		let ignored = subject.createElement(location, "DarkRed");
+		subject.replace(expected);
+		let actual = subject.elementAt(location);
+
+		assert.propEqual(actual, expected, "board replaces element with provided")
+	}
+);
+
+QUnit.test("Can't replace an empty location",
+	assert => {
+		assert.expect(1);
+		let elementFactory = createElementFactory();
+		let subject = createBoard(new MockCanvas(), elementFactory);
+
+		assert.throws(
+			() => subject.replace(
+				elementFactory.createElement(
+					createLocation(0,0),
+					"DarkOrange"
+				)
+			),
+			new Error("No element to replace at (0,0)"),
+			"Replacing an empty location throws error"
+		);
+	}
+);
+
 QUnit.test("Elements must be on the board",
 	assert => {
-		assert.expect(5);
+		assert.expect(6);
 
-		let subject = createBoard(new MockCanvas());
+		let subject = createBoard(new MockCanvas(), createElementFactory());
 
 		assert.throws(
 			() => subject.createElement(createLocation(0,BOARD_SIZE)),
@@ -105,11 +197,19 @@ QUnit.test("Elements must be on the board",
 		);
 
 		let maxLocation = createLocation(BOARD_SIZE-1, BOARD_SIZE-1);
-		let actual = subject.createElement(maxLocation, "DarkRed");
+		let maxElement = subject.createElement(maxLocation, "DarkRed");
 		assert.propEqual(
-			actual.location,
+			maxElement.location,
 			maxLocation,
 			"Max location is on the board"
+		);
+
+		let minLocation = createLocation(0, 0);
+		let minElement = subject.createElement(minLocation, "DarkRed");
+		assert.propEqual(
+			minElement.location,
+			minLocation,
+			"Min location is on the board"
 		);
 	}
 );
@@ -118,7 +218,7 @@ QUnit.test("Board space must be available to add elements",
 	assert => {
 		assert.expect(1);
 
-		let subject = createBoard(new MockCanvas());
+		let subject = createBoard(new MockCanvas(), createElementFactory());
 
 		let sameLocation = createLocation(1,1);
 		let first = subject.createElement(sameLocation, "DarkRed");
@@ -127,40 +227,6 @@ QUnit.test("Board space must be available to add elements",
 			() => subject.createElement(sameLocation, "DarkOrange"),
 			new Error("Location occupied"),
 			"Elements can't share same location"
-		);
-	}
-);
-
-
-QUnit.module("Elements")
-
-QUnit.test("Elements know their location on the board",
-	assert => {
-		assert.expect(1);
-		let expected = createLocation(1,2);
-
-		let subject = createBoard(new MockCanvas());
-		let element = subject.createElement(expected,"DarkRed");
-
-		assert.propEqual(
-			element.location,
-			expected,
-			"Element knows its location"
-		);
-	}
-);
-
-QUnit.test("Elements are immutable",
-	assert => {
-		assert.expect(1);
-
-		let subject = createBoard(new MockCanvas());
-		let element = subject.createElement(createLocation(0,0), "DarkRed");
-
-		assert.throws(
-			() => element.location = createLocation(1,1),
-			new TypeError("\"location\" is read-only"),
-			"Location cannot be changed."
 		);
 	}
 );

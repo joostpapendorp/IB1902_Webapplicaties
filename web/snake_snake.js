@@ -11,7 +11,35 @@ function createSnakeFactory(board){
 			@param {[Element] segments een array met aaneengesloten slangsegmenten Het laatste element van segments wordt de kop van de slang
 		*/
 		function Snake(segments) {
+
 			this.segments = segments;
+
+			function lastIndex(){
+				return segments.length - 1;
+			}
+
+			this.move = function(direction){
+				// remove the last tail element
+				let lastBodyElement = this.segments[0];
+				board.remove(lastBodyElement);
+				segments.shift();
+
+
+				// repaint the old head as body
+				let oldHead = this.head();
+				let oldHeadAsBody = oldHead.withColor(SNAKE_BODY_COLOR);
+				board.replace(oldHeadAsBody);
+				segments[lastIndex()] = oldHeadAsBody;
+
+				// add the new head
+				let newHeadLocation = oldHead.location.translated(direction);
+				let newHead = board.createElement(newHeadLocation, SNAKE_HEAD_COLOR);
+				segments.push(newHead);
+			};
+
+			this.head = function(){
+				return segments[lastIndex()];
+			};
 		}
 
 		let elements = [];
@@ -30,13 +58,11 @@ function createSnakeFactory(board){
 		let snake = new Snake(elements);
 
 	  return {
-
+			move : (direction) => snake.move(direction)
 	  };
 	}
 
 	return{
-		createSnake : function(locations){
-			return createSnake(locations);
-		}
+		createSnake : createSnake
 	};
 }

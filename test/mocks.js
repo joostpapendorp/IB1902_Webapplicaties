@@ -29,12 +29,22 @@ function MockCanvas() {
 function MockBoard(){
 	this.recorders = {
 		createElement : new Recorder("createElement"),
+		replace : new Recorder("replaceElement"),
+		remove : new Recorder("removeElement"),
 		clear : new Recorder("clear"),
 		redraw : new Recorder("redraw")
 	};
 
 	this.createElement = function(location, color){
 		this.recorders.createElement.invokedWith([location,color]);
+	}
+
+	this.replace = function(element){
+		this.recorders.replace.invokedWith([element]);
+	}
+
+	this.remove = function(element){
+		this.recorders.remove.invokedWith([element]);
 	}
 
 	this.clear = function(){

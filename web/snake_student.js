@@ -16,7 +16,8 @@ $(document).ready(function() {
 function buildInjectionContext(){
 	let canvasDOMElement = $("#"+SNAKE_CANVAS_ID);
 	let canvas = createCanvas(canvasDOMElement);
-	let board = createBoard(canvas);
+	let elementFactory = createElementFactory();
+	let board = createBoard(canvas, elementFactory);
 	let snakeFactory = createSnakeFactory(board);
 
 	return {

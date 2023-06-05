@@ -2,9 +2,10 @@
 
 const BOARD_SIZE = 18;
 
-function createBoard(canvas){
+function createBoard(canvas, elementFactory){
 	function Board(canvas){
 		this.canvas = canvas;
+		this.elementFactory = elementFactory;
 		this.elements = new Map();
 
 		let smallestCanvasDimension = Math.min( canvas.width(), canvas.height() );
@@ -40,13 +41,29 @@ function createBoard(canvas){
 		this.createElement = function(location, color){
 			this.checkBoundaries(location);
 
-      let element = new Element(location,color);
-      Object.freeze(element);
-
-      board.elements.set(location, element);
+      let element = elementFactory.createElement(location,color);
+      this.elements.set(location, element);
 
       return element;
     }
+
+		this.replace = function(element){
+			let location = element.location;
+			if(!this.elementAt(location))
+				throw new Error(`No element to replace at ${location.describe()}`)
+
+			this.elements.set(element.location, element);
+		}
+
+		this.remove = function(element){
+			let location = element.location;
+			if(!this.elements.delete(location))
+				throw Error(`No element at ${location.describe()}`)
+		}
+
+		this.elementAt = function(location){
+			return this.elements.get(location);
+		}
 
     this.checkBoundaries = function(location){
       let max = Math.max(location.x, location.y);
@@ -62,15 +79,13 @@ function createBoard(canvas){
     }
 	}
 
-	function Element(location, color) {
-		this.location = location;
-		this.color = color;
-	}
-
 	let board = new Board(canvas);
 
 	return {
 		createElement : (location, color) => board.createElement(location, color),
+		replace : (element) => board.replace(element),
+		remove : (element) => board.remove(element),
+		elementAt: (location) => board.elementAt(location),
 		clear : () => board.clear(),
 		redraw : () => board.redraw()
 	};

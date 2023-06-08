@@ -1,6 +1,4 @@
-function loadCanvasFromHTML() {
-	snakeCanvas = createCanvas($("#"+SNAKE_CANVAS_ID));
-}
+"use strict";
 
 function createCanvas(mySnakeCanvas){
 	let width = mySnakeCanvas.prop("width");

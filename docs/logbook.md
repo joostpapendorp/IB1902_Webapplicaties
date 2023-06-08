@@ -210,13 +210,151 @@ Dit lost ook de plaatsing van de constanten E_R, E_D en H_G_S/ V_G_S op.
 
 wederom een closure dat *_niet_* de omgeving meeneemt??? ===> nee. Referencing a function van een object neemt zijn context niet over, waardoor die waarden NaN zijn. In plaats daarvan juist wel een closure over de aanroep gebruiken. Geen foutmelding, echter, want javascript
 
+[v] harden tests with new situation
+
 
 ### 2023-05-25
 
 stories _009-Define_playing_field_ and _010-Mocking_and_modularize_testing_
 
-(Pomodoro 1)
+(Pomodoro 1 + 2)
+
+story _011-move_a_snake_
+
+? reuse elements while moving? of drop elements? gc?
+
+javascript heeft gc: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management
+
+Zijn de references unreachable als ik ze uit de snake array tief? ==> _let_ is local, maar closure!
+
+?? Worden alleen de _in de closure gebruikte_ variabelen in de closure gestopt? of is de closure over de hele scope??
+
+    Bewegen
+    Figuur 1.3 maakt duidelijk hoe we de slang eenvoudig DOWN
+    kunnen laten bewegen. Er wordt een extra segment toegevoegd aan het
+    einde, en het eerste segment verdwijnt. Bovendien krijgt het nieuwe
+    segment de kleur van de kop, terwijl de originele kop verandert in een
+    ‘gewoon’ segment.
+
+dus wel gewoon nieuwe segmenten maken.
+
+    De richting waarin de slang beweegt bij de start van het spel is omhoog.
+
+oepsie. aanpassen.
+
+(Pomodoro 3)
+
+
+### 2023-05-26
+
+story _011-move_a_snake_
+
+location should be explicit
+
+(Pomodoro 1+2)
+
+HT vs Map: https://www.freecodecamp.org/news/javascript-hash-table-associative-array-hashing-in-js/
+
+
+### 2023-05-27
+
+Use factory pattern for snake.
+
+(Pomodoro 1+2)
+
+    
+WTF? function reference werkt _toch wel_ met een closure over het board argument??
+
+    return{
+        createSnake : createSnake
+    };
+
+(Pomodoro 3)
+
+Om te testen of snake de elementen manipuleert, moet het board mocks terug gaan geven van de elementen. Deep mocking is 
+frowned upon:
+
+    "when a mock returns a mock, a fairy dies."
+
+Maar element is onderdeel van het board. Dit board is effectief de element factory, dus splitsing heeft weinig zin.
+Toch zijn board en element conceptueel verschillende dingen.
+
+Ze zijn verbonden vanwege de integriteit van het board: de manipulaties van element verlopen via het board, omdat deze de
+referenties beheert. Moving an element is replacing an element b/c of immutability.
+
+==> on that note: is board niet gewoon ook de factory voor snake?? ==> Nee. Board interactions worden afgetest.
+==> kunnen we dan niet hetzelfde truukje uithalen voor element? e.g:
+    
+    createElementFactory(board).createElement(location, color)
+
+Vergelijk het gebruik van de snake in game: 
+    
+    function createStartSnake(snakeFactory)
+    ...
+	    return snakeFactory.createSnake(locations);
+
+dit is gemocked als:
+    
+    createStartSnake(mockSnakeFactory);
+
+in essentie is de createElementFactory gelijk aan createBoard. Het probleem gaat daar ook ontstaan als we aankomen bij
+het aftesten van snake.move. de snake is dan de mock teruggegeven door snakeFactory. mocks door mocks. dead fairy.
+
+https://softwareengineering.stackexchange.com/questions/406146/how-to-avoid-mock-returning-mock-when-using-factory-pattern
+
+==> split from story, double-mock for now.
+
+
+### 2023-06-05
+
+(P 1,2)
+
+Normaal zou de test local access hebben in Snake, zodat het de factory omzeilt. Uiteraard kan ook dat niet in Javascript.
+
+
+(P 3, 4, 5)
+
+[v] partially mock board?
+
+(P 6, 7)
+
+[v] updating the snake array
+[v] implementing new board functions
+
+(P 8)
+[v] move manually in game
+
+(P 9)
+
+
+### 2023-06-06
+
+(P 1)
+
+[v] isolate game as a concept.
+
+(P 2, 3)
+
+
+### 2023-06-08
+
+(P 1, 2, 3)
+[v] add the engine
+
+==> ik = dropje: factory pattern is redundant in 'functionele' taal: simply pass functions in. 
+Maar hoe kunnen we dit dan recorden?
+
+[v] replace factory patterns with functions.
+
+(P 4)
+[v] add timer
+[v] clear board contents
+
+(P 5, 6, 7)
+[v] prettify & test timer, move timeout naar timer
+
+(P 8)
+[v] Factory pattern ADR
+[v] DoD
 
 ### TODO
-
-[ ] harden tests with new situation

@@ -1,9 +1,13 @@
+"use strict";
+
 const BOARD_SIZE = 18;
 
-function createBoard(canvas){
-	board = new Board();
+function createBoard(canvas, elementFactory){
+	function Board(canvas){
+		this.canvas = canvas;
+		this.elementFactory = elementFactory;
+		this.elements = new Map();
 
-	function Board(){
 		let smallestCanvasDimension = Math.min( canvas.width(), canvas.height() );
 
 		this.tileSize = Math.floor( smallestCanvasDimension / BOARD_SIZE );
@@ -13,79 +17,77 @@ function createBoard(canvas){
 			return coordinate * this.tileSize + this.elementRadius;
 		}
 
-		this.drawElement = function(x,y,color){
+		this.clear = function(){
+			this.elements = new Map();
+			canvas.clear();
+		}
+
+		this.redraw = function(){
+			canvas.clear();
+
+			for (let [location, element] of this.elements){
+				this.drawElement(location, element.color);
+			}
+		}
+
+		this.drawElement = function(location,color){
 			canvas.drawArc(
 				this.elementRadius,
-				this.toPixels(x),
-				this.toPixels(y),
+				this.toPixels(location.x),
+				this.toPixels(location.y),
 				color
 			);
 		}
 
-		this.clear = function(){
-			canvas.clear();
+		this.createElement = function(location, color){
+			this.checkBoundaries(location);
+
+      let element = elementFactory.createElement(location,color);
+      this.elements.set(location, element);
+
+      return element;
+    }
+
+		this.replace = function(element){
+			let location = element.location;
+			if(!this.elementAt(location))
+				throw new Error(`No element to replace at ${location.describe()}`)
+
+			this.elements.set(element.location, element);
 		}
+
+		this.remove = function(element){
+			let location = element.location;
+			if(!this.elements.delete(location))
+				throw Error(`No element at ${location.describe()}`)
+		}
+
+		this.elementAt = function(location){
+			return this.elements.get(location);
+		}
+
+    this.checkBoundaries = function(location){
+      let max = Math.max(location.x, location.y);
+      if(max>=BOARD_SIZE)
+        throw new Error(max + " is out of bounds");
+
+      let min = Math.min(location.x, location.y);
+      if(min < 0)
+        throw new Error(min + " is out of bounds");
+
+      if(this.elements.get(location))
+        throw new Error("Location occupied")
+    }
 	}
 
-	function Element(x, y, color) {
-		this.x = x,
-		this.y = y,
-		this.color = color
-
-		this.draw = function(){
-			board.drawElement(this.x, this.y, this.color);
-		}
-	}
+	let board = new Board(canvas);
 
 	return {
-		createElement : function(x, y, color){
-			let element = new Element(x,y,color);
-
-			return {
-				draw : () => element.draw()
-			};
-		},
-
-		clear : () => board.clear()
-	};
-}
-
-/**
-  @function createSegment(x,y) -> Element
-  @desc Slangsegment creeren op een bepaalde plaats
-  @param {number} x x-coordinaat middelpunt
-  @param {number} y y-coordinaat middelpunt
-  @param {color} kleur v/h element
-  @return: {Element} met straal ELEMENT_RADIUS
-*/
-function createElement(x, y, color) {
-	/**
-	   @constructor Element
-	   @param radius straal
-	   @param {number} x x-coordinaat middelpunt
-	   @param {number} y y-coordinaat middelpunt
-	   @param {string} color kleur van het element
-	*/
-	function Element(radius, x, y, color) {
-			this.radius = radius,
-			this.x = x,
-			this.y = y,
-			this.color = color
-
-			this.draw = function(){
-				snakeCanvas.drawArc(
-					this.radius,
-					this.x,
-					this.y,
-					this.color
-				);
-			}
-	}
-	let element = new Element(ELEMENT_RADIUS, x, y, color);
-
-	return {
-		draw: function(){
-			element.draw();
-		}
+		createElement : (location, color) => board.createElement(location, color),
+		replace : (element) => board.replace(element),
+		remove : (element) => board.remove(element),
+		elementAt: (location) => board.elementAt(location),
+		clear : () => board.clear(),
+		redraw : () => board.redraw()
 	};
 }

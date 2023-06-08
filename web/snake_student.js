@@ -1,48 +1,31 @@
-const SNAKE_CANVAS_ID = "mySnakeCanvas"
+"use strict";
+
+const SNAKE_CANVAS_ID = "mySnakeCanvas";
 
 const FOOD_ELEMENT_COLOR = "Olive";
 
-// TODO last global
-var game;
-
 $(document).ready(function() {
-	// note: we MUST use onDocumentReady here, since the canvas might not be initialized otherwise, resulting in an empty jQuery object
-	game = buildInjectionContext();
+	// note: we MUST construct the context onDocumentReady, since we need the html canvas JQuery object.
+  // It might not be initialized beforehand.
+	let game = buildInjectionContext();
 
-	$("#startSnake").click(init);
-	$("#stopSnake").click(stop);
+	$("#startSnake").click(()=>game.start());
+	$("#stopSnake").click(()=>game.stop());
 });
 
 function buildInjectionContext(){
 	let canvasDOMElement = $("#"+SNAKE_CANVAS_ID);
-	let canvas = createCanvas(canvasDOMElement);
-	let board = createBoard(canvas);
+	let board = createBoard(
+		createCanvas(canvasDOMElement),
+		createElementFactory()
+	);
 
-	return {
-		board : board
-	};
-}
+	let snakeFactory = createSnakeFactory(board);
 
-/**
-	@function init() -> void
-  @desc Haal eventueel bestaand voedsel en een bestaande slang weg, cre\"eer een slang, genereer voedsel, en teken alles
-*/
-function init() {
-	console.log("game started");
-	snake = createStartSnake(game.board);
-	console.log("snake created");
-	draw();
-}
-
-function stop() {
-	game.board.clear();
-	console.log("game stopped");
-}
-
-/**
-  @function draw() -> void
-  @desc Teken de slang en het voedsel
-*/
-function draw() {
-	snake.draw();
+	return createGame(
+		board,
+		snakeFactory.createSnake,
+		createEngine,
+		createTimer()
+	);
 }

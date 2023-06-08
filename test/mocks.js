@@ -29,17 +29,93 @@ function MockCanvas() {
 function MockBoard(){
 	this.recorders = {
 		createElement : new Recorder("createElement"),
+		replace : new Recorder("replace"),
+		remove : new Recorder("remove"),
 		clear : new Recorder("clear"),
+		redraw : new Recorder("redraw")
 	};
 
-	this.createElement = function(x, y, color){
-		this.recorders.createElement.invokedWith( [x,y,color]);
+	this.createElement = function(location, color){
+		this.recorders.createElement.invokedWith([location,color]);
+	}
+
+	this.replace = function(element){
+		this.recorders.replace.invokedWith([element]);
+	}
+
+	this.remove = function(element){
+		this.recorders.remove.invokedWith([element]);
 	}
 
 	this.clear = function(){
 		this.recorders.clear.invoked();
 	}
+
+	this.redraw = function(){
+		this.recorders.redraw.invoked();
+	}
 }
+
+
+function MockFactory(name){
+	this.recorders = {
+		build : new Recorder(`build${name}`)
+	};
+
+	this.monadic = function(){
+		let build = this.recorders.build;
+		return function(first){
+			build.invokedWith([first]);
+		}
+	}
+
+	this.dyadic =  function(){
+		let build = this.recorders.build;
+    return function(first, second){
+      build.invokedWith([first, second]);
+    }
+  }
+}
+
+
+function MockSnake(){
+	this.recorders = {
+		move : new Recorder("move")
+	};
+
+	this.move = function(direction){
+		this.recorders.move.invokedWith([direction]);
+	}
+}
+
+
+function MockEngine(){
+	this.recorders = {
+		tick : new Recorder("tick")
+	};
+
+	this.tick = function(direction){
+		this.recorders.tick.invokedWith([direction]);
+	}
+}
+
+
+
+function MockTimer(){
+	this.recorders = {
+		start : new Recorder("startTimer"),
+		stop : new Recorder("stopTimer")
+	};
+
+	this.start = function(callBack, interval){
+		this.recorders.start.invokedWith([callBack, interval]);
+	}
+
+	this.stop = function(){
+		this.recorders.stop.invoked();
+	}
+}
+
 
 
 function Recorder(name){

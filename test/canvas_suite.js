@@ -1,3 +1,5 @@
+"use strict";
+
 QUnit.module("Canvas");
 
 QUnit.test("Canvas size is taken from .html",
@@ -8,12 +10,12 @@ QUnit.test("Canvas size is taken from .html",
 		let expectedHeight = 2;
 
 		withHTMLCanvasUsing( { width : expectedWidth, height : expectedHeight },
-			canvas => {
+			mockCanvas => {
 				// call document-ready function
-				loadCanvasFromHTML();
+				let subject = createCanvas(mockCanvas);
 
-				assert.equal(snakeCanvas.width(), expectedWidth, "with should come from .html");
-				assert.equal(snakeCanvas.height(), expectedHeight, "height should come from .html");
+				assert.equal(subject.width(), expectedWidth, "with should come from .html");
+				assert.equal(subject.height(), expectedHeight, "height should come from .html");
 			}
 		);
 	}

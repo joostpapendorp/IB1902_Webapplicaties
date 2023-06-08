@@ -18,6 +18,7 @@ function createBoard(canvas, elementFactory){
 		}
 
 		this.clear = function(){
+			this.elements = new Map();
 			canvas.clear();
 		}
 

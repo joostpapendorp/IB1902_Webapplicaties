@@ -324,4 +324,33 @@ Normaal zou de test local access hebben in Snake, zodat het de factory omzeilt. 
 (P 8)
 [v] move manually in game
 
+(P 9)
+
+
+### 2023-06-06
+
+(P 1)
+
+[v] isolate game as a concept.
+
+(P 2, 3)
+
+
+### 2023-06-08
+
+(P 1, 2, 3)
+[v] add the engine
+
+==> ik = dropje: factory pattern is redundant in 'functionele' taal: simply pass functions in. 
+Maar hoe kunnen we dit dan recorden?
+
+[v] replace factory patterns with functions.
+
+(P 4)
+[v] add timer
+[v] clear board contents
+
+(P 5, 6, 7)
+[v] prettify & test timer, move timeout naar timer
+
 ### TODO

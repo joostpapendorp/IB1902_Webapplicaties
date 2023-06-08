@@ -55,6 +55,24 @@ QUnit.test("Clearing the board means clearing the canvas",
 	}
 );
 
+QUnit.test("Clearing the board deletes its elements",
+	assert => {
+		assert.expect(1);
+
+		let mockCanvas = new MockCanvas();
+
+		let subject = createBoard(mockCanvas, createElementFactory());
+
+		subject.createElement(createLocation(0,0), "DarkOrange");
+		subject.clear();
+		subject.redraw();
+
+		let recorder = mockCanvas.recorders.drawArc;
+		assert.equal(recorder.timesInvoked(), 0, "After clearing, no elements remain on the board.")
+	}
+);
+
+
 QUnit.test("Redraw clears the board, then draws all elements",
 	assert => {
 		assert.expect(2);

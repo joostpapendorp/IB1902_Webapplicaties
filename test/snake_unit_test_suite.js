@@ -1,3 +1,5 @@
+"use strict";
+
 QUnit.module("Initialization");
 
 QUnit.test("Constant values",
@@ -31,48 +33,6 @@ QUnit.test("Canvas initialization uses JQuery element with the correct ID",
 				);
 			}
 		);
-	}
-);
-
-QUnit.test("Starting snake is two segments long, placed in left of the center, facing up",
-	assert => {
-		assert.expect(2);
-
-		let mockSnakeFactory = new MockSnakeFactory();
-		let expectedLocations = [
-			createLocation(8, 9),
-			createLocation(8, 8)
-		];
-
-		createStartSnake(mockSnakeFactory);
-
-		let recorder = mockSnakeFactory.recorders.createSnake
-		assert.equal(recorder.timesInvoked(), 1, "One snake is created");
-
-		assert.propEqual(
-			recorder.invocations[0],
-			new Invocation([expectedLocations]),
-			"Snake is located left of the center, facing up"
-		);
-	}
-);
-
-
-QUnit.module("Exit");
-
-QUnit.test("Stop clears the board.",
-	assert => {
-		assert.expect(1);
-
-		let mockBoard = new MockBoard();
-
-		//last global!
-		game = { board : mockBoard };
-
-		stop();
-
-		let recorder = mockBoard.recorders.clear;
-		assert.equal(recorder.timesInvoked(), 1, "Invoked clear");
 	}
 );
 

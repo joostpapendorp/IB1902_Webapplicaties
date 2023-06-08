@@ -156,3 +156,58 @@ QUnit.test("Stopping a game stops the timer.",
 		assert.equal(stopTimer.timesInvoked(), 1, "Stopping a game stops the timer");
 	}
 );
+
+
+QUnit.test("Snake starts moving upwards.",
+	assert => {
+		assert.expect(1);
+
+		let mockEngine = new MockEngine();
+		let mockTimer = new MockTimer();
+
+		let subject = new GameBuilder().
+			withEngineFactory(() => mockEngine).
+			withTimer(mockTimer).
+			build();
+
+
+		subject.start();
+
+
+		let tick = mockEngine.recorders.tick;
+		let callBack = mockTimer.recorders.start.invocations[0].arguments[0];
+
+		callBack();
+
+		let actualArguments = tick.invocations[0].arguments;
+		assert.equal(actualArguments[0], UP, "Initial direction is up.")
+	}
+);
+
+
+QUnit.test("Steering a snake starts moving the snake in the provided direction.",
+	assert => {
+		assert.expect(1);
+
+		let mockEngine = new MockEngine();
+		let mockTimer = new MockTimer();
+
+		let subject = new GameBuilder().
+			withEngineFactory(() => mockEngine).
+			withTimer(mockTimer).
+			build();
+
+
+		subject.start();
+		subject.steer(LEFT);
+
+
+		let tick = mockEngine.recorders.tick;
+		let callBack = mockTimer.recorders.start.invocations[0].arguments[0];
+
+		callBack();
+
+		let actualArguments = tick.invocations[0].arguments;
+		assert.equal(actualArguments[0], LEFT, "Initial direction is up.")
+	}
+);

@@ -353,4 +353,8 @@ Maar hoe kunnen we dit dan recorden?
 (P 5, 6, 7)
 [v] prettify & test timer, move timeout naar timer
 
+(P 8)
+[v] Factory pattern ADR
+[v] DoD
+
 ### TODO

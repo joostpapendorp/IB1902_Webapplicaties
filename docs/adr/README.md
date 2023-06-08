@@ -9,3 +9,4 @@
 * [7. code-is-neatly-styled.](0007-code-is-neatly-styled..md)
 * [8. decisions-deviating-from-assignment-requirements](0008-decisions-deviating-from-assignment-requirements.md)
 * [9. we-use-first-for-unit-testing-and-write-our-own-scaffolds](0009-we-use-first-for-unit-testing-and-write-our-own-scaffolds.md)
+* [10. we-apply-factory-patterns-for-testability](0010-we-apply-factory-patterns-for-testability.md)

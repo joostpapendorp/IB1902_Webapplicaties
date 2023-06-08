@@ -17,7 +17,7 @@ function createElementFactory(){
 
 	return {
 		createElement : function(location, color){
-		 return createElement(location, color);
-	 }
+			return createElement(location, color);
+		}
 	};
 }

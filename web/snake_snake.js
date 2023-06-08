@@ -57,9 +57,9 @@ function createSnakeFactory(board){
 
 		let snake = new Snake(elements);
 
-	  return {
+		return {
 			move : (direction) => snake.move(direction)
-	  };
+		};
 	}
 
 	return{

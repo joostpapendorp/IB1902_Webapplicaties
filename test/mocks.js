@@ -100,7 +100,6 @@ function MockEngine(){
 }
 
 
-
 function MockTimer(){
 	this.recorders = {
 		start : new Recorder("startTimer"),
@@ -116,6 +115,26 @@ function MockTimer(){
 	}
 }
 
+
+function MockGame(){
+	this.recorders = {
+		start : new Recorder("startGame"),
+		stop : new Recorder("stopGame"),
+		steer : new Recorder("steer")
+	};
+
+	this.start = function(){
+		this.recorders.start.invoked();
+	}
+
+	this.stop = function(){
+		this.recorders.stop.invoked();
+	}
+
+	this.steer = function(direction){
+		this.recorders.steer.invokedWith([direction]);
+	}
+}
 
 
 function Recorder(name){

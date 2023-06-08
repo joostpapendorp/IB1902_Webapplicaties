@@ -357,4 +357,10 @@ Maar hoe kunnen we dit dan recorden?
 [v] Factory pattern ADR
 [v] DoD
 
+(P 9)
+
+story _012-steer_a_snake_
+
+Dropping immutability for game b/c of Direction; this is a non-functional design.
+
 ### TODO

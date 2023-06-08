@@ -8,13 +8,13 @@ function createGame(
 ){
 	function Game(board){
 		this.timer = timer;
+		this.direction = UP;
 
 		/**
 			@function init() -> void
 		  @desc Haal eventueel bestaand voedsel en een bestaande slang weg, cre\"eer een slang, genereer voedsel, en teken alles
 		*/
 		this.start = function() {
-			console.log("game started");
 
 			let snake = createStartSnake();
 			console.log("snake created");
@@ -24,15 +24,21 @@ function createGame(
 			board.redraw();
 
 			this.timer.start(
-				() => engine.tick(UP)
+				() => engine.tick(this.direction)
 			);
-		}
+
+			console.log("game started");
+		};
 
 		this.stop = function() {
 			board.clear();
 			this.timer.stop();
 			console.log("game stopped");
-		}
+		};
+
+		this.steer = function(direction) {
+			this.direction = direction;
+		};
 	}
 
 	/**
@@ -51,7 +57,10 @@ function createGame(
 	}
 
 	let game = new Game(board);
-	Object.freeze(game);
 
-	return game;
+	return {
+		start : () => game.start(),
+		stop : () => game.stop(),
+		steer: (direction) => game.steer(direction)
+	};
 }

@@ -4,7 +4,7 @@ QUnit.module("Location and directions");
 
 QUnit.test("Constants",
 	assert => {
-		assert.expect(4);
+		assert.expect(5);
 
 		assert.propEqual(
 			UP,
@@ -28,6 +28,12 @@ QUnit.test("Constants",
 			RIGHT,
 			createLocation(1, 0),
 			"LEFT moves positive x"
+		);
+
+		assert.propEqual(
+			NO_LOCATION,
+			createLocation(0, 0),
+			"Sentinel for unknown location"
 		);
 	}
 );

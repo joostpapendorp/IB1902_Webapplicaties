@@ -16,7 +16,9 @@ QUnit.test("Constant values",
 
 QUnit.test("Player converts key codes into steering directions",
 	assert => {
-	  assert.expect(8);
+	  assert.expect(4);
+
+		let subject = createPlayer();
 
 		for( const [code, expectedDirection] of [
 			[LEFT_ARROW_KEY_CODE, LEFT],
@@ -24,15 +26,22 @@ QUnit.test("Player converts key codes into steering directions",
 			[RIGHT_ARROW_KEY_CODE, RIGHT],
 			[DOWN_ARROW_KEY_CODE, DOWN]
 		]){
-			let mockGame = new MockGame();
-			let subject = createPlayer(mockGame);
-
-			subject.receive(code);
-
-			let steer = mockGame.recorders.steer;
-			assert.equal(steer.timesInvoked(), 1, `player calls game for ${code}`);
-			let actualDirection = steer.invocations[0].arguments[0];
+			let actualDirection = subject.receive(code);
 			assert.equal(actualDirection, expectedDirection, `player converts ${code} to ${expectedDirection.describe()}` );
 		}
+	}
+);
+
+
+QUnit.test("Player converts unknown codes into sentinel value",
+	assert => {
+	  assert.expect(1);
+
+		const UNKNOWN_CODE = -1;
+
+		let subject = createPlayer();
+
+		let actualDirection = subject.receive(UNKNOWN_CODE);
+		assert.equal(actualDirection, NO_LOCATION, "player converts unknown codes to NO_LOCATION" );
 	}
 );

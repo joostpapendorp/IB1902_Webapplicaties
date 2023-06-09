@@ -378,5 +378,20 @@ Feature envy:
 
 maar snake zit al zo vol
 
+(P 2)
+
+??? Engine als aparte entiteit? of re-integreren in Game? 
+    ==> engine is apart v/w de snake vs. snakeFactory.
+
+??? move spul van game naar engine? 
+        ==> timer, direction
+
+(P 3, 4, 5)
+[v] move timer, direction van Game naar Engine
+
+(P 6)
+[v] harden tests
+[ ] Stop timer on kill
+
 
 ### TODO

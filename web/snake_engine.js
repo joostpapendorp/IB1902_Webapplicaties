@@ -1,20 +1,50 @@
 "use strict";
 
-function createEngine(board,snake){
+function createEngineFactory(board, timer){
 
-	function Engine(board, snake){
+	function Engine(board, timer, snake, direction){
 		this.board = board;
-		this.snake = snake;
+		this.timer = timer;
 
-		this.tick = function(direction){
-			let result = snake.push(direction);
-			board.redraw();
-			return result;
-		}
+		this.snake = snake;
+		this.direction = direction;
+
+		this.start = function(){
+			this.board.redraw();
+			this.timer.start(() => this.tick());
+		};
+
+		this.tick = function(){
+			let result = this.snake.push(this.direction);
+			this.board.redraw();
+		};
+
+		this.steer = function(direction){
+			this.direction = direction;
+		};
+
+		this.halt = function(){
+			this.timer.stop();
+		};
+
+		this.shutDown = function(){
+			this.board.clear();
+		};
 	}
 
-	let engine = new Engine(board, snake);
-	Object.freeze(engine);
+	function prepareEngineWith(snake, direction){
+		let engine = new Engine(board, timer, snake, direction);
 
-	return engine;
+		return {
+			start: () => engine.start(),
+			tick: () => engine.tick(), //public for testing
+			steer: (direction) => engine.steer(direction),
+			halt: () => engine.halt(), //public for testing
+			shutDown : () => engine.shutDown()
+		};
+	}
+
+	return {
+		prepareEngineWith : (snake, direction) => prepareEngineWith(snake, direction)
+	};
 }

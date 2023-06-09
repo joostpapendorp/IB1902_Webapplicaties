@@ -62,17 +62,19 @@ function MockFactory(name){
 		build : new Recorder(`build${name}`)
 	};
 
-	this.monadic = function(){
+	this.monadic = function(returnValue){
 		let build = this.recorders.build;
 		return function(first){
 			build.invokedWith([first]);
+			return returnValue;
 		}
 	}
 
-	this.dyadic =  function(){
+	this.dyadic =  function(returnValue){
 		let build = this.recorders.build;
     return function(first, second){
       build.invokedWith([first, second]);
+      return returnValue;
     }
   }
 }
@@ -99,11 +101,26 @@ function MockSnake(returnValue){
 
 function MockEngine(){
 	this.recorders = {
-		tick : new Recorder("tick")
+		start : new Recorder("start"),
+		tick : new Recorder("tick"),
+		steer : new Recorder("tick"),
+		shutDown : new Recorder("shut down")
+	};
+
+	this.start = function(){
+		this.recorders.start.invoked();
 	};
 
 	this.tick = function(direction){
 		this.recorders.tick.invokedWith([direction]);
+	};
+
+	this.steer = function(direction){
+		this.recorders.steer.invokedWith([direction]);
+	};
+
+	this.shutDown = function(){
+		this.recorders.shutDown.invoked();
 	};
 }
 
@@ -114,8 +131,8 @@ function MockTimer(){
 		stop : new Recorder("stopTimer")
 	};
 
-	this.start = function(callBack, interval){
-		this.recorders.start.invokedWith([callBack, interval]);
+	this.start = function(callBack){
+		this.recorders.start.invokedWith([callBack]);
 	};
 
 	this.stop = function(){

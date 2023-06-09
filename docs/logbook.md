@@ -395,6 +395,19 @@ maar snake zit al zo vol
 
 (P 7, 8)
 [v] Dead snake turns black
-[ ] Snake dies on own body
+
+    map.set(createLocation(0,0), "a");
+    map.get(createLocation(0,0))
+    => undefined.
+
+want tuurlijk. @#%$^@
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#same-value-zero_equality
+
+ging tot dusver toevallig goed omdat we onbewust dezelfde objecten herbruikten.
+
+[v] convert board into double array. goodbye efficiency
+[v] Snake dies on own body
+
 
 ### TODO

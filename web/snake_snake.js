@@ -24,7 +24,7 @@ function createSnakeFactory(board){
 
 			function lastIndex(){
 				return segments.length - 1;
-			};
+			}
 
 			this.push = function(direction){
 				if(this.dies(direction))
@@ -40,7 +40,14 @@ function createSnakeFactory(board){
 			this.dies = function(direction){
 				let newLocation = this.head().location.translated(direction);
 
-	      return !board.isValidPosition(newLocation);
+				let alive = board.isValidPosition(newLocation);
+				if(alive){
+					let element = board.elementAt(newLocation);
+					if(element)
+						alive = element.color !== SNAKE_BODY_COLOR;
+				}
+
+				return ! alive;
 			};
 
 			this.die = function(){
@@ -79,6 +86,8 @@ function createSnakeFactory(board){
 				let newHeadLocation = oldHead.location.translated(direction);
 				let newHead = board.createElement(newHeadLocation, SNAKE_HEAD_COLOR);
 				segments.push(newHead);
+
+				return SNAKE_MOVED;
 			};
 
 			this.head = function(){

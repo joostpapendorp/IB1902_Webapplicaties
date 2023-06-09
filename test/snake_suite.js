@@ -251,6 +251,24 @@ QUnit.test("Moving from the board kills the snake.",
 );
 
 
+QUnit.test("Moving onto its own body kills the snake.",
+	assert => {
+		assert.expect(1);
+
+		let board = createBoard(new MockCanvas(), createElementFactory());
+		let snakeFactory = createSnakeFactory(board);
+
+		let subject = snakeFactory.createSnake([
+			createLocation(0,1),
+			createLocation(0,0)
+		]);
+
+		let result = subject.push(DOWN);
+		assert.equal(result, SNAKE_DIED, "Snake was killed by moving onto its own body.");
+	}
+);
+
+
 QUnit.test("When a snake dies, it turns black.",
 	assert => {
 		assert.expect(3);

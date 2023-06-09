@@ -363,4 +363,51 @@ story _012-steer_a_snake_
 
 Dropping immutability for game b/c of Direction; this is a non-functional design.
 
+(P 10, 11)
+
+story _013-kill_a_snake_
+
+
+### 2023-06-09
+
+(P 1)
+
+Feature envy: 
+
+    let newLocation = snake.head().location.translated(direction);
+
+maar snake zit al zo vol
+
+(P 2)
+
+??? Engine als aparte entiteit? of re-integreren in Game? 
+    ==> engine is apart v/w de snake vs. snakeFactory.
+
+??? move spul van game naar engine? 
+        ==> timer, direction
+
+(P 3, 4, 5)
+[v] move timer, direction van Game naar Engine
+
+(P 6)
+[v] harden tests
+[v] Stop timer on kill
+
+(P 7, 8)
+[v] Dead snake turns black
+
+    map.set(createLocation(0,0), "a");
+    map.get(createLocation(0,0))
+    => undefined.
+
+want tuurlijk. @#%$^@
+
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#same-value-zero_equality
+
+ging tot dusver toevallig goed omdat we onbewust dezelfde objecten herbruikten.
+
+[v] convert board into double array. goodbye efficiency
+[v] Snake dies on own body
+
+
 ### TODO

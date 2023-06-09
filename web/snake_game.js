@@ -1,43 +1,37 @@
 "use strict";
 
 function createGame(
-	board,
 	buildSnake,
-	buildEngine,
-	timer
+	prepareEngineWith,
+	player
 ){
-	function Game(board){
-		this.timer = timer;
-		this.direction = UP;
+	function Game(player){
+		this.engine;
+		this.player = player;
 
 		/**
 			@function init() -> void
 		  @desc Haal eventueel bestaand voedsel en een bestaande slang weg, cre\"eer een slang, genereer voedsel, en teken alles
 		*/
 		this.start = function() {
-
 			let snake = createStartSnake();
 			console.log("snake created");
 
-			let engine = buildEngine(board, snake);
-
-			board.redraw();
-
-			this.timer.start(
-				() => engine.tick(this.direction)
-			);
+			this.engine = prepareEngineWith(snake, UP);
+			this.engine.start();
 
 			console.log("game started");
 		};
 
 		this.stop = function() {
-			board.clear();
-			this.timer.stop();
+			this.engine.shutDown();
 			console.log("game stopped");
 		};
 
-		this.steer = function(direction) {
-			this.direction = direction;
+		this.receiveKeyInput = function(keyCode) {
+			let direction = player.receive(keyCode);
+			if(direction !== NO_LOCATION)
+				this.engine.steer(direction);
 		};
 	}
 
@@ -56,11 +50,11 @@ function createGame(
 		return buildSnake(locations);
 	}
 
-	let game = new Game(board);
+	let game = new Game(player);
 
 	return {
 		start : () => game.start(),
 		stop : () => game.stop(),
-		steer: (direction) => game.steer(direction)
+		receiveKeyInput: (code) => game.receiveKeyInput(code)
 	};
 }

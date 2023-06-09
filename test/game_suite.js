@@ -3,23 +3,16 @@
 QUnit.module("Game");
 
 function GameBuilder(){
-	this.board = new MockBoard();
-	this.snakeFactory = () => new MockSnake();
-	this.engineFactory = () => new MockEngine();
-	this.timer = new MockTimer();
+	this.snakeFactory = (locations) => new MockSnake();
+	this.engineFactory = (board, timer) => new MockEngine();
+	this.player = createPlayer();
 
 	this.build = function(){
 		return createGame(
-			this.board,
 			this.snakeFactory,
 			this.engineFactory,
-			this.timer
+			this.player
 		);
-	};
-
-	this.withBoard = function(board){
-		this.board = board;
-		return this;
 	};
 
 	this.withSnakeFactory = function(snakeFactory){
@@ -32,14 +25,14 @@ function GameBuilder(){
 		return this;
 	};
 
-	this.withTimer = function(timer){
-		this.timer = timer;
+	this.withPlayer = function(player){
+		this.player = player;
 		return this;
 	};
 }
 
 
-QUnit.test("Starting snake is two segments long, placed in left of the center, facing up",
+QUnit.test("Starting snake is two segments long, placed left of the center, facing up",
 	assert => {
 		assert.expect(2);
 
@@ -67,48 +60,17 @@ QUnit.test("Starting snake is two segments long, placed in left of the center, f
 );
 
 
-QUnit.test("Starting a game starts a timer.",
+QUnit.test("Starting a game creates the engine with initial snake moving upwards.",
 	assert => {
-		assert.expect(2);
+		assert.expect(4);
 
-		let mockTimer = new MockTimer();
+		let mockEngineFactory = new MockFactory("Engine")
+		let mockSnake = new MockSnake();
 		let mockEngine = new MockEngine();
 
 		let subject = new GameBuilder().
-			withEngineFactory(() => mockEngine).
-			withTimer(mockTimer).
-			build();
-
-
-		subject.start();
-
-
-		let startTimer = mockTimer.recorders.start;
-		assert.equal(startTimer.timesInvoked(), 1, "Game starts a timer");
-
-
-		let tick = mockEngine.recorders.tick;
-		let callBack = startTimer.invocations[0].arguments[0];
-
-		callBack();
-
-		assert.equal(tick.timesInvoked(), 1, "Timer calls back to engine.")
-	}
-);
-
-
-QUnit.test("Starting a game starts the engine.",
-	assert => {
-		assert.expect(3);
-
-		let mockEngineFactory = new MockFactory("Engine");
-		let mockBoard = new MockBoard();
-		let mockSnake = new MockSnake();
-
-		let subject = new GameBuilder().
-			withEngineFactory(mockEngineFactory.dyadic()).
-			withBoard(mockBoard).
-			withSnakeFactory(()=>mockSnake).
+			withSnakeFactory((locations) => mockSnake).
+			withEngineFactory(mockEngineFactory.dyadic(mockEngine)).
 			build();
 
 		subject.start();
@@ -117,97 +79,73 @@ QUnit.test("Starting a game starts the engine.",
 		assert.equal(build.timesInvoked(), 1, "Game creates the engine");
 
 		let actualArguments = build.invocations[0].arguments;
-		assert.equal(actualArguments[0], mockBoard, "Game passes the given board to the engine");
-		assert.equal(actualArguments[1], mockSnake, "Game passes the starting snake it built to the engine");
+		assert.equal(actualArguments[0], mockSnake, "Game passes the starting snake it built to the engine");
+		assert.equal(actualArguments[1], UP, "Snake starts moving upwards.");
+
+		let start = mockEngine.recorders.start;
+		assert.equal(start.timesInvoked(),1,"Game starts the engine");
 	}
 );
 
 
-QUnit.test("Stopping a game clears the board.",
-	assert => {
-		assert.expect(1);
-
-		let mockBoard = new MockBoard();
-		let subject = new GameBuilder().
-			withBoard(mockBoard).
-			build();
-
-		subject.stop();
-
-		let recorder = mockBoard.recorders.clear;
-		assert.equal(recorder.timesInvoked(), 1, "Invoked clear");
-	}
-);
-
-
-QUnit.test("Stopping a game stops the timer.",
-	assert => {
-		assert.expect(1);
-
-		let mockTimer = new MockTimer();
-
-		let subject = new GameBuilder().
-			withTimer(mockTimer).
-			build();
-
-		subject.stop();
-
-		let stopTimer = mockTimer.recorders.stop;
-		assert.equal(stopTimer.timesInvoked(), 1, "Stopping a game stops the timer");
-	}
-);
-
-
-QUnit.test("Snake starts moving upwards.",
+QUnit.test("Stopping a game shuts the engine down.",
 	assert => {
 		assert.expect(1);
 
 		let mockEngine = new MockEngine();
-		let mockTimer = new MockTimer();
-
 		let subject = new GameBuilder().
-			withEngineFactory(() => mockEngine).
-			withTimer(mockTimer).
+			withEngineFactory((snake, direction)=>mockEngine).
 			build();
 
-
 		subject.start();
+		subject.stop();
 
-
-		let tick = mockEngine.recorders.tick;
-		let callBack = mockTimer.recorders.start.invocations[0].arguments[0];
-
-		callBack();
-
-		let actualArguments = tick.invocations[0].arguments;
-		assert.equal(actualArguments[0], UP, "Initial direction is up.")
+		let recorder = mockEngine.recorders.shutDown;
+		assert.equal(recorder.timesInvoked(), 1, "Invoked shut down");
 	}
 );
 
 
-QUnit.test("Steering a snake starts moving the snake in the provided direction.",
+QUnit.test("Receiving key input translates the key code into a direction to steer the engine.",
+	assert => {
+		assert.expect(2);
+
+		let mockEngine = new MockEngine();
+
+		let subject = new GameBuilder().
+      withEngineFactory((snake, direction)=>mockEngine).
+      withPlayer(createPlayer()).
+      build();
+
+		subject.start();
+		subject.receiveKeyInput(UP_ARROW_KEY_CODE);
+
+		let steer = mockEngine.recorders.steer;
+		assert.equal(steer.timesInvoked(), 1, "receiving valid input steers the engine");
+
+		let actual = steer.invocations[0].arguments[0];
+		assert.equal(actual, UP, "valid input is translated into corresponding direction")
+	}
+);
+
+
+QUnit.test("Game filters invalid key inputs.",
 	assert => {
 		assert.expect(1);
 
+		const INVALID_KEY_CODE = -1;
+
 		let mockEngine = new MockEngine();
-		let mockTimer = new MockTimer();
 
 		let subject = new GameBuilder().
-			withEngineFactory(() => mockEngine).
-			withTimer(mockTimer).
-			build();
-
+      withEngineFactory((snake, direction)=>mockEngine).
+      withPlayer(createPlayer()).
+      build();
 
 		subject.start();
-		subject.steer(LEFT);
+		subject.receiveKeyInput(INVALID_KEY_CODE);
 
-
-		let tick = mockEngine.recorders.tick;
-		let callBack = mockTimer.recorders.start.invocations[0].arguments[0];
-
-		callBack();
-
-		let actualArguments = tick.invocations[0].arguments;
-		assert.equal(actualArguments[0], LEFT, "Initial direction is up.")
+		let steer = mockEngine.recorders.steer;
+		assert.equal(steer.timesInvoked(), 0, "Invalid input is filtered out");
 	}
 );

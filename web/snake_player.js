@@ -5,29 +5,25 @@ const UP_ARROW_KEY_CODE = 38;
 const RIGHT_ARROW_KEY_CODE = 39;
 const DOWN_ARROW_KEY_CODE = 40;
 
-function createPlayer(game){
-
+function createPlayer(){
 	return {
 		receive : function(code){
-			var direction;
 			switch (code) {
 				case LEFT_ARROW_KEY_CODE:
-					direction = LEFT;
-					break;
+					return LEFT;
 
 				case UP_ARROW_KEY_CODE:
-					direction = UP;
-					break;
+					return UP;
 
 				case RIGHT_ARROW_KEY_CODE:
-					direction = RIGHT;
-					break;
+					return RIGHT;
 
 				case DOWN_ARROW_KEY_CODE:
-					direction = DOWN;
-					break;
+					return DOWN;
+
+				default:
+					return NO_LOCATION;
 			}
-			game.steer(direction);
 		}
 	}
 }

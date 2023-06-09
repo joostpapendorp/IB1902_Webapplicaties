@@ -5,6 +5,8 @@ const DOWN = createLocation(0,1);
 const LEFT = createLocation(-1,0);
 const RIGHT = createLocation(1,0);
 
+const NO_LOCATION = createLocation(0,0);
+
 function createLocation(xCoordinate,yCoordinate){
 	function Location(x,y){
 		this.x = x;

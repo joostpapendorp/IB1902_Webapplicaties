@@ -7,13 +7,13 @@ const FOOD_ELEMENT_COLOR = "Olive";
 $(document).ready(function() {
 	// note: we MUST construct the context onDocumentReady, since we need the html canvas JQuery object.
   // It might not be initialized beforehand.
-	let context = buildInjectionContext();
+	let game = buildInjectionContext();
 
-	$("#startSnake").click(()=>context.start());
-	$("#stopSnake").click(()=>context.stop());
+	$("#startSnake").click(()=>game.start());
+	$("#stopSnake").click(()=>game.stop());
 
 	$(document).keydown(function (event) {
-		context.receiveInput(event.which);
+		game.receiveKeyInput(event.which);
   });
 });
 
@@ -25,18 +25,11 @@ function buildInjectionContext(){
 	);
 
 	let snakeFactory = createSnakeFactory(board);
+	let engineFactory = createEngineFactory(board, createTimer());
 
-	let game = createGame(
-		board,
+	return createGame(
 		snakeFactory.createSnake,
-		createEngine,
-		createTimer()
+		engineFactory.prepareEngineWith,
+		createPlayer()
 	);
-	let player = createPlayer(game);
-
-	return {
-		start: () => game.start(),
-		stop: () => game.stop(),
-		receiveInput: (code) => player.receive(code)
-	}
 }

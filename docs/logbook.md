@@ -363,4 +363,20 @@ story _012-steer_a_snake_
 
 Dropping immutability for game b/c of Direction; this is a non-functional design.
 
+(P 10, 11)
+
+story _013-kill_a_snake_
+
+
+### 2023-06-09
+
+(P 1)
+
+Feature envy: 
+
+    let newLocation = snake.head().location.translated(direction);
+
+maar snake zit al zo vol
+
+
 ### TODO

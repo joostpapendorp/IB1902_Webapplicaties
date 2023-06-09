@@ -4,10 +4,14 @@ QUnit.module("Snake");
 
 QUnit.test("Constant values",
 	assert => {
-	  assert.expect(2);
+	  assert.expect(5);
 
 	  assert.equal( SNAKE_HEAD_COLOR, "DarkOrange", "Color of the snake's head is orange" )
 	  assert.equal( SNAKE_BODY_COLOR, "DarkRed", "Color of the snake's body is red" )
+
+	  assert.equal(SNAKE_MOVED, "Snake moved", "Game state: Snake has moved.");
+	  assert.equal(SNAKE_DIED, "Snake died", "Game state: Snake was killed");
+	  assert.equal(SNAKE_ATE, "Snake ate", "Game state: Snake ate a food");
 	}
 );
 
@@ -70,7 +74,7 @@ QUnit.test("When a snake moves, it removes the its last body segment",
 		let recorders = boardSpy.recorders;
 
 
-		subject.move(DOWN);
+		subject.push(DOWN);
 
 
 		let remove = recorders.remove;
@@ -105,7 +109,7 @@ QUnit.test("When a snake moves, it repaints the previous head segment as a body 
 		let recorders = boardSpy.recorders;
 
 
-		subject.move(DOWN);
+		subject.push(DOWN);
 
 
 		let replace = recorders.replace;
@@ -141,7 +145,7 @@ QUnit.test("When a snake moves, it adds the new head to the front",
 		let recorders = boardSpy.recorders;
 
 
-		subject.move(DOWN);
+		subject.push(DOWN);
 
 
 		let createElement = recorders.createElement;
@@ -177,9 +181,9 @@ QUnit.test("When a snake moves, it records its new positions for the next moves"
 		let recorders = boardSpy.recorders;
 
 
-		subject.move(DOWN);
-		subject.move(DOWN);
-		subject.move(DOWN);
+		subject.push(DOWN);
+		subject.push(DOWN);
+		subject.push(DOWN);
 
 
 		let replace = recorders.replace;
@@ -211,6 +215,36 @@ QUnit.test("When a snake moves, it records its new positions for the next moves"
 		)
 	}
 );
+
+
+QUnit.test("Moving from the board kills the snake.",
+	assert => {
+		assert.expect(4);
+
+		let board = createBoard(new MockCanvas(), createElementFactory());
+		let snakeFactory = createSnakeFactory(board);
+
+		let lowerBoundSnake = snakeFactory.createSnake([
+			createLocation(0,1),
+			createLocation(0,0)
+		]);
+		let upperBoundSnake = snakeFactory.createSnake([
+			createLocation(17,16),
+			createLocation(17,17)
+		]);
+
+		for(const [direction, subject, description] of [
+			[UP, lowerBoundSnake, "top"],
+			[LEFT, lowerBoundSnake, "left"],
+			[DOWN, upperBoundSnake, "bottom"],
+			[RIGHT, upperBoundSnake, "right"]
+		]){
+			let result = subject.push(direction);
+			assert.equal(result, SNAKE_DIED, `Snake was killed moving off the ${description} of the board.`)
+		};
+	}
+);
+
 
 function createSpyFrom(board){
 	let mockBoard = new MockBoard()

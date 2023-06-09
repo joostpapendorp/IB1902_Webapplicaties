@@ -78,14 +78,22 @@ function MockFactory(name){
 }
 
 
-function MockSnake(){
+function MockSnake(returnValue){
 	this.recorders = {
-		move : new Recorder("move")
+		push : new Recorder("push"),
+		head : new Recorder("head")
+	};
+	this.returnValue = returnValue;
+
+	this.push = function(direction){
+		this.recorders.push.invokedWith([direction]);
+		return returnValue;
 	};
 
-	this.move = function(direction){
-		this.recorders.move.invokedWith([direction]);
-	}
+	this.head = function(){
+		this.recorders.head.invoked();
+		return returnValue;
+	};
 }
 
 
@@ -96,7 +104,7 @@ function MockEngine(){
 
 	this.tick = function(direction){
 		this.recorders.tick.invokedWith([direction]);
-	}
+	};
 }
 
 
@@ -108,11 +116,11 @@ function MockTimer(){
 
 	this.start = function(callBack, interval){
 		this.recorders.start.invokedWith([callBack, interval]);
-	}
+	};
 
 	this.stop = function(){
 		this.recorders.stop.invoked();
-	}
+	};
 }
 
 

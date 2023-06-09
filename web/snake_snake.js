@@ -3,6 +3,11 @@
 const SNAKE_HEAD_COLOR = "DarkOrange";
 const SNAKE_BODY_COLOR = "DarkRed";
 
+const SNAKE_MOVED = "Snake moved";
+const SNAKE_DIED = "Snake died";
+const SNAKE_ATE = "Snake ate";
+
+
 // GoF factory pattern for snake creation
 function createSnakeFactory(board){
 	function createSnake(locations){
@@ -16,14 +21,42 @@ function createSnakeFactory(board){
 
 			function lastIndex(){
 				return segments.length - 1;
-			}
+			};
+
+			this.push = function(direction){
+				if(this.dies(direction))
+					return this.die();
+
+				else if(this.eats(direction))
+					return this.eat(direction);
+
+				else
+					return this.move(direction);
+			};
+
+			this.dies = function(direction){
+				let newLocation = this.head().location.translated(direction);
+
+	      return !board.isValidPosition(newLocation);
+			};
+
+			this.die = function(){
+				return SNAKE_DIED;
+			};
+
+			this.eats = function(direction){
+				return false;
+			};
+
+			this.eat = function(direction){
+				return SNAKE_ATE;
+			};
 
 			this.move = function(direction){
 				// remove the last tail element
 				let lastBodyElement = this.segments[0];
 				board.remove(lastBodyElement);
 				segments.shift();
-
 
 				// repaint the old head as body
 				let oldHead = this.head();
@@ -42,23 +75,28 @@ function createSnakeFactory(board){
 			};
 		}
 
-		let elements = [];
-		for(let i = 0; i < locations.length - 1; i++ ){
-			let bodyElement = board.createElement(
-				locations[i],
-				SNAKE_BODY_COLOR);
-			elements.push(bodyElement);
+		function buildFrom(positions){
+			let elements = [];
+			for(let i = 0; i < locations.length - 1; i++ ){
+				let bodyElement = board.createElement(
+					locations[i],
+					SNAKE_BODY_COLOR);
+				elements.push(bodyElement);
+			}
+
+			let headElement = board.createElement(
+				locations[ locations.length -1],
+				SNAKE_HEAD_COLOR);
+			elements.push(headElement)
+
+			return new Snake(elements);
 		}
 
-		let headElement = board.createElement(
-			locations[ locations.length -1],
-			SNAKE_HEAD_COLOR);
-		elements.push(headElement)
-
-		let snake = new Snake(elements);
+		let snake = buildFrom(locations);
 
 		return {
-			move : (direction) => snake.move(direction)
+			push : (direction) => snake.push(direction),
+			head : () => snake.head()
 		};
 	}
 

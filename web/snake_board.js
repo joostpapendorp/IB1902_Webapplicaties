@@ -42,6 +42,9 @@ function createBoard(canvas, elementFactory){
 		this.createElement = function(location, color){
 			this.checkBoundaries(location);
 
+      if(this.elements.get(location))
+        throw new Error("Location occupied")
+
       let element = elementFactory.createElement(location,color);
       this.elements.set(location, element);
 
@@ -50,6 +53,8 @@ function createBoard(canvas, elementFactory){
 
 		this.replace = function(element){
 			let location = element.location;
+			this.checkBoundaries(location);
+
 			if(!this.elementAt(location))
 				throw new Error(`No element to replace at ${location.describe()}`)
 
@@ -58,26 +63,28 @@ function createBoard(canvas, elementFactory){
 
 		this.remove = function(element){
 			let location = element.location;
+			this.checkBoundaries(location);
+
 			if(!this.elements.delete(location))
 				throw Error(`No element at ${location.describe()}`)
 		}
 
 		this.elementAt = function(location){
+			this.checkBoundaries(location);
+
 			return this.elements.get(location);
 		}
 
+		this.isValidPosition = function(location){
+			let min = Math.min(location.x, location.y);
+			let max = Math.max(location.x, location.y);
+			return min >= 0 && max < BOARD_SIZE;
+		}
+
     this.checkBoundaries = function(location){
-      let max = Math.max(location.x, location.y);
-      if(max>=BOARD_SIZE)
-        throw new Error(max + " is out of bounds");
-
-      let min = Math.min(location.x, location.y);
-      if(min < 0)
-        throw new Error(min + " is out of bounds");
-
-      if(this.elements.get(location))
-        throw new Error("Location occupied")
-    }
+			if(!this.isValidPosition(location))
+				throw new Error(`${location.describe()} is out of bounds`);
+		}
 	}
 
 	let board = new Board(canvas);
@@ -88,6 +95,7 @@ function createBoard(canvas, elementFactory){
 		remove : (element) => board.remove(element),
 		elementAt: (location) => board.elementAt(location),
 		clear : () => board.clear(),
-		redraw : () => board.redraw()
+		redraw : () => board.redraw(),
+		isValidPosition : (location) => board.isValidPosition(location)
 	};
 }

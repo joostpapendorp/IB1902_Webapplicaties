@@ -7,8 +7,9 @@ function createEngine(board,snake){
 		this.snake = snake;
 
 		this.tick = function(direction){
-			snake.move(direction);
+			let result = snake.push(direction);
 			board.redraw();
+			return result;
 		}
 	}
 

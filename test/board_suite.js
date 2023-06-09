@@ -192,25 +192,25 @@ QUnit.test("Elements must be on the board",
 
 		assert.throws(
 			() => subject.createElement(createLocation(0,BOARD_SIZE)),
-			new Error("18 is out of bounds"),
+			new Error("(0,18) is out of bounds"),
 			"Board size is [0..17]"
 		);
 
 		assert.throws(
 			() => subject.createElement(createLocation(BOARD_SIZE,17)),
-			new Error("18 is out of bounds"),
+			new Error("(18,17) is out of bounds"),
 			"Board size is [0..17]"
 		);
 
 		assert.throws(
 			() => subject.createElement(createLocation(0,-1)),
-			new Error("-1 is out of bounds"),
+			new Error("(0,-1) is out of bounds"),
 			"Board size is [0..17]"
 		);
 
 		assert.throws(
 			() => subject.createElement(createLocation(-1,0)),
-			new Error("-1 is out of bounds"),
+			new Error("(-1,0) is out of bounds"),
 			"Board size is [0..17]"
 		);
 

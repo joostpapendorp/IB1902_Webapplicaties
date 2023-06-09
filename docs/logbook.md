@@ -391,7 +391,7 @@ maar snake zit al zo vol
 
 (P 6)
 [v] harden tests
-[ ] Stop timer on kill
+[v] Stop timer on kill
 
 
 ### TODO

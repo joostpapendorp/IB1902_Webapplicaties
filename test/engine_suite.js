@@ -29,6 +29,26 @@ QUnit.test("Tick pushes the snake and repaints the board",
 );
 
 
+QUnit.test("Killing the snake stops the timer.",
+	assert => {
+		assert.expect(1);
+
+		let mockTimer = new MockTimer();
+
+		let factory = createEngineFactory(
+			new MockBoard(),
+			mockTimer
+		);
+		let subject = factory.prepareEngineWith(new MockSnake(SNAKE_DIED), UP);
+
+		subject.tick();
+
+		let stopTimer = mockTimer.recorders.stop;
+		assert.equal(stopTimer.timesInvoked(), 1, "Killing the snake stops the timer.");
+	}
+);
+
+
 QUnit.test("Starting the engine starts a timer.",
 	assert => {
 		assert.expect(2);

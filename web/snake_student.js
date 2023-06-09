@@ -13,7 +13,7 @@ $(document).ready(function() {
 	$("#stopSnake").click(()=>game.stop());
 
 	$(document).keydown(function (event) {
-		game.receiveInput(event.which);
+		game.receiveKeyInput(event.which);
   });
 });
 

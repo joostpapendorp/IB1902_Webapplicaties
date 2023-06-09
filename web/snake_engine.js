@@ -16,6 +16,8 @@ function createEngineFactory(board, timer){
 
 		this.tick = function(){
 			let result = this.snake.push(this.direction);
+			if(result === SNAKE_DIED)
+				this.halt();
 			this.board.redraw();
 		};
 

@@ -393,5 +393,8 @@ maar snake zit al zo vol
 [v] harden tests
 [v] Stop timer on kill
 
+(P 7, 8)
+[v] Dead snake turns black
+[ ] Snake dies on own body
 
 ### TODO

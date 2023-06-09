@@ -3,6 +3,9 @@
 const SNAKE_HEAD_COLOR = "DarkOrange";
 const SNAKE_BODY_COLOR = "DarkRed";
 
+const DEAD_SNAKE_BODY_COLOR = "Black";
+const DEAD_SNAKE_HEAD_COLOR = "DarkGrey";
+
 const SNAKE_MOVED = "Snake moved";
 const SNAKE_DIED = "Snake died";
 const SNAKE_ATE = "Snake ate";
@@ -41,6 +44,14 @@ function createSnakeFactory(board){
 			};
 
 			this.die = function(){
+				for(let i = 0; i < lastIndex(); i++ ){
+					this.segments[i] = this.segments[i].withColor(DEAD_SNAKE_BODY_COLOR);
+					board.replace(segments[i]);
+				}
+
+				this.segments[lastIndex()] = this.segments[lastIndex()].withColor(DEAD_SNAKE_HEAD_COLOR);
+				board.replace(segments[lastIndex()]);
+
 				return SNAKE_DIED;
 			};
 

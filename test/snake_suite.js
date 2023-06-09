@@ -4,16 +4,20 @@ QUnit.module("Snake");
 
 QUnit.test("Constant values",
 	assert => {
-	  assert.expect(5);
+	  assert.expect(7);
 
 	  assert.equal( SNAKE_HEAD_COLOR, "DarkOrange", "Color of the snake's head is orange" )
 	  assert.equal( SNAKE_BODY_COLOR, "DarkRed", "Color of the snake's body is red" )
+
+	  assert.equal( DEAD_SNAKE_HEAD_COLOR, "DarkGrey", "Color of the dead snake's head is gray" )
+	  assert.equal( DEAD_SNAKE_BODY_COLOR, "Black", "Color of the dead snake's body is blac" )
 
 	  assert.equal(SNAKE_MOVED, "Snake moved", "Game state: Snake has moved.");
 	  assert.equal(SNAKE_DIED, "Snake died", "Game state: Snake was killed");
 	  assert.equal(SNAKE_ATE, "Snake ate", "Game state: Snake ate a food");
 	}
 );
+
 
 QUnit.test("When a snake is created, it request segments at the indicated positions.",
 	assert => {
@@ -53,6 +57,7 @@ QUnit.test("When a snake is created, it request segments at the indicated positi
 		);
 	}
 );
+
 
 QUnit.test("When a snake moves, it removes the its last body segment",
 	assert => {
@@ -242,6 +247,49 @@ QUnit.test("Moving from the board kills the snake.",
 			let result = subject.push(direction);
 			assert.equal(result, SNAKE_DIED, `Snake was killed moving off the ${description} of the board.`)
 		};
+	}
+);
+
+
+QUnit.test("When a snake dies, it turns black.",
+	assert => {
+		assert.expect(3);
+
+		let elementFactory = createElementFactory();
+		let board = createBoard(new MockCanvas(), elementFactory);
+
+		let mockBoard = createSpyFrom(board);
+		let recorder = mockBoard.recorders.replace;
+		let invocations = recorder.invocations;
+
+		let expectedLocations = [
+			createLocation(1,1),
+			createLocation(1,0),
+			createLocation(0,0)
+		];
+
+		let snakeFactory = createSnakeFactory(board);
+		let subject = snakeFactory.createSnake(expectedLocations);
+
+		subject.push(UP);
+
+		assert.propEqual(
+			invocations[0].arguments,
+			[elementFactory.createElement(expectedLocations[0], DEAD_SNAKE_BODY_COLOR)],
+			"The first body segment turns black."
+		);
+
+		assert.propEqual(
+			invocations[1].arguments,
+			[elementFactory.createElement(expectedLocations[1], DEAD_SNAKE_BODY_COLOR)],
+			"The second body segment turns black."
+		);
+
+		assert.propEqual(
+			invocations[2].arguments,
+			[elementFactory.createElement(expectedLocations[2], DEAD_SNAKE_HEAD_COLOR)],
+			"The last segment is the head and it turns grey."
+		);
 	}
 );
 

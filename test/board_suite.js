@@ -24,7 +24,7 @@ QUnit.test("Tile size is calculated from the smallest canvas dimension",
 		mockCanvas.height = () => largestDimension;
 
 		let subject = createBoard(mockCanvas, createElementFactory());
-		let el = subject.createElement(createLocation(0,0),"DarkRed");
+		let el = subject.createElement(createLocation(0,0), MOCK_TYPE);
 		subject.redraw();
 
 		let recorder = mockCanvas.recorders.drawArc;
@@ -63,7 +63,7 @@ QUnit.test("Clearing the board deletes its elements",
 
 		let subject = createBoard(mockCanvas, createElementFactory());
 
-		subject.createElement(createLocation(0,0), "DarkOrange");
+		subject.createElement(createLocation(0,0), MOCK_TYPE);
 		subject.clear();
 		subject.redraw();
 
@@ -75,20 +75,31 @@ QUnit.test("Clearing the board deletes its elements",
 
 QUnit.test("Redraw clears the board, then draws all elements",
 	assert => {
-		assert.expect(2);
+		assert.expect(4);
 
 		let mockCanvas = new MockCanvas();
 		let subject = createBoard(mockCanvas, createElementFactory());
 
-		// el1 and el2 values are ignored
-		let el1 = subject.createElement(createLocation(0,0));
-		let el2 = subject.createElement(createLocation(1,1));
+		let firstElement = subject.createElement(createLocation(0,0), MOCK_TYPE);
+		let secondElement = subject.createElement(createLocation(1,1), MOCK_TYPE);
 
 		subject.redraw();
 
 		let recorders = mockCanvas.recorders;
 		assert.equal(recorders.clear.timesInvoked(), 1, "redraw clears the canvas");
-		assert.equal(recorders.drawArc.timesInvoked(), 2, "redraw draws both elements");
+
+		let drawArc = recorders.drawArc
+		assert.equal(drawArc.timesInvoked(), 2, "redraw draws both elements");
+
+		assert.equal(
+			drawArc.invocations[0].arguments[3],
+			firstElement.type.color,
+			"redraw uses correct color on first");
+
+		assert.equal(
+			drawArc.invocations[1].arguments[3],
+			secondElement.type.color,
+			"redraw uses correct color on second");
 	}
 );
 
@@ -98,7 +109,7 @@ QUnit.test("Board records its elements",
 		let subject = createBoard(new MockCanvas(), createElementFactory());
 
 		let location = createLocation(0,0);
-		let expected = subject.createElement(location, "DarkRed");
+		let expected = subject.createElement(location, MOCK_TYPE);
 
 		let actual = subject.elementAt(location);
 
@@ -124,7 +135,7 @@ QUnit.test("Cant remove element not on the board",
 		let subject = createBoard(new MockCanvas(), elementFactory);
 
 		let location = createLocation(0,0);
-		let element = elementFactory.createElement(location, "DarkRed");
+		let element = elementFactory.createElement(location, MOCK_TYPE);
 
 		assert.throws(
 			() => subject.remove(element),
@@ -140,7 +151,7 @@ QUnit.test("Remove element removes an element from the given position",
 		let subject = createBoard(new MockCanvas(), createElementFactory());
 
 		let location = createLocation(0,0);
-		let element = subject.createElement(location, "DarkRed");
+		let element = subject.createElement(location, MOCK_TYPE);
 
 		subject.remove(element);
 		let actual = subject.elementAt(location);
@@ -152,12 +163,14 @@ QUnit.test("Remove element removes an element from the given position",
 QUnit.test("Board replaces an element with another at the same location",
 	assert => {
 		assert.expect(1);
+
 		let elementFactory = createElementFactory();
 		let location = createLocation(0,0);
-		let expected = elementFactory.createElement(location, "DarkOrange");
+		let expected = elementFactory.createElement(location, MOCK_TYPE);
 
 		let subject = createBoard(new MockCanvas(), elementFactory);
-		let ignored = subject.createElement(location, "DarkRed");
+
+		let ignored = subject.createElement(location, SECOND_MOCK_TYPE);
 		subject.replace(expected);
 		let actual = subject.elementAt(location);
 
@@ -173,10 +186,7 @@ QUnit.test("Can't replace an empty location",
 
 		assert.throws(
 			() => subject.replace(
-				elementFactory.createElement(
-					createLocation(0,0),
-					"DarkOrange"
-				)
+				elementFactory.createElement(createLocation(0,0), MOCK_TYPE)
 			),
 			new Error("No element to replace at (0,0)"),
 			"Replacing an empty location throws error"
@@ -191,31 +201,31 @@ QUnit.test("Elements must be on the board",
 		let subject = createBoard(new MockCanvas(), createElementFactory());
 
 		assert.throws(
-			() => subject.createElement(createLocation(0,BOARD_SIZE)),
+			() => subject.createElement(createLocation(0,BOARD_SIZE), MOCK_TYPE),
 			new Error("(0,18) is out of bounds"),
 			"Board size is [0..17]"
 		);
 
 		assert.throws(
-			() => subject.createElement(createLocation(BOARD_SIZE,17)),
+			() => subject.createElement(createLocation(BOARD_SIZE,17), MOCK_TYPE),
 			new Error("(18,17) is out of bounds"),
 			"Board size is [0..17]"
 		);
 
 		assert.throws(
-			() => subject.createElement(createLocation(0,-1)),
+			() => subject.createElement(createLocation(0,-1), MOCK_TYPE),
 			new Error("(0,-1) is out of bounds"),
 			"Board size is [0..17]"
 		);
 
 		assert.throws(
-			() => subject.createElement(createLocation(-1,0)),
+			() => subject.createElement(createLocation(-1,0), MOCK_TYPE),
 			new Error("(-1,0) is out of bounds"),
 			"Board size is [0..17]"
 		);
 
 		let maxLocation = createLocation(BOARD_SIZE-1, BOARD_SIZE-1);
-		let maxElement = subject.createElement(maxLocation, "DarkRed");
+		let maxElement = subject.createElement(maxLocation, MOCK_TYPE);
 		assert.propEqual(
 			maxElement.location,
 			maxLocation,
@@ -223,7 +233,7 @@ QUnit.test("Elements must be on the board",
 		);
 
 		let minLocation = createLocation(0, 0);
-		let minElement = subject.createElement(minLocation, "DarkRed");
+		let minElement = subject.createElement(minLocation, MOCK_TYPE);
 		assert.propEqual(
 			minElement.location,
 			minLocation,
@@ -239,10 +249,10 @@ QUnit.test("Board space must be available to add elements",
 		let subject = createBoard(new MockCanvas(), createElementFactory());
 
 		let sameLocation = createLocation(1,1);
-		let first = subject.createElement(sameLocation, "DarkRed");
+		let first = subject.createElement(sameLocation, MOCK_TYPE);
 
 		assert.throws(
-			() => subject.createElement(sameLocation, "DarkOrange"),
+			() => subject.createElement(sameLocation, SECOND_MOCK_TYPE),
 			new Error("Location occupied"),
 			"Elements can't share same location"
 		);

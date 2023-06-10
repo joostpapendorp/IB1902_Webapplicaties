@@ -1,4 +1,8 @@
+"use strict";
+
 const FIXTURE_ELEMENT_ID = "fixture-element";
+const MOCK_TYPE = createElementType("MOCK_COLOR", createElementEntity("MOCK_TYPE"));
+const SECOND_MOCK_TYPE = createElementType("SECOND_MOCK_TYPE", createElementEntity("SECOND_MOCK_TYPE"));
 
 function MockCanvas() {
 	this.recorders = {
@@ -35,8 +39,8 @@ function MockBoard(){
 		redraw : new Recorder("redraw")
 	};
 
-	this.createElement = function(location, color){
-		this.recorders.createElement.invokedWith([location,color]);
+	this.createElement = function(location, type){
+		this.recorders.createElement.invokedWith([location,type]);
 	}
 
 	this.replace = function(element){
@@ -175,9 +179,9 @@ function Recorder(name){
 		this.invocations.push(new Invocation([]));
 	}
 
-	this.invokedWith = function(arguments){
-		console.log( this.name + " invoked with " + arguments.length + " argument(s)." )
-		let thisInvocation = new Invocation(arguments);
+	this.invokedWith = function(argumentList){
+		console.log( this.name + " invoked with " + argumentList.length + " argument(s)." )
+		let thisInvocation = new Invocation(argumentList);
 		this.invocations.push(thisInvocation);
 	};
 }

@@ -410,4 +410,28 @@ ging tot dusver toevallig goed omdat we onbewust dezelfde objecten herbruikten.
 [v] Snake dies on own body
 
 
+### 2023-06-10
+
+(P1, 2)
+
+story _014-feed_a_snake_
+
+[v] enrich element with type
+[ ] have board return empty element on empty space
+[v] snake can now switch on element type
+??? what 'element' is an out-of-bounds element?
+??? wrapper around element? 'square'? ==> Square(Element(Location(Int,Int),String),Type())
+
+==> No. use type as wrapper for color. Define types as constants in the appropriate places. This is simply a more elegant 
+way than to switch directly on the colors. 
+
+    const SNAKE_HEAD_COLOR = "DarkOrange";
+    const SNAKE_BODY_COLOR = "DarkRed";
+    
+    const DEAD_SNAKE_BODY_COLOR = "Black";
+    const DEAD_SNAKE_HEAD_COLOR = "DarkGrey";
+
+??? These are all snake types. Unify? diversify? Property 'class'?
+    ==> introduce concept of 'entity'. Entity is the game concept the element is part of, e.g. snake, food, wall
+
 ### TODO

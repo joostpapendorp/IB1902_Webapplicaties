@@ -37,7 +37,7 @@ function createBoard(canvas, elementFactory){
 			for (let x = 0; x < BOARD_SIZE; x++)
 				for (let y = 0; y < BOARD_SIZE; y++)
 					if(this.elements[x][y])
-						this.drawElement(this.elements[x][y].location, this.elements[x][y].color);
+						this.drawElement(this.elements[x][y].location, this.elements[x][y].type.color);
 		};
 
 		this.drawElement = function(location,color){
@@ -49,13 +49,13 @@ function createBoard(canvas, elementFactory){
 			);
 		};
 
-		this.createElement = function(location, color){
+		this.createElement = function(location, type){
 			this.checkBoundaries(location);
 
       if(this.elementAt(location))
         throw new Error("Location occupied")
 
-      let element = elementFactory.createElement(location,color);
+      let element = elementFactory.createElement(location, type);
       this.elements[location.x][location.y] = element;
 
       return element;
@@ -102,7 +102,7 @@ function createBoard(canvas, elementFactory){
 	let board = new Board(canvas);
 
 	return {
-		createElement : (location, color) => board.createElement(location, color),
+		createElement : (location, type) => board.createElement(location, type),
 		replace : (element) => board.replace(element),
 		remove : (element) => board.remove(element),
 		elementAt: (location) => board.elementAt(location),

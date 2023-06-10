@@ -4,9 +4,12 @@ QUnit.module("Board");
 
 QUnit.test("Constant values",
 	assert => {
-		assert.expect(1);
+		assert.expect(3);
 
-		assert.equal( BOARD_SIZE, 18, "size of the board is 18x18 tiles." );
+		assert.equal(BOARD_SIZE, 18, "size of the board is 18x18 tiles.");
+
+		assert.equal(OFF_THE_BOARD_ENTITY.description, "Off the board", "Entity used to indicate a space outside the board")
+		assert.equal(FREE_SPACE_ENTITY.description, "Free space", "Entity used to indicate a free space on the board")
 	}
 );
 
@@ -117,14 +120,16 @@ QUnit.test("Board records its elements",
 	}
 );
 
-QUnit.test("Empty positions are undefined",
+QUnit.test("Empty positions are free space",
 	assert => {
-		assert.expect(1);
+		assert.expect(2);
 		let subject = createBoard(new MockCanvas(), createElementFactory());
 
-		let actual = subject.elementAt(createLocation(0,0));
+		let expectedLocation = createLocation(0,0);
+		let actual = subject.elementAt(expectedLocation);
 
-		assert.propEqual(actual, undefined, "Element at location should be the created element");
+		assert.equal(actual.location, expectedLocation, "Element should be at the created location");
+		assert.equal(actual.type, FREE_SPACE_TYPE, "Element should have the free space type");
 	}
 );
 
@@ -156,7 +161,7 @@ QUnit.test("Remove element removes an element from the given position",
 		subject.remove(element);
 		let actual = subject.elementAt(location);
 
-		assert.propEqual(actual, undefined, "Element at location should not be on the board");
+		assert.propEqual(actual.type, FREE_SPACE_TYPE, "Element at location should not be on the board");
 	}
 );
 

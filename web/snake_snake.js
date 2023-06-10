@@ -1,12 +1,12 @@
 "use strict";
 
-const SNAKE_ELEMENT_ENTITY = createElementEntity("Snake");
+const SNAKE_ENTITY = createElementEntity("Snake");
 
-const SNAKE_HEAD_TYPE = createElementType("DarkOrange", SNAKE_ELEMENT_ENTITY);
-const SNAKE_BODY_TYPE = createElementType("DarkRed", SNAKE_ELEMENT_ENTITY);
+const SNAKE_HEAD_TYPE = createElementType("DarkOrange", SNAKE_ENTITY);
+const SNAKE_BODY_TYPE = createElementType("DarkRed", SNAKE_ENTITY);
 
-const DEAD_SNAKE_BODY_TYPE = createElementType("Black", SNAKE_ELEMENT_ENTITY);
-const DEAD_SNAKE_HEAD_TYPE = createElementType("DarkGrey", SNAKE_ELEMENT_ENTITY);
+const DEAD_SNAKE_BODY_TYPE = createElementType("Black", SNAKE_ENTITY);
+const DEAD_SNAKE_HEAD_TYPE = createElementType("DarkGrey", SNAKE_ENTITY);
 
 const SNAKE_MOVED = "Snake moved";
 const SNAKE_DIED = "Snake died";
@@ -29,27 +29,17 @@ function createSnakeFactory(board){
 			}
 
 			this.push = function(direction){
-				if(this.dies(direction))
-					return this.die();
-
-				else if(this.eats(direction))
-					return this.eat(direction);
-
-				else
-					return this.move(direction);
-			};
-
-			this.dies = function(direction){
 				let newLocation = this.head().location.translated(direction);
+				let elementPresent = board.elementAt(newLocation);
 
-				let alive = board.isValidPosition(newLocation);
-				if(alive){
-					let element = board.elementAt(newLocation);
-					if(element)
-						alive = element.entity() !== SNAKE_ELEMENT_ENTITY;
+				switch(elementPresent.entity()){
+					case OFF_THE_BOARD_ENTITY:
+					case SNAKE_ENTITY:
+						return this.die();
+
+					case FREE_SPACE_ENTITY:
+						return this.move(direction);
 				}
-
-				return ! alive;
 			};
 
 			this.die = function(){
@@ -64,11 +54,7 @@ function createSnakeFactory(board){
 				return SNAKE_DIED;
 			};
 
-			this.eats = function(direction){
-				return false;
-			};
-
-			this.eat = function(direction){
+			this.eat = function(element){
 				return SNAKE_ATE;
 			};
 

@@ -6,7 +6,7 @@ QUnit.test("Constant values",
 	assert => {
 	  assert.expect(8);
 
-		assert.equal( SNAKE_ELEMENT_ENTITY.description, "Snake");
+		assert.equal( SNAKE_ENTITY.description, "Snake");
 
 	  assert.propEqual( SNAKE_HEAD_TYPE.color, "DarkOrange", "Color of the snake's head is orange" )
 	  assert.equal( SNAKE_BODY_TYPE.color, "DarkRed", "Color of the snake's body is red" )

@@ -412,13 +412,12 @@ ging tot dusver toevallig goed omdat we onbewust dezelfde objecten herbruikten.
 
 ### 2023-06-10
 
-(P1, 2)
+(P 1, 2)
 
 story _014-feed_a_snake_
 
 [v] enrich element with type
-[ ] have board return empty element on empty space
-[v] snake can now switch on element type
+
 ??? what 'element' is an out-of-bounds element?
 ??? wrapper around element? 'square'? ==> Square(Element(Location(Int,Int),String),Type())
 
@@ -433,5 +432,10 @@ way than to switch directly on the colors.
 
 ??? These are all snake types. Unify? diversify? Property 'class'?
     ==> introduce concept of 'entity'. Entity is the game concept the element is part of, e.g. snake, food, wall
+
+(P 3)
+
+[v] have board return empty element on empty space
+[v] snake can now switch on element type
 
 ### TODO

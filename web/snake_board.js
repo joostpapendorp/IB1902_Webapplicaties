@@ -2,6 +2,12 @@
 
 const BOARD_SIZE = 18;
 
+const OFF_THE_BOARD_ENTITY = createElementEntity("Off the board");
+const OFF_THE_BOARD_TYPE = createElementType(undefined, OFF_THE_BOARD_ENTITY);
+
+const FREE_SPACE_ENTITY = createElementEntity("Free space");
+const FREE_SPACE_TYPE = createElementType(undefined, FREE_SPACE_ENTITY);
+
 function createBoard(canvas, elementFactory){
 	function Board(canvas){
 		this.canvas = canvas;
@@ -23,14 +29,6 @@ function createBoard(canvas, elementFactory){
 			canvas.clear();
 		};
 
-		function clearArray(){
-			let arr = new Array(BOARD_SIZE);
-      for (let i = 0; i < BOARD_SIZE; i++) {
-        arr[i] = new Array(BOARD_SIZE);
-      }
-      return arr;
-		}
-
 		this.redraw = function(){
 			canvas.clear();
 
@@ -50,9 +48,9 @@ function createBoard(canvas, elementFactory){
 		};
 
 		this.createElement = function(location, type){
-			this.checkBoundaries(location);
+			checkBoundaries(location);
 
-      if(this.elementAt(location))
+      if(!this.isFree(location))
         throw new Error("Location occupied")
 
       let element = elementFactory.createElement(location, type);
@@ -63,9 +61,9 @@ function createBoard(canvas, elementFactory){
 
 		this.replace = function(element){
 			let location = element.location;
-			this.checkBoundaries(location);
+			checkBoundaries(location);
 
-			if(!this.elementAt(location))
+			if(this.isFree(location))
 				throw new Error(`No element to replace at ${location.describe()}`)
 
       this.elements[location.x][location.y] = element;
@@ -73,30 +71,46 @@ function createBoard(canvas, elementFactory){
 
 		this.remove = function(element){
 			let location = element.location;
-			this.checkBoundaries(location);
+			checkBoundaries(location);
 
-			if(!this.elementAt(location))
+			if(this.isFree(location))
 				throw Error(`No element at ${location.describe()}`)
 
 			this.elements[location.x][location.y] = undefined;
 		};
 
 		this.elementAt = function(location){
-			this.checkBoundaries(location);
+			if(!isValidPosition(location))
+				return elementFactory.createElement(location, OFF_THE_BOARD_TYPE);
+
+			if(this.isFree(location))
+				return elementFactory.createElement(location, FREE_SPACE_TYPE);
 
 			return this.elements[location.x][location.y];
 		};
 
-		this.isValidPosition = function(location){
+		this.isFree = function(location){
+			return this.elements[location.x][location.y] === undefined;
+		}
+
+		function clearArray(){
+			let arr = new Array(BOARD_SIZE);
+	    for (let i = 0; i < BOARD_SIZE; i++) {
+	      arr[i] = new Array(BOARD_SIZE);
+	    }
+	    return arr;
+		}
+
+    function checkBoundaries(location){
+			if(!isValidPosition(location))
+				throw new Error(`${location.describe()} is out of bounds`);
+		};
+
+		function isValidPosition(location){
 			let min = Math.min(location.x, location.y);
 			let max = Math.max(location.x, location.y);
 			return min >= 0 && max < BOARD_SIZE;
 		}
-
-    this.checkBoundaries = function(location){
-			if(!this.isValidPosition(location))
-				throw new Error(`${location.describe()} is out of bounds`);
-		};
 	}
 
 	let board = new Board(canvas);
@@ -108,6 +122,5 @@ function createBoard(canvas, elementFactory){
 		elementAt: (location) => board.elementAt(location),
 		clear : () => board.clear(),
 		redraw : () => board.redraw(),
-		isValidPosition : (location) => board.isValidPosition(location)
 	};
 }

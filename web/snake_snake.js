@@ -37,45 +37,67 @@ function createSnakeFactory(board){
 					case SNAKE_ENTITY:
 						return this.die();
 
+					case FOOD_ENTITY:
+						return this.eat(elementPresent);
+
 					case FREE_SPACE_ENTITY:
 						return this.move(direction);
 				}
 			};
 
 			this.die = function(){
-				for(let i = 0; i < lastIndex(); i++ ){
-					this.segments[i] = this.segments[i].withType(DEAD_SNAKE_BODY_TYPE);
-					board.replace(segments[i]);
-				}
-
-				this.segments[lastIndex()] = this.segments[lastIndex()].withType(DEAD_SNAKE_HEAD_TYPE);
-				board.replace(segments[lastIndex()]);
-
+				this.paintBodyBlack();
+				this.paintHeadGrey();
 				return SNAKE_DIED;
 			};
 
 			this.eat = function(element){
+				this.repaintOldHeadAsBody();
+				this.addNewHeadByReplacing(element);
 				return SNAKE_ATE;
 			};
 
 			this.move = function(direction){
-				// remove the last tail element
+				this.removeLastTailSegment();
+				this.repaintOldHeadAsBody();
+				this.addNewHeadIn(direction);
+				return SNAKE_MOVED;
+			};
+
+			this.paintBodyBlack = function(){
+				for(let i = 0; i < lastIndex(); i++ ){
+	        this.segments[i] = this.segments[i].withType(DEAD_SNAKE_BODY_TYPE);
+	        board.replace(segments[i]);
+	      }
+			};
+
+			this.paintHeadGrey = function(){
+				this.segments[lastIndex()] = this.segments[lastIndex()].withType(DEAD_SNAKE_HEAD_TYPE);
+				board.replace(segments[lastIndex()]);
+			};
+
+			this.removeLastTailSegment = function(){
 				let lastBodyElement = this.segments[0];
 				board.remove(lastBodyElement);
 				segments.shift();
+			};
 
-				// repaint the old head as body
-				let oldHead = this.head();
-				let oldHeadAsBody = oldHead.withType(SNAKE_BODY_TYPE);
+			this.repaintOldHeadAsBody = function(){
+				let oldHeadAsBody = this.head().withType(SNAKE_BODY_TYPE);
 				board.replace(oldHeadAsBody);
 				segments[lastIndex()] = oldHeadAsBody;
+			};
 
-				// add the new head
-				let newHeadLocation = oldHead.location.translated(direction);
+			this.addNewHeadByReplacing = function(element){
+				let newHead = element.withType(SNAKE_HEAD_TYPE);
+				board.replace(newHead);
+				segments.push(newHead);
+			};
+
+			this.addNewHeadIn = function(direction){
+				let newHeadLocation = this.head().location.translated(direction);
 				let newHead = board.createElement(newHeadLocation, SNAKE_HEAD_TYPE);
 				segments.push(newHead);
-
-				return SNAKE_MOVED;
 			};
 
 			this.head = function(){

@@ -438,4 +438,8 @@ way than to switch directly on the colors.
 [v] have board return empty element on empty space
 [v] snake can now switch on element type
 
+(P 4)
+
+[ ] Snake eats a food and grows
+
 ### TODO

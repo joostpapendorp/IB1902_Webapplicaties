@@ -63,7 +63,7 @@ QUnit.test("When a snake is created, it request segments at the indicated positi
 
 QUnit.test("When a snake moves, it removes the its last body segment",
 	assert => {
-		assert.expect(2);
+		assert.expect(3);
 
 		// actual board to avoid mocks returning mocks.
 		let elementFactory = createElementFactory();
@@ -81,8 +81,10 @@ QUnit.test("When a snake moves, it removes the its last body segment",
 		let recorders = boardSpy.recorders;
 
 
-		subject.push(DOWN);
+		let result = subject.push(DOWN);
 
+
+		assert.equal(result, SNAKE_MOVED, "Snake moved down.");
 
 		let remove = recorders.remove;
 		let actual = elementFactory.createElement(lastBodySegmentLocation, SNAKE_BODY_TYPE);
@@ -98,7 +100,7 @@ QUnit.test("When a snake moves, it removes the its last body segment",
 
 QUnit.test("When a snake moves, it repaints the previous head segment as a body segment",
 	assert => {
-		assert.expect(2);
+		assert.expect(3);
 
 		// actual board to avoid mocks returning mocks.
 		let elementFactory = createElementFactory();
@@ -116,7 +118,9 @@ QUnit.test("When a snake moves, it repaints the previous head segment as a body 
 		let recorders = boardSpy.recorders;
 
 
-		subject.push(DOWN);
+		let result = subject.push(DOWN);
+
+		assert.equal(result, SNAKE_MOVED, "Snake moved down.");
 
 
 		let replace = recorders.replace;
@@ -134,7 +138,7 @@ QUnit.test("When a snake moves, it repaints the previous head segment as a body 
 
 QUnit.test("When a snake moves, it adds the new head to the front",
 	assert => {
-		assert.expect(2);
+		assert.expect(3);
 
 		// actual board to avoid mocks returning mocks.
 		let elementFactory = createElementFactory();
@@ -152,8 +156,10 @@ QUnit.test("When a snake moves, it adds the new head to the front",
 		let recorders = boardSpy.recorders;
 
 
-		subject.push(DOWN);
+		let result = subject.push(DOWN);
 
+
+    assert.equal(result, SNAKE_MOVED, "Snake moved down.");
 
 		let createElement = recorders.createElement;
 		let actualLocation = createLocation(0,2);
@@ -309,6 +315,80 @@ QUnit.test("When a snake dies, it turns black.",
 			invocations[2].arguments,
 			[elementFactory.createElement(expectedLocations[2], DEAD_SNAKE_HEAD_TYPE)],
 			"The last segment is the head and it turns grey."
+		);
+	}
+);
+
+
+QUnit.test("When a snake eats, it grows by one segment.",
+	assert => {
+		assert.expect(2);
+
+		// actual board to avoid mocks returning mocks.
+		let elementFactory = createElementFactory();
+		let board = createBoard(new MockCanvas(), elementFactory );
+
+		let startingBodyLocation = createLocation(0,0);
+
+		let subject = createSnakeFactory(board)
+			.createSnake([
+				startingBodyLocation,
+				createLocation(0,1)
+			]);
+
+		board.createElement(createLocation(0,2), FOOD_TYPE);
+
+
+		let result = subject.push(DOWN);
+
+
+		assert.equal(result, SNAKE_ATE, "Snake ate the food");
+
+		assert.equal(board.elementAt(startingBodyLocation).type, SNAKE_BODY_TYPE, "new segment is added to the end");
+	}
+);
+
+
+QUnit.test("When a snake eats, it repaints the previous head segment as a body segment and the food segment as the new head segment",
+	assert => {
+		assert.expect(4);
+
+		// actual board to avoid mocks returning mocks.
+		let elementFactory = createElementFactory();
+		let board = createBoard(new MockCanvas(), elementFactory );
+
+		let startingHeadLocation = createLocation(0,1);
+		let subject = createSnakeFactory(board)
+			.createSnake([
+				createLocation(0,0),
+				startingHeadLocation
+			]);
+
+		let foodLocation = createLocation(0,2);
+		board.createElement(foodLocation, FOOD_TYPE);
+
+		// partially mock board to spy on future invocations.
+		let boardSpy = createSpyFrom(board);
+		let recorders = boardSpy.recorders;
+
+
+		let result = subject.push(DOWN);
+
+
+		assert.equal(result, SNAKE_ATE, "Snake ate the food");
+
+		let replace = recorders.replace;
+		assert.equal(replace.timesInvoked(), 2, "paint the previous last segment as body and the food as head");
+
+		assert.propEqual(
+			replace.invocations[0].arguments[0],
+			elementFactory.createElement(startingHeadLocation, SNAKE_BODY_TYPE),
+			"new body element has the same location as old head, but has a different type"
+		);
+		assert.propEqual(
+			replace.invocations[1].arguments[0],
+			elementFactory.createElement(foodLocation, SNAKE_HEAD_TYPE),
+			"new head has the same location as food, but has a different type"
 		);
 	}
 );

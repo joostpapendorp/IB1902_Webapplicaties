@@ -4,6 +4,7 @@ const FIXTURE_ELEMENT_ID = "fixture-element";
 const MOCK_TYPE = createElementType("MOCK_COLOR", createElementEntity("MOCK_TYPE"));
 const SECOND_MOCK_TYPE = createElementType("SECOND_MOCK_TYPE", createElementEntity("SECOND_MOCK_TYPE"));
 
+
 function MockCanvas() {
 	this.recorders = {
 		drawArc : new Recorder("drawArc"),
@@ -26,6 +27,28 @@ function MockCanvas() {
 
 	this.height = function(){
 		this.recorders.height.invoked();
+	};
+}
+
+
+
+function MockHTMLCanvas() {
+	this.recorders = {
+		drawArc : new Recorder("drawArc"),
+		drawText : new Recorder("drawText"),
+		prop : new Recorder("prop")
+	};
+
+	this.drawArc = function(props){
+		this.recorders.drawArc.invokedWith([props]);
+	};
+
+	this.drawText = function(props){
+		this.recorders.drawText.invokedWith([props]);
+	};
+
+	this.prop = function(arg){
+		this.recorders.prop.invokedWith([arg]);
 	};
 }
 

@@ -440,6 +440,23 @@ way than to switch directly on the colors.
 
 (P 4)
 
-[ ] Snake eats a food and grows
+[v] Snake eats a food and grows
+
+(P 5)
+
+[v] copy example code
+[v] design RNG adapter ==> functional style
+
+(P 6, 7)
+
+??? Wie genereert food?
+==> Engine bepaalt wanneer. Game bepaalt hoe.
+
+### 2013-06-11
+
+(P 1)
+
+[ ] Generate foods
+[ ] Ports and adapters ARD
 
 ### TODO

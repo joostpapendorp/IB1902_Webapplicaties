@@ -32,10 +32,9 @@ function createBoard(canvas, elementFactory){
 		this.redraw = function(){
 			canvas.clear();
 
-			for (let x = 0; x < BOARD_SIZE; x++)
-				for (let y = 0; y < BOARD_SIZE; y++)
-					if(this.elements[x][y])
-						this.drawElement(this.elements[x][y].location, this.elements[x][y].type.color);
+			this.elements.
+				flatMap( column => column ).
+				forEach( element => this.drawElement(element.location, element.type.color));
 		};
 
 		this.drawElement = function(location,color){
@@ -91,7 +90,7 @@ function createBoard(canvas, elementFactory){
 
 		this.isFree = function(location){
 			return this.elements[location.x][location.y] === undefined;
-		}
+		};
 
 		function clearArray(){
 			let arr = new Array(BOARD_SIZE);

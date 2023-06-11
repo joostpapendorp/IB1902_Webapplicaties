@@ -456,6 +456,29 @@ way than to switch directly on the colors.
 
 (P 1)
 
+Got the shit working untested, including the ending. Now we must integrate story _015- end the game_ into this one.
+[v] paint the text (canvas)
+
+(P 2) 
+
+    for (let x = 0; x < BOARD_SIZE; x++)
+        for (let y = 0; y < BOARD_SIZE; y++){
+            let next = this.elements[x][y];
+            if(next)
+                this.drawElement(next.location, next.type.color);
+        }
+    };
+
+Inefficient! 
+??? Can we use flatmap to just iterate the set elements?
+    ==> we already have the verification:
+        
+    assert.equal(drawArc.timesInvoked(), 2, "redraw draws both elements");
+
+[v] use flatMap to iterate the board
+[ ] paint the text (board)
+
+
 [ ] Generate foods
 [ ] Ports and adapters ARD
 

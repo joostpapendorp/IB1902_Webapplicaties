@@ -13,6 +13,7 @@ QUnit.test("Constant values",
 	}
 );
 
+
 QUnit.test("Tile size is calculated from the smallest canvas dimension",
 	assert => {
 		assert.expect(2);
@@ -43,6 +44,38 @@ QUnit.test("Tile size is calculated from the smallest canvas dimension",
 		);
 	}
 );
+
+
+QUnit.test("Writing text at a location translates coordinates to canvas coordinates",
+	assert => {
+		assert.expect(4);
+
+		const EXPECTED_TILE_SIZE = 4;
+		const RADIUS = EXPECTED_TILE_SIZE / 2;
+		const EXPECTED_TEXT = "EXPECTED_TEXT";
+
+		let smallestDimension = EXPECTED_TILE_SIZE * BOARD_SIZE;
+		let largestDimension = (EXPECTED_TILE_SIZE + 2) * BOARD_SIZE;
+
+		let mockCanvas = new MockCanvas();
+		mockCanvas.width = () => smallestDimension;
+		mockCanvas.height = () => largestDimension;
+
+		let subject = createBoard(mockCanvas, createElementFactory());
+
+		subject.writeAt(createLocation(1,2), EXPECTED_TEXT);
+
+		let drawText = mockCanvas.recorders.drawText;
+		assert.equal(drawText.timesInvoked(), 1, "Board writes the text on the canvas");
+
+		let actualArguments = drawText.invocations[0].arguments;
+
+		assert.equal(actualArguments[0], EXPECTED_TEXT, "Text is passed unchanged");
+		assert.equal(actualArguments[1], 1 * EXPECTED_TILE_SIZE + RADIUS, "x-coordinate is converted to canvas coordinates");
+		assert.equal(actualArguments[2], 2 * EXPECTED_TILE_SIZE + RADIUS, "y-coordinate is converted to canvas coordinates");
+	}
+);
+
 
 QUnit.test("Clearing the board means clearing the canvas",
 	assert => {

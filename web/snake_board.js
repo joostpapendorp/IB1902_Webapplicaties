@@ -88,6 +88,15 @@ function createBoard(canvas, elementFactory){
 			return this.elements[location.x][location.y];
 		};
 
+		this.writeAt = function(location, text){
+			canvas.drawText(
+				text,
+				this.toPixels(location.x),
+        this.toPixels(location.y),
+			);
+			console.log("drawing "+text );
+		};
+
 		this.isFree = function(location){
 			return this.elements[location.x][location.y] === undefined;
 		};
@@ -121,5 +130,6 @@ function createBoard(canvas, elementFactory){
 		elementAt: (location) => board.elementAt(location),
 		clear : () => board.clear(),
 		redraw : () => board.redraw(),
+		writeAt : (location, text) => board.writeAt(location,text)
 	};
 }

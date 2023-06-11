@@ -8,6 +8,7 @@ const SECOND_MOCK_TYPE = createElementType("SECOND_MOCK_TYPE", createElementEnti
 function MockCanvas() {
 	this.recorders = {
 		drawArc : new Recorder("drawArc"),
+		drawText : new Recorder("drawText"),
 		clear: new Recorder("clear"),
 		width: new Recorder("width"),
 		height: new Recorder("height")
@@ -15,6 +16,10 @@ function MockCanvas() {
 
 	this.drawArc = function(radius, x, y, color){
 		this.recorders.drawArc.invokedWith([radius, x, y, color]);
+	};
+
+	this.drawText = function(text, x, y){
+		this.recorders.drawText.invokedWith([text, x, y]);
 	};
 
 	this.clear = function(){

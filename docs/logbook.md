@@ -476,8 +476,20 @@ Inefficient!
     assert.equal(drawArc.timesInvoked(), 2, "redraw draws both elements");
 
 [v] use flatMap to iterate the board
-[ ] paint the text (board)
+[v] paint the text (board)
 
+(P 3)
+
+introduce rule set to manage foods and game endings
+
+### 2023-06-12
+
+(P 1, 2, 3)
+[ ] food planter plants at random locations
+
+[ ] rule set builds basic snake
+[ ] basic rule set generates food on board
+[ ] engine uses rule set to initialize board
 
 [ ] Generate foods
 [ ] Ports and adapters ARD

@@ -1,9 +1,12 @@
 "use strict";
 
 const FIXTURE_ELEMENT_ID = "fixture-element";
+
 const MOCK_TYPE = createElementType("MOCK_COLOR", createElementEntity("MOCK_TYPE"));
 const SECOND_MOCK_TYPE = createElementType("SECOND_MOCK_TYPE", createElementEntity("SECOND_MOCK_TYPE"));
 
+const MOCK_LOCATION = createLocation(1, 2);
+const SECOND_MOCK_LOCATION = createLocation(2, 1);
 
 function MockCanvas() {
 	this.recorders = {
@@ -64,7 +67,8 @@ function MockBoard(){
 		replace : new Recorder("replace"),
 		remove : new Recorder("remove"),
 		clear : new Recorder("clear"),
-		redraw : new Recorder("redraw")
+		redraw : new Recorder("redraw"),
+		elementAt : new Recorder("elementAt")
 	};
 
 	this.createElement = function(location, type){
@@ -85,6 +89,15 @@ function MockBoard(){
 
 	this.redraw = function(){
 		this.recorders.redraw.invoked();
+	}
+
+	this.elementAtReturns = function(location) {
+		return { type : FREE_SPACE_TYPE };
+	};
+
+	this.elementAt = function(location){
+		this.recorders.elementAt.invokedWith(location);
+		return this.elementAtReturns(location);
 	}
 }
 

@@ -1,9 +1,5 @@
 "use strict";
 
-const FOOD_ENTITY = createElementEntity("Food");
-
-const FOOD_TYPE = createElementType("Olive", FOOD_ENTITY);
-
 function createGame(
 	buildSnake,
 	prepareEngineWith,

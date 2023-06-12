@@ -1,0 +1,63 @@
+"use strict";
+
+QUnit.module("Food");
+
+QUnit.test("Constant values",
+	assert => {
+		assert.expect(2);
+
+		assert.equal( FOOD_ENTITY.description, "Food", "Food is a separate entity" );
+	  assert.equal( FOOD_TYPE.color, "Olive", "Color of the food is olive" )
+	}
+);
+
+
+QUnit.test("Food planter plants a food on the board at a random location.",
+	assert => {
+		assert.expect(3);
+
+		let mockBoard = new MockBoard();
+		let subject = foodPlanter(mockBoard, () => MOCK_LOCATION);
+
+		subject.plant();
+
+		let createElement = mockBoard.recorders.createElement;
+		assert.equal(createElement.timesInvoked(), 1, "planter creates one new food");
+		let actual = createElement.invocations[0].arguments
+		assert.equal(actual[0], MOCK_LOCATION, "Planter uses random location");
+		assert.equal(actual[1], FOOD_TYPE, "Planter marks element as food.");
+	}
+);
+
+
+QUnit.test("Food planter retries until a free space is found.",
+	assert => {
+		assert.expect(3);
+
+		let mockBoard = new MockBoard();
+		mockBoard.elementAtReturns = function(location) {
+			return location === MOCK_LOCATION ?
+				{ type : SNAKE_HEAD_TYPE } :
+				{ type : FREE_SPACE_TYPE };
+		};
+
+		let subject = foodPlanter(mockBoard, mockRandom([MOCK_LOCATION, MOCK_LOCATION, SECOND_MOCK_LOCATION]));
+
+		subject.plant();
+
+		let elementAt = mockBoard.recorders.elementAt;
+		assert.equal(elementAt.timesInvoked(), 3, "board is queried for each attempt" );
+
+		let createElement = mockBoard.recorders.createElement;
+		assert.equal(createElement.timesInvoked(), 1, "only one element is created" );
+		assert.equal(createElement.invocations[0].arguments[0], SECOND_MOCK_LOCATION, "element is created at free location");
+	}
+);
+
+function mockRandom(locations){
+	let index = 0;
+
+	return () => {
+		return locations[index++];
+	}
+}

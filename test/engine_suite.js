@@ -2,6 +2,7 @@
 
 QUnit.module("Engine");
 
+
 QUnit.test("Tick pushes the snake and repaints the board",
 	assert => {
 		assert.expect(3);
@@ -14,7 +15,7 @@ QUnit.test("Tick pushes the snake and repaints the board",
 		);
 
 		let mockSnake = new MockSnake(SNAKE_MOVED);
-		let subject = factory.prepareEngineWith(mockSnake, UP);
+		let subject = factory.prepareEngineWith(new MockDifficulty(), mockSnake, UP);
 
 		subject.tick();
 
@@ -39,7 +40,7 @@ QUnit.test("Killing the snake stops the timer.",
 			new MockBoard(),
 			mockTimer
 		);
-		let subject = factory.prepareEngineWith(new MockSnake(SNAKE_DIED), UP);
+		let subject = factory.prepareEngineWith(new MockDifficulty(), new MockSnake(SNAKE_DIED), UP);
 
 		subject.tick();
 
@@ -61,7 +62,7 @@ QUnit.test("Starting the engine starts a timer.",
 			mockBoard,
 			mockTimer
 		);
-		let subject = factory.prepareEngineWith(mockSnake, UP);
+		let subject = factory.prepareEngineWith(new MockDifficulty(), mockSnake, UP);
 
 		subject.start();
 
@@ -88,7 +89,7 @@ QUnit.test("Halting the engine stops the timer.",
 			new MockBoard(),
 			mockTimer
 		);
-		let subject = factory.prepareEngineWith(new MockSnake(), UP);
+		let subject = factory.prepareEngineWith(new MockDifficulty(), new MockSnake(), UP);
 
 		subject.halt();
 
@@ -107,7 +108,7 @@ QUnit.test("Shutting down the engine clears the board.",
 			mockBoard,
 			new MockTimer()
 		);
-		let subject = factory.prepareEngineWith(new MockSnake(), UP);
+		let subject = factory.prepareEngineWith(new MockDifficulty(), new MockSnake(), UP);
 
 		subject.shutDown();
 
@@ -123,7 +124,7 @@ QUnit.test("Steering a snake starts moving the snake in the provided direction."
 
 		let mockSnake = new MockSnake();
 		let factory = createEngineFactory(new MockBoard(), new MockTimer());
-		let subject = factory.prepareEngineWith(mockSnake, UP)
+		let subject = factory.prepareEngineWith(new MockDifficulty(), mockSnake, UP)
 
 		subject.steer(LEFT);
 		subject.tick();

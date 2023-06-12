@@ -410,4 +410,95 @@ ging tot dusver toevallig goed omdat we onbewust dezelfde objecten herbruikten.
 [v] Snake dies on own body
 
 
+### 2023-06-10
+
+(P 1, 2)
+
+story _014-feed_a_snake_
+
+[v] enrich element with type
+
+??? what 'element' is an out-of-bounds element?
+??? wrapper around element? 'square'? ==> Square(Element(Location(Int,Int),String),Type())
+
+==> No. use type as wrapper for color. Define types as constants in the appropriate places. This is simply a more elegant 
+way than to switch directly on the colors. 
+
+    const SNAKE_HEAD_COLOR = "DarkOrange";
+    const SNAKE_BODY_COLOR = "DarkRed";
+    
+    const DEAD_SNAKE_BODY_COLOR = "Black";
+    const DEAD_SNAKE_HEAD_COLOR = "DarkGrey";
+
+??? These are all snake types. Unify? diversify? Property 'class'?
+    ==> introduce concept of 'entity'. Entity is the game concept the element is part of, e.g. snake, food, wall
+
+(P 3)
+
+[v] have board return empty element on empty space
+[v] snake can now switch on element type
+
+(P 4)
+
+[v] Snake eats a food and grows
+
+(P 5)
+
+[v] copy example code
+[v] design RNG adapter ==> functional style
+
+(P 6, 7)
+
+??? Wie genereert food?
+==> Engine bepaalt wanneer. Game bepaalt hoe.
+
+### 2013-06-11
+
+(P 1)
+
+Got the shit working untested, including the ending. Now we must integrate story _015- end the game_ into this one.
+[v] paint the text (canvas)
+
+(P 2) 
+
+    for (let x = 0; x < BOARD_SIZE; x++)
+        for (let y = 0; y < BOARD_SIZE; y++){
+            let next = this.elements[x][y];
+            if(next)
+                this.drawElement(next.location, next.type.color);
+        }
+    };
+
+Inefficient! 
+??? Can we use flatmap to just iterate the set elements?
+    ==> we already have the verification:
+        
+    assert.equal(drawArc.timesInvoked(), 2, "redraw draws both elements");
+
+[v] use flatMap to iterate the board
+[v] paint the text (board)
+
+(P 3)
+
+introduce rule set to manage foods and game endings
+
+### 2023-06-12
+
+(P 1, 2, 3)
+[v] food planter plants at random locations
+
+(P 4 ,5, 6)
+[v] random generates random location
+
+(P 7)
+[v] basic rule set generates food on board
+[v] engine uses rule set to initialize board
+[v] Generate foods
+
+(P 8)
+[v] Ports and adapters ARD
+
+[ ] rule set builds basic snake
+
+
 ### TODO

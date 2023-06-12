@@ -1,8 +1,27 @@
+"use strict";
+
 const FIXTURE_ELEMENT_ID = "fixture-element";
+
+const MOCK_TYPE = createElementType("MOCK_COLOR", createElementEntity("MOCK_TYPE"));
+const SECOND_MOCK_TYPE = createElementType("SECOND_MOCK_TYPE", createElementEntity("SECOND_MOCK_TYPE"));
+
+const MOCK_LOCATION = createLocation(1, 2);
+const SECOND_MOCK_LOCATION = createLocation(2, 1);
+
+
+function iterateReturnValuesOver(values){
+	let index = 0;
+
+	return () => {
+		return values[index++];
+	};
+}
+
 
 function MockCanvas() {
 	this.recorders = {
 		drawArc : new Recorder("drawArc"),
+		drawText : new Recorder("drawText"),
 		clear: new Recorder("clear"),
 		width: new Recorder("width"),
 		height: new Recorder("height")
@@ -10,6 +29,10 @@ function MockCanvas() {
 
 	this.drawArc = function(radius, x, y, color){
 		this.recorders.drawArc.invokedWith([radius, x, y, color]);
+	};
+
+	this.drawText = function(text, x, y){
+		this.recorders.drawText.invokedWith([text, x, y]);
 	};
 
 	this.clear = function(){
@@ -26,17 +49,60 @@ function MockCanvas() {
 }
 
 
+function MockHTMLCanvas() {
+	this.recorders = {
+		drawArc : new Recorder("drawArc"),
+		drawText : new Recorder("drawText"),
+		prop : new Recorder("prop")
+	};
+
+	this.drawArc = function(props){
+		this.recorders.drawArc.invokedWith([props]);
+	};
+
+	this.drawText = function(props){
+		this.recorders.drawText.invokedWith([props]);
+	};
+
+	this.prop = function(arg){
+		this.recorders.prop.invokedWith([arg]);
+	};
+}
+
+
+function MockMath(mockRandomValues, mockFloorValues) {
+	this.recorders = {
+		random : new Recorder("random"),
+		floor : new Recorder("drawText")
+	};
+
+	this.mockRandomValues = mockRandomValues;
+
+	this.mockFloorValues = mockFloorValues;
+
+	this.random = function(){
+		this.recorders.random.invoked();
+		return this.mockRandomValues();
+	};
+
+	this.floor = function(number){
+		this.recorders.floor.invokedWith([number]);
+		return this.mockFloorValues(number);
+	};
+}
+
 function MockBoard(){
 	this.recorders = {
 		createElement : new Recorder("createElement"),
 		replace : new Recorder("replace"),
 		remove : new Recorder("remove"),
 		clear : new Recorder("clear"),
-		redraw : new Recorder("redraw")
+		redraw : new Recorder("redraw"),
+		elementAt : new Recorder("elementAt")
 	};
 
-	this.createElement = function(location, color){
-		this.recorders.createElement.invokedWith([location,color]);
+	this.createElement = function(location, type){
+		this.recorders.createElement.invokedWith([location,type]);
 	}
 
 	this.replace = function(element){
@@ -53,6 +119,15 @@ function MockBoard(){
 
 	this.redraw = function(){
 		this.recorders.redraw.invoked();
+	}
+
+	this.elementAtReturns = function(location) {
+		return { type : FREE_SPACE_TYPE };
+	};
+
+	this.elementAt = function(location){
+		this.recorders.elementAt.invokedWith(location);
+		return this.elementAtReturns(location);
 	}
 }
 
@@ -74,6 +149,14 @@ function MockFactory(name){
 		let build = this.recorders.build;
     return function(first, second){
       build.invokedWith([first, second]);
+      return returnValue;
+    }
+  }
+
+	this.triadic =  function(returnValue){
+		let build = this.recorders.build;
+    return function(first, second, third){
+      build.invokedWith([first, second, third]);
       return returnValue;
     }
   }
@@ -141,6 +224,17 @@ function MockTimer(){
 }
 
 
+function MockFood(){
+	this.recorders = {
+		plant : new Recorder("plantFood"),
+	};
+
+	this.plant = function(){
+		this.recorders.plant.invoked();
+	};
+}
+
+
 function MockGame(){
 	this.recorders = {
 		start : new Recorder("startGame"),
@@ -162,6 +256,17 @@ function MockGame(){
 }
 
 
+function MockDifficulty(){
+	this.recorders = {
+		prepare : new Recorder("prepare"),
+	};
+
+	this.prepare = function(){
+		this.recorders.prepare.invoked();
+	}
+}
+
+
 function Recorder(name){
 	this.name = name;
 	this.invocations = [];
@@ -175,9 +280,9 @@ function Recorder(name){
 		this.invocations.push(new Invocation([]));
 	}
 
-	this.invokedWith = function(arguments){
-		console.log( this.name + " invoked with " + arguments.length + " argument(s)." )
-		let thisInvocation = new Invocation(arguments);
+	this.invokedWith = function(argumentList){
+		console.log( this.name + " invoked with " + argumentList.length + " argument(s)." )
+		let thisInvocation = new Invocation(argumentList);
 		this.invocations.push(thisInvocation);
 	};
 }

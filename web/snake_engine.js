@@ -2,14 +2,16 @@
 
 function createEngineFactory(board, timer){
 
-	function Engine(board, timer, snake, direction){
+	function Engine(board, timer, ruleSet, snake, direction){
 		this.board = board;
 		this.timer = timer;
 
 		this.snake = snake;
 		this.direction = direction;
+		this.ruleSet = ruleSet;
 
 		this.start = function(){
+			this.ruleSet.prepare();
 			this.board.redraw();
 			this.timer.start(() => this.tick());
 		};
@@ -34,8 +36,8 @@ function createEngineFactory(board, timer){
 		};
 	}
 
-	function prepareEngineWith(snake, direction){
-		let engine = new Engine(board, timer, snake, direction);
+	function prepareEngineWith(rules, snake, direction){
+		let engine = new Engine(board, timer, rules, snake, direction);
 
 		return {
 			start: () => engine.start(),
@@ -47,6 +49,6 @@ function createEngineFactory(board, timer){
 	}
 
 	return {
-		prepareEngineWith : (snake, direction) => prepareEngineWith(snake, direction)
+		prepareEngineWith : (rules, snake, direction) => prepareEngineWith(rules, snake, direction)
 	};
 }

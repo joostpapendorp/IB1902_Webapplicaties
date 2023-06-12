@@ -3,16 +3,23 @@
 QUnit.module("Game");
 
 function GameBuilder(){
+	this.difficulty = new MockDifficulty();
 	this.snakeFactory = (locations) => new MockSnake();
 	this.engineFactory = (board, timer) => new MockEngine();
 	this.player = createPlayer();
 
 	this.build = function(){
 		return createGame(
+			this.difficulty,
 			this.snakeFactory,
 			this.engineFactory,
 			this.player
 		);
+	};
+
+	this.withDifficulty = function(difficulty){
+		this.difficulty = difficulty;
+		return this;
 	};
 
 	this.withSnakeFactory = function(snakeFactory){
@@ -62,15 +69,17 @@ QUnit.test("Starting snake is two segments long, placed left of the center, faci
 
 QUnit.test("Starting a game creates the engine with initial snake moving upwards.",
 	assert => {
-		assert.expect(4);
+		assert.expect(5);
 
+		let mockDifficulty = new MockDifficulty();
 		let mockEngineFactory = new MockFactory("Engine")
 		let mockSnake = new MockSnake();
 		let mockEngine = new MockEngine();
 
 		let subject = new GameBuilder().
+			withDifficulty(mockDifficulty).
 			withSnakeFactory((locations) => mockSnake).
-			withEngineFactory(mockEngineFactory.dyadic(mockEngine)).
+			withEngineFactory(mockEngineFactory.triadic(mockEngine)).
 			build();
 
 		subject.start();
@@ -79,8 +88,9 @@ QUnit.test("Starting a game creates the engine with initial snake moving upwards
 		assert.equal(build.timesInvoked(), 1, "Game creates the engine");
 
 		let actualArguments = build.invocations[0].arguments;
-		assert.equal(actualArguments[0], mockSnake, "Game passes the starting snake it built to the engine");
-		assert.equal(actualArguments[1], UP, "Snake starts moving upwards.");
+		assert.equal(actualArguments[0], mockDifficulty, "Game passes the difficulty to the engine");
+		assert.equal(actualArguments[1], mockSnake, "Game passes the starting snake it built to the engine");
+		assert.equal(actualArguments[2], UP, "Snake starts moving upwards.");
 
 		let start = mockEngine.recorders.start;
 		assert.equal(start.timesInvoked(),1,"Game starts the engine");

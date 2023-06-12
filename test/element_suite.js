@@ -8,7 +8,7 @@ QUnit.test("Elements know their location on the board",
 		let expected = createLocation(1,2);
 
 	  let subject = createElementFactory();
-		let element = subject.createElement(expected, "DarkRed");
+		let element = subject.createElement(expected, MOCK_TYPE);
 
 		assert.propEqual(
 			element.location,
@@ -23,7 +23,7 @@ QUnit.test("Elements are immutable",
 		assert.expect(1);
 
 	  let subject = createElementFactory();
-		let element = subject.createElement(createLocation(0,0), "DarkRed");
+		let element = subject.createElement(createLocation(0,0), MOCK_TYPE);
 
 		assert.throws(
 			() => element.location = createLocation(1,1),
@@ -33,26 +33,25 @@ QUnit.test("Elements are immutable",
 	}
 );
 
-QUnit.test("Updating the color creates a new element",
+QUnit.test("Updating the type creates a new element",
 	assert => {
 		assert.expect(2);
 
 		let subject = createElementFactory();
 		let location = createLocation(0,0);
-		let original = subject.createElement(location, "DarkRed");
+		let original = subject.createElement(location, MOCK_TYPE);
 
-		let updated = original.withColor("DarkOrange");
+		let updated = original.withType(SECOND_MOCK_TYPE);
 
 		assert.propEqual(
 			updated,
-			subject.createElement(location, "DarkOrange"),
-			"Only color changes"
+			subject.createElement(location, SECOND_MOCK_TYPE),
+			"Only the type is updated"
 		);
-
 
 		assert.propEqual(
 			original,
-			subject.createElement(location, "DarkRed"),
+			subject.createElement(location, MOCK_TYPE),
 			"original doesn't change");
 	}
 );

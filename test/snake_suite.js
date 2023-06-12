@@ -4,13 +4,15 @@ QUnit.module("Snake");
 
 QUnit.test("Constant values",
 	assert => {
-	  assert.expect(7);
+	  assert.expect(8);
 
-	  assert.equal( SNAKE_HEAD_COLOR, "DarkOrange", "Color of the snake's head is orange" )
-	  assert.equal( SNAKE_BODY_COLOR, "DarkRed", "Color of the snake's body is red" )
+		assert.equal( SNAKE_ENTITY.description, "Snake", "Snake is a separate entity");
 
-	  assert.equal( DEAD_SNAKE_HEAD_COLOR, "DarkGrey", "Color of the dead snake's head is gray" )
-	  assert.equal( DEAD_SNAKE_BODY_COLOR, "Black", "Color of the dead snake's body is blac" )
+	  assert.equal( SNAKE_HEAD_TYPE.color, "DarkOrange", "Color of the snake's head is orange" )
+	  assert.equal( SNAKE_BODY_TYPE.color, "DarkRed", "Color of the snake's body is red" )
+
+	  assert.equal( DEAD_SNAKE_HEAD_TYPE.color, "DarkGrey", "Color of the dead snake's head is gray" )
+	  assert.equal( DEAD_SNAKE_BODY_TYPE.color, "Black", "Color of the dead snake's body is blac" )
 
 	  assert.equal(SNAKE_MOVED, "Snake moved", "Game state: Snake has moved.");
 	  assert.equal(SNAKE_DIED, "Snake died", "Game state: Snake was killed");
@@ -40,19 +42,19 @@ QUnit.test("When a snake is created, it request segments at the indicated positi
 
 		assert.propEqual(
 			invocations[0].arguments,
-			[expectedLocations[0],SNAKE_BODY_COLOR],
+			[expectedLocations[0],SNAKE_BODY_TYPE],
 			"The first body segment uses the first coordinate given."
 		);
 
 		assert.propEqual(
 			invocations[1].arguments,
-			[expectedLocations[1],SNAKE_BODY_COLOR],
+			[expectedLocations[1], SNAKE_BODY_TYPE],
 			"The second body segment uses the second coordinate given."
 		);
 
 		assert.propEqual(
 			invocations[2].arguments,
-			[expectedLocations[2],SNAKE_HEAD_COLOR],
+			[expectedLocations[2],SNAKE_HEAD_TYPE],
 			"The last segment is the head and uses the third coordinate given."
 		);
 	}
@@ -61,7 +63,7 @@ QUnit.test("When a snake is created, it request segments at the indicated positi
 
 QUnit.test("When a snake moves, it removes the its last body segment",
 	assert => {
-		assert.expect(2);
+		assert.expect(3);
 
 		// actual board to avoid mocks returning mocks.
 		let elementFactory = createElementFactory();
@@ -79,11 +81,13 @@ QUnit.test("When a snake moves, it removes the its last body segment",
 		let recorders = boardSpy.recorders;
 
 
-		subject.push(DOWN);
+		let result = subject.push(DOWN);
 
+
+		assert.equal(result, SNAKE_MOVED, "Snake moved down.");
 
 		let remove = recorders.remove;
-		let actual = elementFactory.createElement(lastBodySegmentLocation,"DarkRed");
+		let actual = elementFactory.createElement(lastBodySegmentLocation, SNAKE_BODY_TYPE);
 
 		assert.equal(remove.timesInvoked(), 1, "remove the last body segment");
 		assert.propEqual(
@@ -96,7 +100,7 @@ QUnit.test("When a snake moves, it removes the its last body segment",
 
 QUnit.test("When a snake moves, it repaints the previous head segment as a body segment",
 	assert => {
-		assert.expect(2);
+		assert.expect(3);
 
 		// actual board to avoid mocks returning mocks.
 		let elementFactory = createElementFactory();
@@ -114,25 +118,27 @@ QUnit.test("When a snake moves, it repaints the previous head segment as a body 
 		let recorders = boardSpy.recorders;
 
 
-		subject.push(DOWN);
+		let result = subject.push(DOWN);
+
+		assert.equal(result, SNAKE_MOVED, "Snake moved down.");
 
 
 		let replace = recorders.replace;
 
 		assert.equal(replace.timesInvoked(), 1, "paint the previous last segment as body");
 
-		let actual = elementFactory.createElement(startingHeadLocation,"DarkRed");
+		let actual = elementFactory.createElement(startingHeadLocation, SNAKE_BODY_TYPE);
 		assert.propEqual(
 			replace.invocations[0],
 			new Invocation([actual]),
-			"new body element has the same location as old head, but has a different color"
+			"new body element has the same location as old head, but has a different type"
 		);
 	}
 );
 
 QUnit.test("When a snake moves, it adds the new head to the front",
 	assert => {
-		assert.expect(2);
+		assert.expect(3);
 
 		// actual board to avoid mocks returning mocks.
 		let elementFactory = createElementFactory();
@@ -150,8 +156,10 @@ QUnit.test("When a snake moves, it adds the new head to the front",
 		let recorders = boardSpy.recorders;
 
 
-		subject.push(DOWN);
+		let result = subject.push(DOWN);
 
+
+    assert.equal(result, SNAKE_MOVED, "Snake moved down.");
 
 		let createElement = recorders.createElement;
 		let actualLocation = createLocation(0,2);
@@ -159,8 +167,8 @@ QUnit.test("When a snake moves, it adds the new head to the front",
 		assert.equal(createElement.timesInvoked(), 1, "add a new segment as head");
 		assert.propEqual(
 			createElement.invocations[0],
-			new Invocation([actualLocation,"DarkOrange"]),
-			"new body element has the same location as old head, but has a different color"
+			new Invocation([actualLocation, SNAKE_HEAD_TYPE]),
+			"A new element is added as the head at the new location."
 		);
 	}
 );
@@ -196,7 +204,7 @@ QUnit.test("When a snake moves, it records its new positions for the next moves"
 
 
 		function containingLocation(x, y){
-			return new Invocation([elementFactory.createElement(createLocation(x,y), "DarkRed")])
+			return new Invocation([elementFactory.createElement(createLocation(x,y), SNAKE_BODY_TYPE)])
 		}
 
 		assert.propEqual(
@@ -293,20 +301,94 @@ QUnit.test("When a snake dies, it turns black.",
 
 		assert.propEqual(
 			invocations[0].arguments,
-			[elementFactory.createElement(expectedLocations[0], DEAD_SNAKE_BODY_COLOR)],
+			[elementFactory.createElement(expectedLocations[0], DEAD_SNAKE_BODY_TYPE)],
 			"The first body segment turns black."
 		);
 
 		assert.propEqual(
 			invocations[1].arguments,
-			[elementFactory.createElement(expectedLocations[1], DEAD_SNAKE_BODY_COLOR)],
+			[elementFactory.createElement(expectedLocations[1], DEAD_SNAKE_BODY_TYPE)],
 			"The second body segment turns black."
 		);
 
 		assert.propEqual(
 			invocations[2].arguments,
-			[elementFactory.createElement(expectedLocations[2], DEAD_SNAKE_HEAD_COLOR)],
+			[elementFactory.createElement(expectedLocations[2], DEAD_SNAKE_HEAD_TYPE)],
 			"The last segment is the head and it turns grey."
+		);
+	}
+);
+
+
+QUnit.test("When a snake eats, it grows by one segment.",
+	assert => {
+		assert.expect(2);
+
+		// actual board to avoid mocks returning mocks.
+		let elementFactory = createElementFactory();
+		let board = createBoard(new MockCanvas(), elementFactory );
+
+		let startingBodyLocation = createLocation(0,0);
+
+		let subject = createSnakeFactory(board)
+			.createSnake([
+				startingBodyLocation,
+				createLocation(0,1)
+			]);
+
+		board.createElement(createLocation(0,2), FOOD_TYPE);
+
+
+		let result = subject.push(DOWN);
+
+
+		assert.equal(result, SNAKE_ATE, "Snake ate the food");
+
+		assert.equal(board.elementAt(startingBodyLocation).type, SNAKE_BODY_TYPE, "new segment is added to the end");
+	}
+);
+
+
+QUnit.test("When a snake eats, it repaints the previous head segment as a body segment and the food segment as the new head segment",
+	assert => {
+		assert.expect(4);
+
+		// actual board to avoid mocks returning mocks.
+		let elementFactory = createElementFactory();
+		let board = createBoard(new MockCanvas(), elementFactory );
+
+		let startingHeadLocation = createLocation(0,1);
+		let subject = createSnakeFactory(board)
+			.createSnake([
+				createLocation(0,0),
+				startingHeadLocation
+			]);
+
+		let foodLocation = createLocation(0,2);
+		board.createElement(foodLocation, FOOD_TYPE);
+
+		// partially mock board to spy on future invocations.
+		let boardSpy = createSpyFrom(board);
+		let recorders = boardSpy.recorders;
+
+
+		let result = subject.push(DOWN);
+
+
+		assert.equal(result, SNAKE_ATE, "Snake ate the food");
+
+		let replace = recorders.replace;
+		assert.equal(replace.timesInvoked(), 2, "paint the previous last segment as body and the food as head");
+
+		assert.propEqual(
+			replace.invocations[0].arguments[0],
+			elementFactory.createElement(startingHeadLocation, SNAKE_BODY_TYPE),
+			"new body element has the same location as old head, but has a different type"
+		);
+		assert.propEqual(
+			replace.invocations[1].arguments[0],
+			elementFactory.createElement(foodLocation, SNAKE_HEAD_TYPE),
+			"new head has the same location as food, but has a different type"
 		);
 	}
 );
@@ -324,9 +406,9 @@ function createSpyFrom(board){
 		mockBoard.remove(element);
 	}
 
-	board.createElement = function(location, color){
-		mockBoard.createElement(location, color);
-		return factory.createElement(location, color);
+	board.createElement = function(location, type){
+		mockBoard.createElement(location, type);
+		return factory.createElement(location, type);
 	}
 
 	return mockBoard;

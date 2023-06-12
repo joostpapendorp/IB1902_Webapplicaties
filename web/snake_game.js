@@ -1,6 +1,7 @@
 "use strict";
 
 function createGame(
+	difficulty,
 	buildSnake,
 	prepareEngineWith,
 	player
@@ -17,7 +18,7 @@ function createGame(
 			let snake = createStartSnake();
 			console.log("snake created");
 
-			this.engine = prepareEngineWith(snake, UP);
+			this.engine = prepareEngineWith(difficulty, snake, UP);
 			this.engine.start();
 
 			console.log("game started");

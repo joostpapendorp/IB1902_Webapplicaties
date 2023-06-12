@@ -20,6 +20,18 @@ function createCanvas(mySnakeCanvas){
 			});
 		},
 
+		drawText : function(myText, x, y) {
+			mySnakeCanvas.drawText({
+				fillStyle: 'Black',
+				fontStyle: 'bold',
+				fontSize: '14pt',
+				fontFamily: 'Trebuchet MS, sans-serif',
+				text: myText,
+				x: x,
+				y: y,
+			});
+		},
+
 		/**
 			@function clear() -> void
 			@desc Schoont het canvas.

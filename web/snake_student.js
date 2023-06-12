@@ -2,8 +2,6 @@
 
 const SNAKE_CANVAS_ID = "mySnakeCanvas";
 
-const FOOD_ELEMENT_COLOR = "Olive";
-
 $(document).ready(function() {
 	// note: we MUST construct the context onDocumentReady, since we need the html canvas JQuery object.
   // It might not be initialized beforehand.
@@ -27,7 +25,11 @@ function buildInjectionContext(){
 	let snakeFactory = createSnakeFactory(board);
 	let engineFactory = createEngineFactory(board, createTimer());
 
+	let planter = foodPlanter(board,random(Math).randomizeLocation);
+	let ruleSet = ruleSets(planter);
+
 	return createGame(
+		ruleSet.basic(),
 		snakeFactory.createSnake,
 		engineFactory.prepareEngineWith,
 		createPlayer()

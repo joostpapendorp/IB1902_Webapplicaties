@@ -1,10 +1,12 @@
 "use strict";
 
-const SNAKE_HEAD_COLOR = "DarkOrange";
-const SNAKE_BODY_COLOR = "DarkRed";
+const SNAKE_ENTITY = createElementEntity("Snake");
 
-const DEAD_SNAKE_BODY_COLOR = "Black";
-const DEAD_SNAKE_HEAD_COLOR = "DarkGrey";
+const SNAKE_HEAD_TYPE = createElementType("DarkOrange", SNAKE_ENTITY);
+const SNAKE_BODY_TYPE = createElementType("DarkRed", SNAKE_ENTITY);
+
+const DEAD_SNAKE_BODY_TYPE = createElementType("Black", SNAKE_ENTITY);
+const DEAD_SNAKE_HEAD_TYPE = createElementType("DarkGrey", SNAKE_ENTITY);
 
 const SNAKE_MOVED = "Snake moved";
 const SNAKE_DIED = "Snake died";
@@ -27,67 +29,75 @@ function createSnakeFactory(board){
 			}
 
 			this.push = function(direction){
-				if(this.dies(direction))
-					return this.die();
-
-				else if(this.eats(direction))
-					return this.eat(direction);
-
-				else
-					return this.move(direction);
-			};
-
-			this.dies = function(direction){
 				let newLocation = this.head().location.translated(direction);
+				let elementPresent = board.elementAt(newLocation);
 
-				let alive = board.isValidPosition(newLocation);
-				if(alive){
-					let element = board.elementAt(newLocation);
-					if(element)
-						alive = element.color !== SNAKE_BODY_COLOR;
+				switch(elementPresent.entity()){
+					case OFF_THE_BOARD_ENTITY:
+					case SNAKE_ENTITY:
+						return this.die();
+
+					case FOOD_ENTITY:
+						return this.eat(elementPresent);
+
+					case FREE_SPACE_ENTITY:
+						return this.move(direction);
 				}
-
-				return ! alive;
 			};
 
 			this.die = function(){
-				for(let i = 0; i < lastIndex(); i++ ){
-					this.segments[i] = this.segments[i].withColor(DEAD_SNAKE_BODY_COLOR);
-					board.replace(segments[i]);
-				}
-
-				this.segments[lastIndex()] = this.segments[lastIndex()].withColor(DEAD_SNAKE_HEAD_COLOR);
-				board.replace(segments[lastIndex()]);
-
+				this.paintBodyBlack();
+				this.paintHeadGrey();
 				return SNAKE_DIED;
 			};
 
-			this.eats = function(direction){
-				return false;
-			};
-
-			this.eat = function(direction){
+			this.eat = function(element){
+				this.repaintOldHeadAsBody();
+				this.addNewHeadByReplacing(element);
 				return SNAKE_ATE;
 			};
 
 			this.move = function(direction){
-				// remove the last tail element
+				this.removeLastTailSegment();
+				this.repaintOldHeadAsBody();
+				this.addNewHeadIn(direction);
+				return SNAKE_MOVED;
+			};
+
+			this.paintBodyBlack = function(){
+				for(let i = 0; i < lastIndex(); i++ ){
+					this.segments[i] = this.segments[i].withType(DEAD_SNAKE_BODY_TYPE);
+					board.replace(segments[i]);
+				}
+			};
+
+			this.paintHeadGrey = function(){
+				this.segments[lastIndex()] = this.segments[lastIndex()].withType(DEAD_SNAKE_HEAD_TYPE);
+				board.replace(segments[lastIndex()]);
+			};
+
+			this.removeLastTailSegment = function(){
 				let lastBodyElement = this.segments[0];
 				board.remove(lastBodyElement);
 				segments.shift();
+			};
 
-				// repaint the old head as body
-				let oldHead = this.head();
-				let oldHeadAsBody = oldHead.withColor(SNAKE_BODY_COLOR);
+			this.repaintOldHeadAsBody = function(){
+				let oldHeadAsBody = this.head().withType(SNAKE_BODY_TYPE);
 				board.replace(oldHeadAsBody);
 				segments[lastIndex()] = oldHeadAsBody;
+			};
 
-				// add the new head
-				let newHeadLocation = oldHead.location.translated(direction);
-				let newHead = board.createElement(newHeadLocation, SNAKE_HEAD_COLOR);
+			this.addNewHeadByReplacing = function(element){
+				let newHead = element.withType(SNAKE_HEAD_TYPE);
+				board.replace(newHead);
 				segments.push(newHead);
+			};
 
-				return SNAKE_MOVED;
+			this.addNewHeadIn = function(direction){
+				let newHeadLocation = this.head().location.translated(direction);
+				let newHead = board.createElement(newHeadLocation, SNAKE_HEAD_TYPE);
+				segments.push(newHead);
 			};
 
 			this.head = function(){
@@ -100,13 +110,13 @@ function createSnakeFactory(board){
 			for(let i = 0; i < locations.length - 1; i++ ){
 				let bodyElement = board.createElement(
 					locations[i],
-					SNAKE_BODY_COLOR);
+					SNAKE_BODY_TYPE);
 				elements.push(bodyElement);
 			}
 
 			let headElement = board.createElement(
 				locations[ locations.length -1],
-				SNAKE_HEAD_COLOR);
+				SNAKE_HEAD_TYPE);
 			elements.push(headElement)
 
 			return new Snake(elements);

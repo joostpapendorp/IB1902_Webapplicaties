@@ -492,11 +492,12 @@ introduce rule set to manage foods and game endings
 
 (P 7)
 [v] basic rule set generates food on board
+[v] engine uses rule set to initialize board
+[v] Generate foods
 
+(P 8)
 [ ] rule set builds basic snake
-[ ] engine uses rule set to initialize board
 
-[ ] Generate foods
 [ ] Ports and adapters ARD
 
 ### TODO

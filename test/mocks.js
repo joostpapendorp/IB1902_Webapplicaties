@@ -152,6 +152,14 @@ function MockFactory(name){
       return returnValue;
     }
   }
+
+	this.triadic =  function(returnValue){
+		let build = this.recorders.build;
+    return function(first, second, third){
+      build.invokedWith([first, second, third]);
+      return returnValue;
+    }
+  }
 }
 
 
@@ -244,6 +252,17 @@ function MockGame(){
 
 	this.steer = function(direction){
 		this.recorders.steer.invokedWith([direction]);
+	}
+}
+
+
+function MockDifficulty(){
+	this.recorders = {
+		prepare : new Recorder("prepare"),
+	};
+
+	this.prepare = function(){
+		this.recorders.prepare.invoked();
 	}
 }
 

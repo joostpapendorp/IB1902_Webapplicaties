@@ -33,8 +33,8 @@ function createBoard(canvas, elementFactory){
 			canvas.clear();
 
 			this.elements.
-				flatMap( column => column ).
-				forEach( element => this.drawElement(element.location, element.type.color));
+				flatMap(column => column).
+				forEach(element => this.drawElement(element.location, element.type.color));
 		};
 
 		this.drawElement = function(location,color){
@@ -75,7 +75,7 @@ function createBoard(canvas, elementFactory){
 			if(this.isFree(location))
 				throw Error(`No element at ${location.describe()}`)
 
-			this.elements[location.x][location.y] = undefined;
+			delete this.elements[location.x][location.y];
 		};
 
 		this.elementAt = function(location){

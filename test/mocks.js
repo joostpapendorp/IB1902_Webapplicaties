@@ -49,7 +49,6 @@ function MockCanvas() {
 }
 
 
-
 function MockHTMLCanvas() {
 	this.recorders = {
 		drawArc : new Recorder("drawArc"),
@@ -213,6 +212,17 @@ function MockTimer(){
 
 	this.stop = function(){
 		this.recorders.stop.invoked();
+	};
+}
+
+
+function MockFood(){
+	this.recorders = {
+		plant : new Recorder("plantFood"),
+	};
+
+	this.plant = function(){
+		this.recorders.plant.invoked();
 	};
 }
 

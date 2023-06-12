@@ -490,8 +490,10 @@ introduce rule set to manage foods and game endings
 (P 4 ,5, 6)
 [v] random generates random location
 
+(P 7)
+[v] basic rule set generates food on board
+
 [ ] rule set builds basic snake
-[ ] basic rule set generates food on board
 [ ] engine uses rule set to initialize board
 
 [ ] Generate foods

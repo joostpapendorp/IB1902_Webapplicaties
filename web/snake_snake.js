@@ -66,9 +66,9 @@ function createSnakeFactory(board){
 
 			this.paintBodyBlack = function(){
 				for(let i = 0; i < lastIndex(); i++ ){
-	        this.segments[i] = this.segments[i].withType(DEAD_SNAKE_BODY_TYPE);
-	        board.replace(segments[i]);
-	      }
+					this.segments[i] = this.segments[i].withType(DEAD_SNAKE_BODY_TYPE);
+					board.replace(segments[i]);
+				}
 			};
 
 			this.paintHeadGrey = function(){

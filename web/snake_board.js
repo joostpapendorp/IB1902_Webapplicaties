@@ -103,16 +103,16 @@ function createBoard(canvas, elementFactory){
 
 		function clearArray(){
 			let arr = new Array(BOARD_SIZE);
-	    for (let i = 0; i < BOARD_SIZE; i++) {
-	      arr[i] = new Array(BOARD_SIZE);
-	    }
-	    return arr;
+			for (let i = 0; i < BOARD_SIZE; i++)
+				arr[i] = new Array(BOARD_SIZE);
+
+			return arr;
 		}
 
     function checkBoundaries(location){
 			if(!isValidPosition(location))
 				throw new Error(`${location.describe()} is out of bounds`);
-		};
+		}
 
 		function isValidPosition(location){
 			let min = Math.min(location.x, location.y);

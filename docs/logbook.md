@@ -496,8 +496,9 @@ introduce rule set to manage foods and game endings
 [v] Generate foods
 
 (P 8)
+[v] Ports and adapters ARD
+
 [ ] rule set builds basic snake
 
-[ ] Ports and adapters ARD
 
 ### TODO

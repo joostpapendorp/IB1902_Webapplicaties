@@ -11,7 +11,7 @@ function foodPlanter(board, randomizeLocation) {
 			foodLocation = randomizeLocation();
 
 		board.createElement(foodLocation, FOOD_TYPE);
-  } ;
+  }
 
 	return {
 		plant : plant

@@ -498,6 +498,14 @@ introduce rule set to manage foods and game endings
 (P 8)
 [v] Ports and adapters ARD
 
+(P 9)
+
+Story _015-End_the_game_
+
+(P 10, 11)
+
+[ ] Engine calls rule set for updates on state. 
+[ ] Dead snake ends the game
 [ ] rule set builds basic snake
 
 

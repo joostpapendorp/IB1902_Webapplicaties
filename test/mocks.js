@@ -259,10 +259,20 @@ function MockGame(){
 function MockDifficulty(){
 	this.recorders = {
 		prepare : new Recorder("prepare"),
+		start : new Recorder("start"),
+		update : new Recorder("update"),
 	};
 
 	this.prepare = function(){
 		this.recorders.prepare.invoked();
+	}
+
+	this.start = function(){
+		this.recorders.start.invoked();
+	}
+
+	this.update = function(result){
+		this.recorders.update.invokedWith(result);
 	}
 }
 

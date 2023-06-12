@@ -8,6 +8,16 @@ const SECOND_MOCK_TYPE = createElementType("SECOND_MOCK_TYPE", createElementEnti
 const MOCK_LOCATION = createLocation(1, 2);
 const SECOND_MOCK_LOCATION = createLocation(2, 1);
 
+
+function iterateReturnValuesOver(values){
+	let index = 0;
+
+	return () => {
+		return values[index++];
+	};
+}
+
+
 function MockCanvas() {
 	this.recorders = {
 		drawArc : new Recorder("drawArc"),
@@ -60,6 +70,27 @@ function MockHTMLCanvas() {
 	};
 }
 
+
+function MockMath(mockRandomValues, mockFloorValues) {
+	this.recorders = {
+		random : new Recorder("random"),
+		floor : new Recorder("drawText")
+	};
+
+	this.mockRandomValues = mockRandomValues;
+
+	this.mockFloorValues = mockFloorValues;
+
+	this.random = function(){
+		this.recorders.random.invoked();
+		return this.mockRandomValues();
+	};
+
+	this.floor = function(number){
+		this.recorders.floor.invokedWith([number]);
+		return this.mockFloorValues(number);
+	};
+}
 
 function MockBoard(){
 	this.recorders = {

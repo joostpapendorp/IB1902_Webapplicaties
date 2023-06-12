@@ -14,7 +14,7 @@ QUnit.test("Canvas size is taken from .html",
 				// call document-ready function
 				let subject = createCanvas(mockCanvas);
 
-				assert.equal(subject.width(), expectedWidth, "with should come from .html");
+				assert.equal(subject.width(), expectedWidth, "width should come from .html");
 				assert.equal(subject.height(), expectedHeight, "height should come from .html");
 			}
 		);

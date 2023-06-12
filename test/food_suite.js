@@ -41,7 +41,10 @@ QUnit.test("Food planter retries until a free space is found.",
 				{ type : FREE_SPACE_TYPE };
 		};
 
-		let subject = foodPlanter(mockBoard, mockRandom([MOCK_LOCATION, MOCK_LOCATION, SECOND_MOCK_LOCATION]));
+		let subject = foodPlanter(
+			mockBoard,
+			iterateReturnValuesOver([MOCK_LOCATION, MOCK_LOCATION, SECOND_MOCK_LOCATION])
+		);
 
 		subject.plant();
 
@@ -53,11 +56,3 @@ QUnit.test("Food planter retries until a free space is found.",
 		assert.equal(createElement.invocations[0].arguments[0], SECOND_MOCK_LOCATION, "element is created at free location");
 	}
 );
-
-function mockRandom(locations){
-	let index = 0;
-
-	return () => {
-		return locations[index++];
-	}
-}

@@ -485,7 +485,10 @@ introduce rule set to manage foods and game endings
 ### 2023-06-12
 
 (P 1, 2, 3)
-[ ] food planter plants at random locations
+[v] food planter plants at random locations
+
+(P 4 ,5, 6)
+[v] random generates random location
 
 [ ] rule set builds basic snake
 [ ] basic rule set generates food on board

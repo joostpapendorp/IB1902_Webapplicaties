@@ -48,6 +48,9 @@ function createEngineFactory(board, timer, splashScreen){
 		};
 
 		this.shutDown = function(){
+			if(this.state === GAME_RUNNING_STATE)
+				this.halt();
+
 			this.board.clear();
 		};
 	}

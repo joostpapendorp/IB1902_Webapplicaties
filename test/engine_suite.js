@@ -261,6 +261,51 @@ QUnit.test("Shutting down the engine clears the board.",
 );
 
 
+QUnit.test("Shutting down the engine while running stops the timer.",
+	assert => {
+		assert.expect(1);
+
+		let mockTimer = new MockTimer();
+		let rules = buildRules()
+	    .withSnakeFactory(() => new MockSnake(SNAKE_MOVED))
+			.basic()
+
+		let subject = buildEngine().
+			withRules(rules).
+			withTimer(mockTimer).
+			build();
+
+		subject.start();
+		subject.shutDown();
+
+		let recorder = mockTimer.recorders.stop;
+		assert.equal(recorder.timesInvoked(), 1, "Timer was stopped.");
+	}
+);
+
+
+QUnit.test("Shutting down the engine while not running doesn't try to stop the timer.",
+	assert => {
+		assert.expect(1);
+
+		let mockTimer = new MockTimer();
+		let rules = buildRules()
+	    .withSnakeFactory(() => new MockSnake(SNAKE_MOVED))
+			.basic()
+
+		let subject = buildEngine().
+			withRules(rules).
+			withTimer(mockTimer).
+			build();
+
+		subject.shutDown();
+
+		let recorder = mockTimer.recorders.stop;
+		assert.equal(recorder.timesInvoked(), 0, "Timer was stopped.");
+	}
+);
+
+
 QUnit.test("Steering a snake starts moving the snake in the provided direction.",
 	assert => {
 		assert.expect(2);

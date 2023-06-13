@@ -293,6 +293,22 @@ function MockRuleSet(stateToReturn){
 }
 
 
+function MockSplashScreen(){
+	this.recorders = {
+		writeGameWon : new Recorder("writeGameWon"),
+		writeGameOver : new Recorder("writeGameOver")
+	};
+
+	this.writeGameWon = function(board){
+		this.recorders.writeGameWon.invokedWith([board]);
+	};
+
+	this.writeGameOver = function(board){
+		this.recorders.writeGameOver.invokedWith([board]);
+	};
+}
+
+
 function Recorder(name){
 	this.name = name;
 	this.invocations = [];

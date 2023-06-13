@@ -9,12 +9,14 @@ function buildEngine() {
 function EngineBuilder(){
 	this.board = new MockBoard();
 	this.timer = new MockTimer();
+	this.splashScreen = new MockSplashScreen();
 	this.rules = new MockRuleSet(GAME_RUNNING_STATE);
 
 	this.build = function(){
 		return createEngineFactory(
 			this.board,
-			this.timer
+			this.timer,
+			this.splashScreen
 		).prepareEngineWith(this.rules);
 	};
 
@@ -30,6 +32,11 @@ function EngineBuilder(){
 
 	this.withRules = function(rules){
 		this.rules = rules;
+		return this;
+	};
+
+	this.withSplashScreen = function(splashScreen){
+		this.splashScreen = splashScreen;
 		return this;
 	};
 }
@@ -109,6 +116,32 @@ QUnit.test("Killing the snake stops the timer.",
 );
 
 
+QUnit.test("Killing the snake writes the loss.",
+	assert => {
+		assert.expect(2);
+
+		let mockBoard = new MockBoard();
+		let mockSplashScreen = new MockSplashScreen();
+		let mockSnake = new MockSnake(SNAKE_DIED);
+		let rules = buildRules()
+	    .withSnakeFactory(() => mockSnake)
+			.basic()
+
+		let subject = buildEngine().
+			withBoard(mockBoard).
+			withSplashScreen(mockSplashScreen).
+			withRules(rules).
+			build();
+
+		subject.tick();
+
+		let writeGameOver = mockSplashScreen.recorders.writeGameOver;
+		assert.equal(writeGameOver.timesInvoked(), 1, "Killing the snake writes game over.");
+		assert.equal(writeGameOver.invocations[0].arguments[0], mockBoard, "splash screen writes on the board")
+	}
+);
+
+
 QUnit.test("Winning the game stops the timer.",
 	assert => {
 		assert.expect(1);
@@ -129,6 +162,33 @@ QUnit.test("Winning the game stops the timer.",
 
 		let stopTimer = mockTimer.recorders.stop;
 		assert.equal(stopTimer.timesInvoked(), 1, "Eating the last food stops the timer.");
+	}
+);
+
+
+QUnit.test("Winning the game writes the win.",
+	assert => {
+		assert.expect(2);
+
+		let mockBoard = new MockBoard();
+		let mockSplashScreen = new MockSplashScreen();
+		let mockSnake = new MockSnake(SNAKE_ATE);
+		let rules = buildRules()
+	    .withSnakeFactory(() => mockSnake)
+			.basic()
+
+		let subject = buildEngine().
+			withBoard(mockBoard).
+			withSplashScreen(mockSplashScreen).
+			withRules(rules).
+			build();
+
+		for(let i = 0; i < NUMBER_OF_FOODS_PER_BASIC_GAME; i++ )
+			subject.tick();
+
+		let writeGameWon = mockSplashScreen.recorders.writeGameWon;
+		assert.equal(writeGameWon.timesInvoked(), 1, "Eating the last food writes you won.");
+		assert.equal(writeGameWon.invocations[0].arguments[0], mockBoard, "splash screen writes on the board")
 	}
 );
 

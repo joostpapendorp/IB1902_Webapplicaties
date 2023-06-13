@@ -1,6 +1,6 @@
 "use strict";
 
-function createEngineFactory(board, timer){
+function createEngineFactory(board, timer, splashScreen){
 
 	function Engine(board, timer, rules){
 		this.board = board;
@@ -28,8 +28,13 @@ function createEngineFactory(board, timer){
 					break;
 
 				case GAME_OVER_STATE:
+					this.halt();
+					splashScreen.writeGameOver(board);
+					break;
+
 				case GAME_WON_STATE:
 					this.halt();
+					splashScreen.writeGameWon(board);
 					break;
 			}
 		};

@@ -515,5 +515,8 @@ Story _015-End_the_game_
 [v] Test states in Engine
 [v] rule set builds basic snake
 
+(P 7)
+[v] report win and loss
+[v] splash screen
 
 ### TODO

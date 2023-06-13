@@ -8,9 +8,10 @@ const GAME_RUNNING_STATE = createGameState("Game running");
 const GAME_OVER_STATE = createGameState("Game over");
 const GAME_WON_STATE = createGameState("Game won");
 
-function ruleSets(foodPlanter) {
+function ruleSets(createSnake, foodPlanter) {
 
-	function BasicRuleSet(foodPlanter){
+	function BasicRuleSet(createSnake, foodPlanter){
+		this.createSnake = createSnake;
 		this.foodPlanter = foodPlanter;
 		this.foodLeft;
 
@@ -26,6 +27,22 @@ function ruleSets(foodPlanter) {
 
 			return NEW_GAME_STATE;
 		};
+
+
+	/**
+		@function createStartSnake() -> Snake
+		@desc Slang creëren, bestaande uit  twee segmenten, in het midden van het veld
+		@return: slang volgens specificaties
+	*/
+	this.createStartSnake = function(board) {
+		let centralTile = Math.floor(BOARD_SIZE / 2) - 1;
+		let locations = [
+			createLocation(centralTile, centralTile + 1),
+			createLocation(centralTile, centralTile)
+		];
+
+		return createSnake(board, locations);
+	}
 
 		this.start = function() {
 			return GAME_RUNNING_STATE;
@@ -47,7 +64,7 @@ function ruleSets(foodPlanter) {
 					return GAME_RUNNING_STATE;
 
 				default:
-					throw new Error("Unknown stat");
+					throw new Error("Unknown state");
 			}
 		};
 
@@ -56,17 +73,12 @@ function ruleSets(foodPlanter) {
 		}
 	}
 
-	// poor mans polymorphism:
 	function basic() {
-		return buildRuleSet(BasicRuleSet);
-	}
-
-	function buildRuleSet(constructor) {
-		let ruleSet = new constructor(foodPlanter);
+		let ruleSet = new BasicRuleSet(createSnake, foodPlanter);
 
 		return {
 			initialDirection : () => ruleSet.initialDirection(),
-			initialState : () => ruleSet.initialState(),
+			createStartSnake : (board) => ruleSet.createStartSnake(board),
 			prepare : () => ruleSet.prepare(),
 			start : () => ruleSet.start(),
 			update : (result) => ruleSet.update(result)

@@ -2,16 +2,18 @@
 
 QUnit.module("Game");
 
+function buildGame() {
+	return new GameBuilder();
+}
+
 function GameBuilder(){
-	this.difficulty = new MockDifficulty();
-	this.snakeFactory = (locations) => new MockSnake();
+	this.difficulty = new MockRuleSet();
 	this.engineFactory = (board, timer) => new MockEngine();
 	this.player = createPlayer();
 
 	this.build = function(){
 		return createGame(
 			this.difficulty,
-			this.snakeFactory,
 			this.engineFactory,
 			this.player
 		);
@@ -19,11 +21,6 @@ function GameBuilder(){
 
 	this.withDifficulty = function(difficulty){
 		this.difficulty = difficulty;
-		return this;
-	};
-
-	this.withSnakeFactory = function(snakeFactory){
-		this.snakeFactory = snakeFactory;
 		return this;
 	};
 
@@ -39,47 +36,17 @@ function GameBuilder(){
 }
 
 
-QUnit.test("Starting snake is two segments long, placed left of the center, facing up",
+QUnit.test("Starting a game creates the engine with the basic rules.",
 	assert => {
-		assert.expect(2);
+		assert.expect(3);
 
-		let mockSnakeFactory = new MockFactory("Snake");
-		let expectedLocations = [
-			createLocation(8, 9),
-			createLocation(8, 8)
-		];
-
-		let subject = new GameBuilder().
-		  withSnakeFactory(mockSnakeFactory.monadic()).
-		  build();
-
-		subject.start();
-
-		let recorder = mockSnakeFactory.recorders.build
-		assert.equal(recorder.timesInvoked(), 1, "One snake is created");
-
-		assert.propEqual(
-			recorder.invocations[0],
-			new Invocation([expectedLocations]),
-			"Snake is located left of the center, facing up"
-		);
-	}
-);
-
-
-QUnit.test("Starting a game creates the engine with initial snake moving upwards.",
-	assert => {
-		assert.expect(5);
-
-		let mockDifficulty = new MockDifficulty();
+		let mockRuleSet = new MockRuleSet();
 		let mockEngineFactory = new MockFactory("Engine")
-		let mockSnake = new MockSnake();
 		let mockEngine = new MockEngine();
 
-		let subject = new GameBuilder().
-			withDifficulty(mockDifficulty).
-			withSnakeFactory((locations) => mockSnake).
-			withEngineFactory(mockEngineFactory.triadic(mockEngine)).
+		let subject = buildGame().
+			withDifficulty(mockRuleSet).
+			withEngineFactory(mockEngineFactory.monadic(mockEngine)).
 			build();
 
 		subject.start();
@@ -88,9 +55,7 @@ QUnit.test("Starting a game creates the engine with initial snake moving upwards
 		assert.equal(build.timesInvoked(), 1, "Game creates the engine");
 
 		let actualArguments = build.invocations[0].arguments;
-		assert.equal(actualArguments[0], mockDifficulty, "Game passes the difficulty to the engine");
-		assert.equal(actualArguments[1], mockSnake, "Game passes the starting snake it built to the engine");
-		assert.equal(actualArguments[2], UP, "Snake starts moving upwards.");
+		assert.equal(actualArguments[0], mockRuleSet, "Game passes the rules to the engine");
 
 		let start = mockEngine.recorders.start;
 		assert.equal(start.timesInvoked(),1,"Game starts the engine");
@@ -103,8 +68,8 @@ QUnit.test("Stopping a game shuts the engine down.",
 		assert.expect(1);
 
 		let mockEngine = new MockEngine();
-		let subject = new GameBuilder().
-			withEngineFactory((snake, direction)=>mockEngine).
+		let subject = buildGame().
+			withEngineFactory((rules)=>mockEngine).
 			build();
 
 		subject.start();
@@ -122,8 +87,8 @@ QUnit.test("Receiving key input translates the key code into a direction to stee
 
 		let mockEngine = new MockEngine();
 
-		let subject = new GameBuilder().
-      withEngineFactory((snake, direction)=>mockEngine).
+		let subject = buildGame().
+      withEngineFactory((rules)=>mockEngine).
       withPlayer(createPlayer()).
       build();
 
@@ -147,8 +112,8 @@ QUnit.test("Game filters invalid key inputs.",
 
 		let mockEngine = new MockEngine();
 
-		let subject = new GameBuilder().
-      withEngineFactory((snake, direction)=>mockEngine).
+		let subject = buildGame().
+      withEngineFactory((rules)=>mockEngine).
       withPlayer(createPlayer()).
       build();
 

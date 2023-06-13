@@ -2,20 +2,76 @@
 
 QUnit.module("Engine");
 
+function buildEngine() {
+	return new EngineBuilder();
+}
+
+function EngineBuilder(){
+	this.board = new MockBoard();
+	this.timer = new MockTimer();
+	this.rules = new MockRuleSet(GAME_RUNNING_STATE);
+
+	this.build = function(){
+		return createEngineFactory(
+			this.board,
+			this.timer
+		).prepareEngineWith(this.rules);
+	};
+
+	this.withBoard = function(board){
+		this.board = board;
+		return this;
+	};
+
+	this.withTimer = function(timer){
+		this.timer = timer;
+		return this;
+	};
+
+	this.withRules = function(rules){
+		this.rules = rules;
+		return this;
+	};
+}
+
+
+QUnit.test("Creating the engine initializes it",
+	assert => {
+		assert.expect(4);
+
+		let mockBoard = new MockBoard();
+		let mockRules = new MockRuleSet(NEW_GAME_STATE);
+
+		/*let ignored =*/ buildEngine().
+			withBoard(mockBoard).
+			withRules(mockRules).
+			build();
+
+		let recorders = mockRules.recorders;
+		assert.equal(recorders.prepare.timesInvoked(), 1, "Engine prepares the rule set");
+		assert.equal(recorders.initialDirection.timesInvoked(), 1, "Engine requests initial direction from the rule set");
+
+		let createStartSnake = recorders.createStartSnake;
+		assert.equal(createStartSnake.timesInvoked(), 1, "Engine requests initial direction from the rule set");
+		assert.equal(createStartSnake.invocations[0].arguments[0], mockBoard, "Engine passes board to rule set to create snake upon");
+	}
+);
+
 
 QUnit.test("Tick pushes the snake and repaints the board",
 	assert => {
 		assert.expect(3);
 
 		let mockBoard = new MockBoard();
-
-		let factory = createEngineFactory(
-			mockBoard,
-			new MockTimer()
-		);
-
+		let rules = buildRules()
+	    .withSnakeFactory(() => mockSnake)
+	    .basic();
 		let mockSnake = new MockSnake(SNAKE_MOVED);
-		let subject = factory.prepareEngineWith(new MockDifficulty(), mockSnake, UP);
+
+		let subject = buildEngine().
+			withBoard(mockBoard).
+			withRules(rules).
+			build();
 
 		subject.tick();
 
@@ -35,17 +91,44 @@ QUnit.test("Killing the snake stops the timer.",
 		assert.expect(1);
 
 		let mockTimer = new MockTimer();
+		let mockSnake = new MockSnake(SNAKE_DIED);
+		let rules = buildRules()
+	    .withSnakeFactory(() => mockSnake)
+			.basic()
 
-		let factory = createEngineFactory(
-			new MockBoard(),
-			mockTimer
-		);
-		let subject = factory.prepareEngineWith(new MockDifficulty(), new MockSnake(SNAKE_DIED), UP);
+		let subject = buildEngine().
+			withTimer(mockTimer).
+			withRules(rules).
+			build();
 
 		subject.tick();
 
 		let stopTimer = mockTimer.recorders.stop;
 		assert.equal(stopTimer.timesInvoked(), 1, "Killing the snake stops the timer.");
+	}
+);
+
+
+QUnit.test("Winning the game stops the timer.",
+	assert => {
+		assert.expect(1);
+
+		let mockTimer = new MockTimer();
+		let mockSnake = new MockSnake(SNAKE_ATE);
+		let rules = buildRules()
+	    .withSnakeFactory(() => mockSnake)
+			.basic()
+
+		let subject = buildEngine().
+			withTimer(mockTimer).
+			withRules(rules).
+			build();
+
+		for(let i = 0; i < NUMBER_OF_FOODS_PER_BASIC_GAME; i++ )
+			subject.tick();
+
+		let stopTimer = mockTimer.recorders.stop;
+		assert.equal(stopTimer.timesInvoked(), 1, "Eating the last food stops the timer.");
 	}
 );
 
@@ -56,13 +139,16 @@ QUnit.test("Starting the engine starts a timer.",
 
 		let mockTimer = new MockTimer();
 		let mockBoard = new MockBoard();
-		let mockSnake = new MockSnake();
+		let mockSnake = new MockSnake(SNAKE_MOVED);
+		let rules = buildRules()
+	    .withSnakeFactory(() => mockSnake)
+			.basic()
 
-		let factory = createEngineFactory(
-			mockBoard,
-			mockTimer
-		);
-		let subject = factory.prepareEngineWith(new MockDifficulty(), mockSnake, UP);
+		let subject = buildEngine().
+			withBoard(mockBoard).
+			withTimer(mockTimer).
+			withRules(rules).
+			build();
 
 		subject.start();
 
@@ -85,11 +171,9 @@ QUnit.test("Halting the engine stops the timer.",
 
 		let mockTimer = new MockTimer();
 
-		let factory = createEngineFactory(
-			new MockBoard(),
-			mockTimer
-		);
-		let subject = factory.prepareEngineWith(new MockDifficulty(), new MockSnake(), UP);
+		let subject = buildEngine().
+			withTimer(mockTimer).
+			build();
 
 		subject.halt();
 
@@ -104,11 +188,10 @@ QUnit.test("Shutting down the engine clears the board.",
 		assert.expect(1);
 
 		let mockBoard = new MockBoard();
-		let factory = createEngineFactory(
-			mockBoard,
-			new MockTimer()
-		);
-		let subject = factory.prepareEngineWith(new MockDifficulty(), new MockSnake(), UP);
+		let subject = buildEngine().
+			withBoard(mockBoard).
+			withRules(buildRules().basic()).
+			build();
 
 		subject.shutDown();
 
@@ -122,9 +205,14 @@ QUnit.test("Steering a snake starts moving the snake in the provided direction."
 	assert => {
 		assert.expect(2);
 
-		let mockSnake = new MockSnake();
-		let factory = createEngineFactory(new MockBoard(), new MockTimer());
-		let subject = factory.prepareEngineWith(new MockDifficulty(), mockSnake, UP)
+		let mockSnake = new MockSnake(SNAKE_MOVED);
+		let rules = buildRules()
+	    .withSnakeFactory(() => mockSnake)
+			.basic()
+
+		let subject = buildEngine().
+			withRules(rules).
+			build();
 
 		subject.steer(LEFT);
 		subject.tick();

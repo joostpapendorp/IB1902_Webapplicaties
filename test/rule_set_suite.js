@@ -2,6 +2,32 @@
 
 QUnit.module("Rule Set");
 
+function buildRules() {
+	return new RuleSetBuilder();
+}
+
+function RuleSetBuilder(){
+	this.snakeFactory = (locations) => new MockSnake();
+	this.foodPlanter = new MockFood();
+
+	this.basic = function(){
+		return ruleSets(
+			this.snakeFactory,
+			this.foodPlanter
+		).basic();
+	};
+
+	this.withSnakeFactory = function(snakeFactory){
+		this.snakeFactory = snakeFactory;
+		return this;
+	};
+
+	this.withFoodPlanter = function(foodPlanter){
+		this.foodPlanter = foodPlanter;
+		return this;
+	};
+}
+
 QUnit.test("Constant values",
 	assert => {
 		assert.expect(6);
@@ -21,9 +47,38 @@ QUnit.test("Rule set provides the initial direction",
 	assert => {
 		assert.expect(1);
 
-		let subject = ruleSets().basic();
+		let subject = buildRules().basic();
 
 		assert.equal(subject.initialDirection(), INITIAL_DIRECTION, "provides the constant as initial direction");
+	}
+);
+
+
+QUnit.test("Starting snake is two segments long, placed left of the center, facing up",
+	assert => {
+		assert.expect(2);
+
+		let mockBoard = new MockBoard()
+		let mockSnakeFactory = new MockFactory("Snake");
+		let expectedLocations = [
+			createLocation(8, 9),
+			createLocation(8, 8)
+		];
+
+		let subject = buildRules().
+			withSnakeFactory(mockSnakeFactory.dyadic()).
+			basic();
+
+		subject.createStartSnake(mockBoard);
+
+		let recorder = mockSnakeFactory.recorders.build
+		assert.equal(recorder.timesInvoked(), 1, "One snake is created");
+
+		assert.propEqual(
+			recorder.invocations[0],
+			new Invocation([mockBoard,expectedLocations]),
+			"Snake is located left of the center, facing up"
+		);
 	}
 );
 
@@ -32,7 +87,7 @@ QUnit.test("Preparing initializes the game.",
 	assert => {
 		assert.expect(1);
 
-		let subject = ruleSets(new MockFood()).basic();
+		let subject = buildRules().basic();
 
 		assert.equal(subject.prepare(), NEW_GAME_STATE, "Preparing yields the new game state");
 	}
@@ -43,7 +98,7 @@ QUnit.test("Starting the game result in it running",
 	assert => {
 		assert.expect(1);
 
-		let subject = ruleSets(new MockFood()).basic();
+		let subject = buildRules().basic();
 		subject.prepare();
 
 		assert.equal(subject.start(), GAME_RUNNING_STATE, "Starting yields the game running state");
@@ -55,7 +110,7 @@ QUnit.test("Moving the snake continues the game",
 	assert => {
 		assert.expect(1);
 
-		let subject = ruleSets(new MockFood()).basic();
+		let subject = buildRules().basic();
 		subject.prepare();
 		subject.start();
 
@@ -68,7 +123,7 @@ QUnit.test("Killing the snake loses the game",
 	assert => {
 		assert.expect(1);
 
-		let subject = ruleSets(new MockFood()).basic();
+		let subject = buildRules().basic();
 		subject.prepare();
 		subject.start();
 
@@ -81,7 +136,7 @@ QUnit.test("In a basic game, eating food while food remains continues the game a
 	assert => {
 		assert.expect(NUMBER_OF_FOODS_PER_BASIC_GAME);
 
-		let subject = ruleSets(new MockFood()).basic();
+		let subject = buildRules().basic();
 		subject.prepare();
 		subject.start();
 
@@ -98,7 +153,9 @@ QUnit.test("Basic rule set plants a fixed amount of food",
 		assert.expect(1);
 
 		let mockFoodPlanter = new MockFood();
-		let subject = ruleSets(mockFoodPlanter).basic();
+		let subject = buildRules().
+			withFoodPlanter(mockFoodPlanter).
+			basic();
 
 		subject.prepare();
 

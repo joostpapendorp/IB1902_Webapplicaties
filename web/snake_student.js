@@ -26,11 +26,10 @@ function buildInjectionContext(){
 	let engineFactory = createEngineFactory(board, createTimer());
 
 	let planter = foodPlanter(board,random(Math).randomizeLocation);
-	let ruleSet = ruleSets(planter);
+	let ruleSet = ruleSets(snakeFactory.createSnake, planter);
 
 	return createGame(
 		ruleSet.basic(),
-		snakeFactory.createSnake,
 		engineFactory.prepareEngineWith,
 		createPlayer()
 	);

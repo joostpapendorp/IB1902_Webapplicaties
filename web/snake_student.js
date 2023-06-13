@@ -41,11 +41,11 @@ const LETTER_TYPE = createElementType("Red", LETTER_ENTITY);
 function createSplashScreen(){
 	function writeGameOver(board) {
 		writeDottedText(board, GAME_OVER);
-	};
+	}
 
 	function writeGameWon(board) {
 		writeDottedText(board, YOU_WON);
-	};
+	}
 
 	function writeDottedText(board, text) {
 		text.

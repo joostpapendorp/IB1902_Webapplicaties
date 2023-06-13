@@ -11,3 +11,4 @@
 * [9. we-use-first-for-unit-testing-and-write-our-own-scaffolds](0009-we-use-first-for-unit-testing-and-write-our-own-scaffolds.md)
 * [10. we-apply-factory-patterns-for-testability](0010-we-apply-factory-patterns-for-testability.md)
 * [11. we-adhere-to-hexagonal-architecture](0011-we-adhere-to-hexagonal-architecture.md)
+* [12. we-use-a-finite-state-machine-to-maintain-game-state](0012-we-use-a-finite-state-machine-to-maintain-game-state.md)

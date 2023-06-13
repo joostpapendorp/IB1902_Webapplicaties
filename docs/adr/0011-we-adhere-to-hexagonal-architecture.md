@@ -11,11 +11,14 @@ We are required to make our designs explicit and document them.
 
 ## Decision
 
-We adopt the [_Hexagonal architecture paradigm_](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)) to explicitly isolate our boundary interfaces from our own code. Currently, we have two types of ports:
-* Native code, such as _setInterval_ and _Math_, and
-* Dom tree interactions, such as _canvas_ and key input captures.
+We adopt the [_Hexagonal architecture paradigm_](https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)) to explicitly isolate our boundary interfaces from our own code. Currently, we have three types of ports:
+* Native code, such as _setInterval_ and _Math_;
+* Dom tree interactions, such as _canvas_ and key input captures, and
+* Storage
 
 For each of these ports we write adapters, tuned to our specific needs.
+
+![hexagonal boundaries of the app](./hexagonal.jpg)
 
 
 ### References

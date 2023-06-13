@@ -2,7 +2,6 @@
 
 function createGame(
 	difficulty,
-	buildSnake,
 	prepareEngineWith,
 	player
 ){
@@ -15,18 +14,30 @@ function createGame(
 		  @desc Haal eventueel bestaand voedsel en een bestaande slang weg, cre\"eer een slang, genereer voedsel, en teken alles
 		*/
 		this.start = function() {
-			let snake = createStartSnake();
-			console.log("snake created");
+			if(this.engine) {
+				console.log("stopping running game.");
+				this.stop();
+				console.log("restarting...");
+			}
+			else
+				console.log( "starting game...");
 
-			this.engine = prepareEngineWith(difficulty, snake, UP);
+			console.log("initializing...")
+			this.engine = prepareEngineWith(difficulty);
+			console.log("...done.");
+
 			this.engine.start();
-
-			console.log("game started");
+			console.log("game started.");
 		};
 
 		this.stop = function() {
-			this.engine.shutDown();
-			console.log("game stopped");
+			if(this.engine) {
+				this.engine.shutDown();
+				this.engine = undefined;
+				console.log("game stopped.");
+			}
+			else
+				console.log("nothing to stop.")
 		};
 
 		this.receiveKeyInput = function(keyCode) {
@@ -34,21 +45,6 @@ function createGame(
 			if(direction !== NO_LOCATION)
 				this.engine.steer(direction);
 		};
-	}
-
-	/**
-		@function createStartSnake() -> Snake
-		@desc Slang creëren, bestaande uit  twee segmenten, in het midden van het veld
-		@return: slang volgens specificaties
-	*/
-	function createStartSnake() {
-		let centralTile = Math.floor(BOARD_SIZE / 2) - 1;
-		let locations = [
-			createLocation(centralTile, centralTile + 1),
-			createLocation(centralTile, centralTile)
-		];
-
-		return buildSnake(locations);
 	}
 
 	let game = new Game(player);

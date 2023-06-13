@@ -2,6 +2,30 @@
 
 QUnit.module("Snake");
 
+function buildSnake() {
+	return new SnakeBuilder();
+}
+
+function SnakeBuilder(){
+	this.board = new MockBoard();
+	this.locations = [];
+
+	this.build = function(){
+		return createSnakeFactory().
+			createSnake(this.board, this.locations);
+	};
+
+	this.withBoard = function(board){
+		this.board = board;
+		return this;
+	};
+
+	this.withLocations = function(locations){
+		this.locations = locations;
+		return this;
+	};
+}
+
 QUnit.test("Constant values",
 	assert => {
 	  assert.expect(8);
@@ -35,8 +59,10 @@ QUnit.test("When a snake is created, it request segments at the indicated positi
 			createLocation(1,1)
 		];
 
-		let subject = createSnakeFactory(mockBoard);
-		subject.createSnake(expectedLocations);
+		let subject = buildSnake().
+			withBoard(mockBoard).
+			withLocations(expectedLocations).
+			build();
 
 		assert.equal(recorder.timesInvoked(), 3, "The snake creates its three segments.");
 
@@ -70,11 +96,13 @@ QUnit.test("When a snake moves, it removes the its last body segment",
 		let board = createBoard(new MockCanvas(), elementFactory );
 
 		let lastBodySegmentLocation = createLocation(0,0);
-		let subject = createSnakeFactory(board)
-			.createSnake([
+		let subject = buildSnake().
+			withBoard(board).
+			withLocations([
 				lastBodySegmentLocation,
 				createLocation(0,1)
-			]);
+			]).
+			build();
 
 		// partially mock board to spy on future invocations.
 		let boardSpy = createSpyFrom(board);
@@ -107,11 +135,13 @@ QUnit.test("When a snake moves, it repaints the previous head segment as a body 
 		let board = createBoard(new MockCanvas(), elementFactory );
 
 		let startingHeadLocation = createLocation(0,1);
-		let subject = createSnakeFactory(board)
-			.createSnake([
+		let subject = buildSnake().
+			withBoard(board).
+			withLocations([
 				createLocation(0,0),
 				startingHeadLocation
-			]);
+			]).
+			build();
 
 		// partially mock board to spy on future invocations.
 		let boardSpy = createSpyFrom(board);
@@ -145,11 +175,13 @@ QUnit.test("When a snake moves, it adds the new head to the front",
 		let board = createBoard(new MockCanvas(), elementFactory );
 
 		let startingHeadLocation = createLocation(0,1);
-		let subject = createSnakeFactory(board)
-			.createSnake([
+		let subject = buildSnake().
+			withBoard(board).
+			withLocations([
 				createLocation(0,0),
 				startingHeadLocation
-			]);
+			]).
+			build();
 
 		// partially mock board to spy on future invocations.
 		let boardSpy = createSpyFrom(board);
@@ -183,11 +215,13 @@ QUnit.test("When a snake moves, it records its new positions for the next moves"
 		let board = createBoard(new MockCanvas(), elementFactory );
 
 		let startingHeadLocation = createLocation(0,1);
-		let subject = createSnakeFactory(board)
-			.createSnake([
+		let subject = buildSnake().
+			withBoard(board).
+			withLocations([
 				createLocation(0,0),
 				startingHeadLocation
-			]);
+			]).
+			build();
 
 		// partially mock board to spy on future invocations.
 		let boardSpy = createSpyFrom(board);
@@ -235,16 +269,22 @@ QUnit.test("Moving from the board kills the snake.",
 		assert.expect(4);
 
 		let board = createBoard(new MockCanvas(), createElementFactory());
-		let snakeFactory = createSnakeFactory(board);
+		let snakeBuilder = buildSnake().
+			withBoard(board);
 
-		let lowerBoundSnake = snakeFactory.createSnake([
-			createLocation(0,1),
-			createLocation(0,0)
-		]);
-		let upperBoundSnake = snakeFactory.createSnake([
-			createLocation(17,16),
-			createLocation(17,17)
-		]);
+		let lowerBoundSnake = snakeBuilder.
+			withLocations([
+				createLocation(0,1),
+				createLocation(0,0)
+			]).
+			build();
+
+		let upperBoundSnake = snakeBuilder.
+			withLocations([
+				createLocation(17,16),
+				createLocation(17,17)
+			]).
+			build();
 
 		for(const [direction, subject, description] of [
 			[UP, lowerBoundSnake, "top"],
@@ -264,12 +304,13 @@ QUnit.test("Moving onto its own body kills the snake.",
 		assert.expect(1);
 
 		let board = createBoard(new MockCanvas(), createElementFactory());
-		let snakeFactory = createSnakeFactory(board);
-
-		let subject = snakeFactory.createSnake([
-			createLocation(0,1),
-			createLocation(0,0)
-		]);
+		let subject = buildSnake().
+			withBoard(board).
+			withLocations([
+				createLocation(0,1),
+				createLocation(0,0)
+			]).
+			build();
 
 		let result = subject.push(DOWN);
 		assert.equal(result, SNAKE_DIED, "Snake was killed by moving onto its own body.");
@@ -294,8 +335,10 @@ QUnit.test("When a snake dies, it turns black.",
 			createLocation(0,0)
 		];
 
-		let snakeFactory = createSnakeFactory(board);
-		let subject = snakeFactory.createSnake(expectedLocations);
+		let subject = buildSnake().
+			withBoard(board).
+			withLocations(expectedLocations).
+			build();
 
 		subject.push(UP);
 
@@ -330,11 +373,13 @@ QUnit.test("When a snake eats, it grows by one segment.",
 
 		let startingBodyLocation = createLocation(0,0);
 
-		let subject = createSnakeFactory(board)
-			.createSnake([
+		let subject = buildSnake().
+			withBoard(board).
+			withLocations([
 				startingBodyLocation,
 				createLocation(0,1)
-			]);
+			]).
+			build();
 
 		board.createElement(createLocation(0,2), FOOD_TYPE);
 
@@ -358,11 +403,13 @@ QUnit.test("When a snake eats, it repaints the previous head segment as a body s
 		let board = createBoard(new MockCanvas(), elementFactory );
 
 		let startingHeadLocation = createLocation(0,1);
-		let subject = createSnakeFactory(board)
-			.createSnake([
+		let subject = buildSnake().
+			withBoard(board).
+			withLocations([
 				createLocation(0,0),
 				startingHeadLocation
-			]);
+			]).
+			build();
 
 		let foodLocation = createLocation(0,2);
 		board.createElement(foodLocation, FOOD_TYPE);

@@ -496,9 +496,31 @@ introduce rule set to manage foods and game endings
 [v] Generate foods
 
 (P 8)
-[v] Ports and adapters ARD
+[v] Ports and adapters ADR
 
-[ ] rule set builds basic snake
+(P 9)
 
+Story _015-End_the_game_
+
+(P 10, 11)
+[v] Dead snake ends the game
+[v] Eating all food ends the game
+[v] Engine calls rule set for updates on state. 
+
+
+#### 2023-06-13
+
+(P 1, 2, 3, 4, 5, 6)
+[v] move start snake from game to rules
+[v] Test states in Engine
+[v] rule set builds basic snake
+
+(P 7)
+[v] report win and loss
+[v] splash screen
+
+(P 8)
+[v] fix start-restart issue
+[ ] Game State ADR
 
 ### TODO

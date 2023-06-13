@@ -1,26 +1,42 @@
 "use strict";
 
-function createEngineFactory(board, timer){
+function createEngineFactory(board, timer, splashScreen){
 
-	function Engine(board, timer, ruleSet, snake, direction){
+	function Engine(board, timer, rules){
 		this.board = board;
 		this.timer = timer;
 
-		this.snake = snake;
-		this.direction = direction;
-		this.ruleSet = ruleSet;
+		this.rules = rules;
+		this.snake = this.rules.createStartSnake(this.board);
+		this.direction = this.rules.initialDirection();
+		this.state = this.rules.prepare();
 
 		this.start = function(){
-			this.ruleSet.prepare();
+			this.state = this.rules.start();
 			this.board.redraw();
 			this.timer.start(() => this.tick());
 		};
 
 		this.tick = function(){
 			let result = this.snake.push(this.direction);
-			if(result === SNAKE_DIED)
-				this.halt();
+			this.state = this.rules.update(result);
+
 			this.board.redraw();
+
+			switch(this.state) {
+				case GAME_RUNNING_STATE:
+					break;
+
+				case GAME_OVER_STATE:
+					this.halt();
+					splashScreen.writeGameOver(board);
+					break;
+
+				case GAME_WON_STATE:
+					this.halt();
+					splashScreen.writeGameWon(board);
+					break;
+			}
 		};
 
 		this.steer = function(direction){
@@ -32,12 +48,15 @@ function createEngineFactory(board, timer){
 		};
 
 		this.shutDown = function(){
+			if(this.state === GAME_RUNNING_STATE)
+				this.halt();
+
 			this.board.clear();
 		};
 	}
 
-	function prepareEngineWith(rules, snake, direction){
-		let engine = new Engine(board, timer, rules, snake, direction);
+	function prepareEngineWith(rules){
+		let engine = new Engine(board, timer, rules);
 
 		return {
 			start: () => engine.start(),
@@ -49,6 +68,6 @@ function createEngineFactory(board, timer){
 	}
 
 	return {
-		prepareEngineWith : (rules, snake, direction) => prepareEngineWith(rules, snake, direction)
+		prepareEngineWith : (rules) => prepareEngineWith(rules)
 	};
 }

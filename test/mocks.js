@@ -153,12 +153,16 @@ function MockFactory(name){
     }
   }
 
-	this.triadic =  function(returnValue){
+	this.triadic = function(returnValue){
 		let build = this.recorders.build;
     return function(first, second, third){
       build.invokedWith([first, second, third]);
       return returnValue;
     }
+  }
+
+  this.recordingFrom = function(buildFunction) {
+		return buildFunction(this.recorders.build);
   }
 }
 
@@ -256,14 +260,56 @@ function MockGame(){
 }
 
 
-function MockDifficulty(){
+function MockRuleSet(stateToReturn){
 	this.recorders = {
 		prepare : new Recorder("prepare"),
+		initialDirection : new Recorder("initialDirection"),
+		createStartSnake : new Recorder("createStartSnake"),
+		start : new Recorder("start"),
+		update : new Recorder("update"),
 	};
+
+	this.stateToReturn = stateToReturn;
 
 	this.prepare = function(){
 		this.recorders.prepare.invoked();
+		return stateToReturn;
 	}
+
+	this.initialDirection = function(){
+		this.recorders.initialDirection.invoked();
+		return stateToReturn;
+	}
+
+	this.createStartSnake = function(board){
+		this.recorders.createStartSnake.invokedWith([board]);
+	}
+
+	this.start = function(){
+		this.recorders.start.invoked();
+		return stateToReturn;
+	}
+
+	this.update = function(result){
+		this.recorders.update.invokedWith(result);
+		return stateToReturn;
+	}
+}
+
+
+function MockSplashScreen(){
+	this.recorders = {
+		writeGameWon : new Recorder("writeGameWon"),
+		writeGameOver : new Recorder("writeGameOver")
+	};
+
+	this.writeGameWon = function(board){
+		this.recorders.writeGameWon.invokedWith([board]);
+	};
+
+	this.writeGameOver = function(board){
+		this.recorders.writeGameOver.invokedWith([board]);
+	};
 }
 
 

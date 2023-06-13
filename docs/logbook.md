@@ -519,4 +519,8 @@ Story _015-End_the_game_
 [v] report win and loss
 [v] splash screen
 
+(P 8)
+[v] fix start-restart issue
+[ ] Game State ADR
+
 ### TODO

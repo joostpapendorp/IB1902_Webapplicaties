@@ -153,12 +153,16 @@ function MockFactory(name){
     }
   }
 
-	this.triadic =  function(returnValue){
+	this.triadic = function(returnValue){
 		let build = this.recorders.build;
     return function(first, second, third){
       build.invokedWith([first, second, third]);
       return returnValue;
     }
+  }
+
+  this.recordingFrom = function(buildFunction) {
+		return buildFunction(this.recorders.build);
   }
 }
 

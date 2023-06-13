@@ -81,6 +81,59 @@ QUnit.test("Stopping a game shuts the engine down.",
 );
 
 
+QUnit.test("Starting a game while the engine is running first shuts the engine down, then starts a new engine.",
+	assert => {
+		assert.expect(4);
+
+		let firstEngine = new MockEngine();
+		let secondEngine = new MockEngine();
+		let mockEngineFactory = new MockFactory("Engine")
+
+		let subject = buildGame().
+			withEngineFactory(
+				mockEngineFactory.recordingFrom( recorder => {
+					let iteration = iterateReturnValuesOver([firstEngine, secondEngine]);
+					return (rules) => {
+						recorder.invokedWith([rules])
+						return iteration(rules);
+					};
+				})
+			).
+			build();
+
+		subject.start();
+		subject.start();
+
+		let firstRecorders = firstEngine.recorders;
+		assert.equal(firstRecorders.start.timesInvoked(),1,"Game starts the first engine once");
+		assert.equal(firstRecorders.shutDown.timesInvoked(),1,"Game stops the first engine once");
+
+		let secondRecorders = secondEngine.recorders;
+		assert.equal(secondRecorders.start.timesInvoked(),1,"Game starts the second engine once");
+		assert.equal(secondRecorders.shutDown.timesInvoked(),0,"Game does not stops the second engine yet");
+	}
+);
+
+
+QUnit.test("Stopping a stopped game does not shuts the engine down a second time.",
+	assert => {
+		assert.expect(1);
+
+		let mockEngine = new MockEngine();
+		let subject = buildGame().
+			withEngineFactory((rules)=>mockEngine).
+			build();
+
+		subject.start();
+		subject.stop();
+		subject.stop();
+
+		let recorder = mockEngine.recorders.shutDown;
+		assert.equal(recorder.timesInvoked(), 1, "Invoked shut down");
+	}
+);
+
+
 QUnit.test("Receiving key input translates the key code into a direction to steer the engine.",
 	assert => {
 		assert.expect(2);

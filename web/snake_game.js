@@ -14,6 +14,14 @@ function createGame(
 		  @desc Haal eventueel bestaand voedsel en een bestaande slang weg, cre\"eer een slang, genereer voedsel, en teken alles
 		*/
 		this.start = function() {
+			if(this.engine) {
+				console.log("stopping running game.");
+				this.stop();
+				console.log("restarting...");
+			}
+			else
+				console.log( "starting game...");
+
 			console.log("initializing...")
 			this.engine = prepareEngineWith(difficulty);
 			console.log("...done.");
@@ -23,8 +31,13 @@ function createGame(
 		};
 
 		this.stop = function() {
-			this.engine.shutDown();
-			console.log("game stopped.");
+			if(this.engine) {
+				this.engine.shutDown();
+				this.engine = undefined;
+				console.log("game stopped.");
+			}
+			else
+				console.log("nothing to stop.")
 		};
 
 		this.receiveKeyInput = function(keyCode) {

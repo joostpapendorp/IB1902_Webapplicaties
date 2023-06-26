@@ -163,3 +163,27 @@ QUnit.test("Basic rule set plants a fixed amount of food",
 		assert.equal(plant.timesInvoked(), NUMBER_OF_FOODS_PER_BASIC_GAME, "Planter is invoked for each piece of food");
 	}
 );
+
+
+QUnit.test("Difficulties provides all the rule sets in ascending order of difficulty",
+	assert => {
+		assert.expect(3);
+
+		let mockBasicRules = new MockFactory("Basic");
+		let mockRuleSets = {
+			basic: mockBasicRules.niladic()
+		}
+
+		let subject = difficulties(mockRuleSets);
+
+
+		let actualBasic = subject[0];
+		assert.equal(actualBasic.name, "Basic", "Basic difficulty exists");
+		assert.equal(actualBasic.description, "Eat all the food to win.", "Basic difficulty describes");
+
+		let mockBasic = mockBasicRules.recorders.build;
+		actualBasic.ruleSet();
+		assert.equal(mockBasic.timesInvoked(), 1, "Basic difficulty invokes");
+
+	}
+);

@@ -7,20 +7,28 @@ function buildGame() {
 }
 
 function GameBuilder(){
-	this.difficulty = new MockRuleSet();
+	this.difficulties = [{
+		name:"MOCK_DIFFICULTY",
+		description:"MOCK_DESCRIPTION",
+		ruleSet: () => new MockRuleSet()
+	}];
 	this.engineFactory = (board, timer) => new MockEngine();
 	this.player = createPlayer();
 
 	this.build = function(){
 		return createGame(
-			this.difficulty,
+			this.difficulties,
 			this.engineFactory,
 			this.player
 		);
 	};
 
-	this.withDifficulty = function(difficulty){
-		this.difficulty = difficulty;
+	this.withRuleSet = function(ruleSet){
+		this.difficulties = [{
+			name:"MOCK_DIFFICULTY",
+			description:"MOCK_DESCRIPTION",
+			ruleSet: () => ruleSet
+		}];
 		return this;
 	};
 
@@ -45,7 +53,7 @@ QUnit.test("Starting a game creates the engine with the basic rules.",
 		let mockEngine = new MockEngine();
 
 		let subject = buildGame().
-			withDifficulty(mockRuleSet).
+			withRuleSet(mockRuleSet).
 			withEngineFactory(mockEngineFactory.monadic(mockEngine)).
 			build();
 

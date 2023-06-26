@@ -137,13 +137,21 @@ function MockFactory(name){
 		build : new Recorder(`build${name}`)
 	};
 
+	this.niladic = function(returnValue){
+		let build = this.recorders.build;
+		return function(){
+			build.invoked();
+			return returnValue;
+		}
+	};
+
 	this.monadic = function(returnValue){
 		let build = this.recorders.build;
 		return function(first){
 			build.invokedWith([first]);
 			return returnValue;
 		}
-	}
+	};
 
 	this.dyadic =  function(returnValue){
 		let build = this.recorders.build;
@@ -151,7 +159,7 @@ function MockFactory(name){
       build.invokedWith([first, second]);
       return returnValue;
     }
-  }
+  };
 
 	this.triadic = function(returnValue){
 		let build = this.recorders.build;
@@ -159,11 +167,11 @@ function MockFactory(name){
       build.invokedWith([first, second, third]);
       return returnValue;
     }
-  }
+  };
 
   this.recordingFrom = function(buildFunction) {
 		return buildFunction(this.recorders.build);
-  }
+  };
 }
 
 

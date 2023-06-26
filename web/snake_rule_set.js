@@ -84,7 +84,6 @@ function ruleSets(createSnake, foodPlanter) {
 			update : (result) => ruleSet.update(result)
 		}
 	}
-
 	return {
 		basic : () => basic(),
 	}
@@ -98,4 +97,17 @@ function createGameState(description){
 	let state = new GameState(description);
 	Object.freeze(state);
 	return state;
+}
+
+function difficulties(ruleSets){
+
+	function Difficulty(name, description, ruleSet){
+		this.name = name;
+		this.description = description;
+		this.ruleSet = ruleSet;
+	}
+
+	let basic = new Difficulty("Basic", "Eat all the food to win.", ruleSets.basic);
+	Object.freeze(basic);
+	return [basic];
 }

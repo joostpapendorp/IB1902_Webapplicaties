@@ -521,6 +521,39 @@ Story _015-End_the_game_
 
 (P 8)
 [v] fix start-restart issue
-[ ] Game State ADR
+
+(P 9, 10)
+[v] Game State ADR
+
+
+### 2023-06-14
+
+(P 1)
+
+Story _016-scoring_
+
+!!! Beoordelingscriteria op youlearn zijn inconsistent! Op de pagina vóór de opdracht staan wél de goede criteria.
+[v] pas criteria aan in DoD.
+
+(P 2)
+
+
+### 2023-06-15
+
+(P 1)
+
+??? Hoe weet ik of een DB al bestaat?
+    ==> kan niet. dus niet testen. Gebruik mock om callbacks af te vangen.
+[ ] define local storage facade.
+
+
+### 2023-06-26
+
+(P 1)
+https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB
+https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Client-side_storage#storing_complex_data_%E2%80%94_indexeddb
+
+(P 2, 3)
+
 
 ### TODO

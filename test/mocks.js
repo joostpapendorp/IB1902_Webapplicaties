@@ -126,7 +126,7 @@ function MockBoard(){
 	};
 
 	this.elementAt = function(location){
-		this.recorders.elementAt.invokedWith(location);
+		this.recorders.elementAt.invokedWith([location]);
 		return this.elementAtReturns(location);
 	}
 }
@@ -321,6 +321,51 @@ function MockSplashScreen(){
 }
 
 
+function MockIndexedDBConnection(request){
+	this.recorders = {
+		open : new Recorder("open")
+	};
+
+	this.open = function(handle, version){
+		this.recorders.open.invokedWith([handle, version]);
+		return request || new MockRequest();
+	};
+}
+
+
+function MockRequest(){
+	this.recorders = {
+		onUpgradeNeeded : new Recorder("onUpgradeNeeded")
+	};
+
+	//nocapitalizationconventionhere !!
+	this.onupgradeneeded = function(callBack){
+		this.recorders.onUpgradeNeeded.invokedWith([callBack]);
+	};
+
+	//nocapitalizationconventionhere !!
+	this.onsuccess = function(callBack){
+		this.recorders.onSuccess.invokedWith([callBack]);
+	};
+
+	//nocapitalizationconventionhere !!
+	this.onerror = function(callBack){
+		this.recorders.onSuccess.invokedWith([callBack]);
+	};
+}
+
+
+function MockIndexedDB(){
+	this.recorders = {
+		createObjectStore : new Recorder("createObjectStore")
+	};
+
+	this.createObjectStore = function(name, options){
+		this.recorders.createObjectStore.invokedWith([name, options]);
+	};
+}
+
+
 function Recorder(name){
 	this.name = name;
 	this.invocations = [];
@@ -335,7 +380,7 @@ function Recorder(name){
 	}
 
 	this.invokedWith = function(argumentList){
-		console.log( this.name + " invoked with " + argumentList.length + " argument(s)." )
+		console.log( this.name + " invoked with " + argumentList.length + " argument(s): " + argumentList.join() )
 		let thisInvocation = new Invocation(argumentList);
 		this.invocations.push(thisInvocation);
 	};

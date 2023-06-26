@@ -553,7 +553,7 @@ Story _016-scoring_
 https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB
 https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Client-side_storage#storing_complex_data_%E2%80%94_indexeddb
 
-(P 2, 3)
+(P 2, 3, 4, 5, 6, 7, 8, 9)
 
 
 ### TODO

@@ -275,6 +275,8 @@ function MockRuleSet(stateToReturn){
 		createStartSnake : new Recorder("createStartSnake"),
 		start : new Recorder("start"),
 		update : new Recorder("update"),
+		gameWon : new Recorder("gameWon"),
+		gameLost : new Recorder("gameLost"),
 	};
 
 	this.stateToReturn = stateToReturn;
@@ -291,6 +293,7 @@ function MockRuleSet(stateToReturn){
 
 	this.createStartSnake = function(board){
 		this.recorders.createStartSnake.invokedWith([board]);
+		return new MockSnake();
 	}
 
 	this.start = function(){
@@ -299,8 +302,16 @@ function MockRuleSet(stateToReturn){
 	}
 
 	this.update = function(result){
-		this.recorders.update.invokedWith(result);
+		this.recorders.update.invokedWith([result]);
 		return stateToReturn;
+	}
+
+	this.gameWon = function(){
+		this.recorders.gameWon.invoked();
+	}
+
+	this.gameLost = function(){
+		this.recorders.gameLost.invoked();
 	}
 }
 

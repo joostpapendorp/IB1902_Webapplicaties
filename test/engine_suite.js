@@ -193,6 +193,42 @@ QUnit.test("Winning the game writes the win.",
 );
 
 
+QUnit.test("Winning the game reports a win.",
+	assert => {
+		assert.expect(1);
+
+		let mockRules = new MockRuleSet(GAME_WON_STATE);
+
+		let subject = buildEngine().
+			withRules(mockRules).
+			build();
+
+		subject.tick();
+
+		let gameWon = mockRules.recorders.gameWon;
+		assert.equal(gameWon.timesInvoked(), 1, "Uses rules to update wins/losses");
+	}
+);
+
+
+QUnit.test("Losing the game reports a loss.",
+	assert => {
+		assert.expect(1);
+
+		let mockRules = new MockRuleSet(GAME_OVER_STATE);
+
+		let subject = buildEngine().
+			withRules(mockRules).
+			build();
+
+		subject.tick();
+
+		let gameLost = mockRules.recorders.gameLost;
+		assert.equal(gameLost.timesInvoked(), 1, "Uses rules to update wins/losses");
+	}
+);
+
+
 QUnit.test("Starting the engine starts a timer.",
 	assert => {
 		assert.expect(2);

@@ -556,4 +556,11 @@ https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/C
 (P 2, 3, 4, 5, 6, 7, 8, 9)
 
 
+### 2023-06-27
+
+(P 1)
+[ ] add indices to storage
+[ ] store wins / losses
+[ ] retrieve wins / losses
+
 ### TODO

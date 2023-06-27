@@ -30,11 +30,13 @@ function createEngineFactory(board, timer, splashScreen){
 				case GAME_OVER_STATE:
 					this.halt();
 					splashScreen.writeGameOver(board);
+					rules.gameLost();
 					break;
 
 				case GAME_WON_STATE:
 					this.halt();
 					splashScreen.writeGameWon(board);
+					rules.gameWon();
 					break;
 			}
 		};

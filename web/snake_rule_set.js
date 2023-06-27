@@ -68,9 +68,13 @@ function ruleSets(createSnake, foodPlanter) {
 			}
 		};
 
-		function halt(text) {
-			return STATE_HALT;
-		}
+		this.gameWon = function(){
+
+		};
+
+		this.gameLost = function(){
+
+		};
 	}
 
 	function basic() {
@@ -81,7 +85,9 @@ function ruleSets(createSnake, foodPlanter) {
 			createStartSnake : (board) => ruleSet.createStartSnake(board),
 			prepare : () => ruleSet.prepare(),
 			start : () => ruleSet.start(),
-			update : (result) => ruleSet.update(result)
+			update : (result) => ruleSet.update(result),
+			gameWon : () => ruleSet.gameWon(),
+			gameLost : () => ruleSet.gameLost(),
 		}
 	}
 	return {

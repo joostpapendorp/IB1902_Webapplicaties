@@ -22,12 +22,14 @@ function buildInjectionContext(){
 		createElementFactory()
 	);
 
-	let snakeFactory = createSnakeFactory(board);
 	let engineFactory = createEngineFactory(board, createTimer(), createSplashScreen());
 
 	let planter = foodPlanter(board,random(Math).randomizeLocation);
+	let snakeFactory = createSnakeFactory(board);
+
 	let rules = ruleSets(snakeFactory.createSnake, planter);
 	let difficultyLevels = difficulties(rules);
+
 	let storage = openStorage(
 		window.indexedDB,
 		SNAKE_DATABASE_HANDLE,

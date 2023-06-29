@@ -8,11 +8,15 @@ const GAME_RUNNING_STATE = createGameState("Game running");
 const GAME_OVER_STATE = createGameState("Game over");
 const GAME_WON_STATE = createGameState("Game won");
 
+const GAME_RESULT_WIN = {result:"win"};
+const GAME_RESULT_LOSS = {result:"loss"};
+
 function ruleSets(createSnake, foodPlanter) {
 
-	function BasicRuleSet(createSnake, foodPlanter){
+	function BasicRuleSet(createSnake, foodPlanter, highScores){
 		this.createSnake = createSnake;
 		this.foodPlanter = foodPlanter;
+		this.highScores = highScores;
 		this.foodLeft;
 
 		this.initialDirection = function(){
@@ -68,25 +72,39 @@ function ruleSets(createSnake, foodPlanter) {
 			}
 		};
 
-		function halt(text) {
-			return STATE_HALT;
+		this.gameWon = function(){
+			highScores.add(GAME_RESULT_WIN);
+			return tallyResults();
+		};
+
+		this.gameLost = function(){
+			highScores.add(GAME_RESULT_LOSS);
+			return tallyResults();
+		};
+
+		async function tallyResults() {
+			let wins = await highScores.count(GAME_RESULT_WIN);
+      let losses = await highScores.count(GAME_RESULT_LOSS);
+
+      return `*** Wins: ${wins} *** Losses: ${losses} ***`;
 		}
 	}
 
-	function basic() {
-		let ruleSet = new BasicRuleSet(createSnake, foodPlanter);
+	function basic(highScores) {
+		let ruleSet = new BasicRuleSet(createSnake, foodPlanter, highScores);
 
 		return {
 			initialDirection : () => ruleSet.initialDirection(),
 			createStartSnake : (board) => ruleSet.createStartSnake(board),
 			prepare : () => ruleSet.prepare(),
 			start : () => ruleSet.start(),
-			update : (result) => ruleSet.update(result)
+			update : (result) => ruleSet.update(result),
+			gameWon : () => ruleSet.gameWon(),
+			gameLost : () => ruleSet.gameLost(),
 		}
 	}
-
 	return {
-		basic : () => basic(),
+		basic : (storage) => basic(storage)
 	}
 }
 
@@ -98,4 +116,20 @@ function createGameState(description){
 	let state = new GameState(description);
 	Object.freeze(state);
 	return state;
+}
+
+function difficulties(ruleSets){
+	function Difficulty(name, description, ruleSet){
+		this.name = name;
+		this.description = description;
+		this.ruleSet = ruleSet;
+	}
+
+	let basic = new Difficulty(
+		"Basic",
+		"Eat all the food to win.",
+		(storage) => ruleSets.basic(storage.requestStorage("Basic"))
+	);
+	Object.freeze(basic);
+	return [basic];
 }

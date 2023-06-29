@@ -1,12 +1,14 @@
 "use strict";
 
 function createGame(
-	difficulty,
+	difficulties,
 	prepareEngineWith,
-	player
+	player,
+	storage
 ){
 	function Game(player){
 		this.engine;
+		this.storage = storage;
 		this.player = player;
 
 		/**
@@ -22,8 +24,10 @@ function createGame(
 			else
 				console.log( "starting game...");
 
-			console.log("initializing...")
-			this.engine = prepareEngineWith(difficulty);
+			let difficulty = difficulties[0];
+			console.log(`initializing engine at ${difficulty.name} difficulty...`)
+			let chosenRuleSet = difficulty.ruleSet(storage);
+			this.engine = prepareEngineWith(chosenRuleSet);
 			console.log("...done.");
 
 			this.engine.start();

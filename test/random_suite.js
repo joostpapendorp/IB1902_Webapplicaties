@@ -1,3 +1,5 @@
+import {random} from "../web/snake_random.js";
+
 "use strict";
 
 QUnit.module("Random");

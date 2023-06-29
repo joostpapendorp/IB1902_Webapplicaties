@@ -1,9 +1,9 @@
 "use strict";
 
-const TICK_SLEEP_TIME_IN_MILLIS = 500;
+export const TICK_SLEEP_TIME_IN_MILLIS = 500;
 
 
-function createTimer(){
+export function createTimer(){
 	const NO_TIMER = {};
 
 	function Timer(){

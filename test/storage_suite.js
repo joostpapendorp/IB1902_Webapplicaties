@@ -1,3 +1,9 @@
+import {
+	SNAKE_DATABASE_HANDLE,
+	SNAKE_DATABASE_VERSION,
+	openStorage
+} from "../web/snake_storage.js";
+
 "use strict";
 
 QUnit.module("Storage");

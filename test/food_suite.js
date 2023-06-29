@@ -7,8 +7,6 @@ import {
 
 "use strict";
 
-const MOCK_TYPE = {type: {color:"COLOR", entity:"ENTITY"}};
-
 QUnit.module("Food");
 
 QUnit.test("Constant values",

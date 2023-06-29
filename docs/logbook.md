@@ -694,6 +694,21 @@ Uncaught JoostError: ambiguous illegible error message
 
 Dependencies only apply to CONSTANTS: no code dependencies, so nothing circular.
 
+(p 11)
+[v] convert snake_storage
+
+    Loading module from “http://localhost:8080/test/snake_storage.js” was blocked because of a disallowed MIME type (“”).
+
+Nope. It means: you forgot to adjust the directory.
+Uncaught JoostError: ambiguous illegible error message
+
+[v] convert snake_timer
+[v] convert snake_random
+
+http://localhost:8080/test/snake_unit_test_suite.html
+
+[ ] convert snake_board
+
 
 
 ### TODO

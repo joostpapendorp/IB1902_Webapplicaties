@@ -1,9 +1,9 @@
 "use strict";
 
-const SNAKE_DATABASE_HANDLE = "SnakeDatabase";
-const SNAKE_DATABASE_VERSION = 1;
+export const SNAKE_DATABASE_HANDLE = "SnakeDatabase";
+export const SNAKE_DATABASE_VERSION = 1;
 
-function openStorage(indexedDBConnection, databaseHandle, storageHandles) {
+export function openStorage(indexedDBConnection, databaseHandle, storageHandles) {
 	let openRequest = indexedDBConnection.open(databaseHandle, SNAKE_DATABASE_VERSION);
 
 	//nocapitalizationconventionhere !! (not like that's important in an untyped but case-sensitive 'language'...)

@@ -1,6 +1,6 @@
 "use strict";
 
-const SNAKE_CANVAS_ID = "mySnakeCanvas";
+export const SNAKE_CANVAS_ID = "mySnakeCanvas";
 
 $(document).ready(function() {
 	// note: we MUST construct the context onDocumentReady, since we need the html canvas JQuery object.
@@ -15,7 +15,7 @@ $(document).ready(function() {
   });
 });
 
-function buildInjectionContext(){
+export function buildInjectionContext(){
 	let canvasDOMElement = $("#"+SNAKE_CANVAS_ID);
 	let board = createBoard(
 		createCanvas(canvasDOMElement),

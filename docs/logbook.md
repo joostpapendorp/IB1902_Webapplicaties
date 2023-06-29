@@ -652,7 +652,7 @@ cursussite:
 Soooo. All or nothing. Either all modules or no modules. No gentle change. Why did I even expect different?
 
 Oja, _wel_ even na ELKE FUCKING CHANGE de webserver herstarten. @W#$#$^%
-==> OK, harde cache refresh CTRL-SHIFT-R werkt ook.
+==> OK, harde cache refresh CTRL-SHIFT-R werkt ook. Soms. Misschien.
 
 https://stackoverflow.com/questions/3302959/how-to-restart-a-node-js-server
 

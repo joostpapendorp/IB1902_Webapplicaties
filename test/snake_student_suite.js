@@ -1,6 +1,8 @@
+import {SNAKE_CANVAS_ID, buildInjectionContext} from "../web/snake_student.js";
+
 "use strict";
 
-QUnit.module("Initialization");
+QUnit.module("Snake student");
 
 QUnit.test("Constant values",
 	assert => {

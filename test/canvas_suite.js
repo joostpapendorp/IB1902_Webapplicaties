@@ -2,6 +2,8 @@
 
 QUnit.module("Canvas");
 
+const MOCK_CANVAS_ID = "MOCK_CANVAS_ID";
+
 QUnit.test("Canvas size is taken from .html",
 	assert => {
 		assert.expect(2);
@@ -93,7 +95,7 @@ QUnit.test("Canvas draws text on html object",
 // loan pattern to isolate html-fixture setup and tear down
 function withHTMLCanvasUsing(props, testFunction){
 		let mockCanvas  = $(document.createElement("canvas")).
-			prop("id", props.id || SNAKE_CANVAS_ID).
+			prop("id", props.id || MOCK_CANVAS_ID).
 			prop("width", props.width || 0).
 			prop("height", props.height || 0);
 

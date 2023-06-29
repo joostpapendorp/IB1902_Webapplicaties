@@ -589,7 +589,7 @@ https://stackoverflow.com/questions/51119821/query-objects-on-index-idb?rq=3
 
 ### 2023-06-29
 
-(P 1)
-[ ] ADR
+(P 1, 2, 3)
+[v] ADR
 
 ### TODO

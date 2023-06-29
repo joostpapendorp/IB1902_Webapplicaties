@@ -9,7 +9,7 @@ function openStorage(indexedDBConnection, databaseHandle, storageHandles) {
 	//nocapitalizationconventionhere !! (not like that's important in an untyped but case-sensitive 'language'...)
 	openRequest.onupgradeneeded = event => createStorages(event, storageHandles);
 	openRequest.onsuccess = event => databaseOpenedSuccessfully(event);
-	openRequest.onerror = event => databaseError(event);
+	openRequest.onerror = databaseError;
 
 	function createStorages(event, handles){
 		/*
@@ -17,7 +17,10 @@ function openStorage(indexedDBConnection, databaseHandle, storageHandles) {
 		*/
 		let actualDB = databaseFrom(event);
 
-		handles.forEach(handle => actualDB.createObjectStore(handle));
+		handles.forEach(handle =>{
+			let store = actualDB.createObjectStore(handle, {keyPath : "id", autoIncrement:true});
+			store.createIndex("result", "result", {unique: false});
+		});
 		console.log( "stores created for " + handles.join())
 	}
 
@@ -40,7 +43,40 @@ function openStorage(indexedDBConnection, databaseHandle, storageHandles) {
 		return event.target.result;
 	}
 
+	function requestStorage(handle){
+
+		async function count(key){
+			async function doCount(key){
+        return new Promise(function(resolve){
+					let request = query("readonly").index("result").count(key.result);
+					request.onsuccess = (event) => {
+							console.log(`resolving promise with ${event.target.result}`)
+							resolve(event.target.result);
+					}
+					request.onerror = databaseError;
+				});
+			}
+			return await doCount(key);
+		}
+
+		function add(value){
+			let request = query("readwrite").add(value);
+			request.onerror = databaseError;
+		}
+
+		function query(mode){
+			return database.
+				transaction([handle], mode).
+				objectStore(handle);
+		}
+
+		return {
+			count : (key) => count(key),
+			add : (value) => add(value)
+		};
+	}
+
 	return {
-		requestStorage : (storageHandle) => {}
+		requestStorage : (storageHandle) => requestStorage(storageHandle)
 	}
 };

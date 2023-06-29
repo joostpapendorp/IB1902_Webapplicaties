@@ -558,9 +558,38 @@ https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/C
 
 ### 2023-06-27
 
+(P 1, 2, 3, 4, 5)
+[v] show wins / losses
+
+(P 6)
+[v] pass storage through game
+
+(P 7)
+
+
+### 2023-06-28
+
 (P 1)
-[ ] add indices to storage
-[ ] store wins / losses
-[ ] retrieve wins / losses
+[v] transaction times out => extract facade which opens a transaction to the store each time.
+
+    Uncaught DOMException: Data provided to an operation does not meet requirements.
+
+(P 2, 3, 4)
+[v] retrieve wins / losses
+
+https://stackoverflow.com/questions/49128292/indexeddb-wait-for-event
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/resolve
+
+(P 5)
+https://stackoverflow.com/questions/51119821/query-objects-on-index-idb?rq=3
+[v] add indices to storage
+[v] store wins / losses
+
+
+### 2023-06-29
+
+(P 1)
+[ ] ADR
 
 ### TODO

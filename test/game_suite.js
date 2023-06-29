@@ -10,16 +10,18 @@ function GameBuilder(){
 	this.difficulties = [{
 		name:"MOCK_DIFFICULTY",
 		description:"MOCK_DESCRIPTION",
-		ruleSet: () => new MockRuleSet()
+		ruleSet: (storage) => new MockRuleSet()
 	}];
 	this.engineFactory = (board, timer) => new MockEngine();
 	this.player = createPlayer();
+	this.storage = new MockSnakeStorage();
 
 	this.build = function(){
 		return createGame(
 			this.difficulties,
 			this.engineFactory,
-			this.player
+			this.player,
+			this.storage
 		);
 	};
 
@@ -27,7 +29,7 @@ function GameBuilder(){
 		this.difficulties = [{
 			name:"MOCK_DIFFICULTY",
 			description:"MOCK_DESCRIPTION",
-			ruleSet: () => ruleSet
+			ruleSet: (storage) => ruleSet
 		}];
 		return this;
 	};
@@ -39,6 +41,11 @@ function GameBuilder(){
 
 	this.withPlayer = function(player){
 		this.player = player;
+		return this;
+	};
+
+	this.withStorage = function(storage){
+		this.storage = storage;
 		return this;
 	};
 }

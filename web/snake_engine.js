@@ -1,5 +1,7 @@
 "use strict";
 
+const CENTRAL_TILE = createLocation(BOARD_SIZE/2, BOARD_SIZE/2)
+
 function createEngineFactory(board, timer, splashScreen){
 
 	function Engine(board, timer, rules){
@@ -30,16 +32,21 @@ function createEngineFactory(board, timer, splashScreen){
 				case GAME_OVER_STATE:
 					this.halt();
 					splashScreen.writeGameOver(board);
-					rules.gameLost();
+					writeTalliedScores(rules.gameLost);
 					break;
 
 				case GAME_WON_STATE:
 					this.halt();
 					splashScreen.writeGameWon(board);
-					rules.gameWon();
+					writeTalliedScores(rules.gameWon);
 					break;
 			}
 		};
+
+		async function writeTalliedScores(tally){
+			let tallyText = await tally();
+			board.writeAt(CENTRAL_TILE, tallyText);
+		}
 
 		this.steer = function(direction){
 			this.direction = direction;

@@ -27,11 +27,18 @@ function buildInjectionContext(){
 
 	let planter = foodPlanter(board,random(Math).randomizeLocation);
 	let rules = ruleSets(snakeFactory.createSnake, planter);
+	let difficultyLevels = difficulties(rules);
+	let storage = openStorage(
+		window.indexedDB,
+		SNAKE_DATABASE_HANDLE,
+		difficultyLevels.map(level => level.name)
+	);
 
 	return createGame(
-		difficulties(rules),
+		difficultyLevels,
 		engineFactory.prepareEngineWith,
-		createPlayer()
+		createPlayer(),
+		storage
 	);
 }
 

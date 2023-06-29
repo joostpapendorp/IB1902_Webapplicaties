@@ -98,28 +98,29 @@ function MockBoard(){
 		remove : new Recorder("remove"),
 		clear : new Recorder("clear"),
 		redraw : new Recorder("redraw"),
-		elementAt : new Recorder("elementAt")
+		elementAt : new Recorder("elementAt"),
+		writeAt : new Recorder("writeAt")
 	};
 
 	this.createElement = function(location, type){
 		this.recorders.createElement.invokedWith([location,type]);
-	}
+	};
 
 	this.replace = function(element){
 		this.recorders.replace.invokedWith([element]);
-	}
+	};
 
 	this.remove = function(element){
 		this.recorders.remove.invokedWith([element]);
-	}
+	};
 
 	this.clear = function(){
 		this.recorders.clear.invoked();
-	}
+	};
 
 	this.redraw = function(){
 		this.recorders.redraw.invoked();
-	}
+	};
 
 	this.elementAtReturns = function(location) {
 		return { type : FREE_SPACE_TYPE };
@@ -128,7 +129,11 @@ function MockBoard(){
 	this.elementAt = function(location){
 		this.recorders.elementAt.invokedWith([location]);
 		return this.elementAtReturns(location);
-	}
+	};
+
+	this.writeAt = function(location, text){
+		this.recorders.writeAt.invokedWith([location, text]);
+	};
 }
 
 
@@ -268,7 +273,7 @@ function MockGame(){
 }
 
 
-function MockRuleSet(stateToReturn){
+function MockRuleSet(stateToReturn, tallyText){
 	this.recorders = {
 		prepare : new Recorder("prepare"),
 		initialDirection : new Recorder("initialDirection"),
@@ -308,10 +313,12 @@ function MockRuleSet(stateToReturn){
 
 	this.gameWon = function(){
 		this.recorders.gameWon.invoked();
+		return tallyText;
 	}
 
 	this.gameLost = function(){
 		this.recorders.gameLost.invoked();
+		return tallyText;
 	}
 }
 
@@ -373,6 +380,41 @@ function MockIndexedDB(){
 
 	this.createObjectStore = function(name, options){
 		this.recorders.createObjectStore.invokedWith([name, options]);
+	};
+}
+
+
+function MockSnakeStorage(){
+	this.recorders = {
+		requestStorage : new Recorder("requestStorage"),
+	};
+
+	this.requestStorage = function(handle){
+		this.recorders.requestStorage.invokedWith([handle]);
+	};
+}
+
+
+function MockObjectStore(counts){
+	this.countResults = counts || (() => 0);
+
+	this.recorders = {
+		get : new Recorder("get"),
+		count : new Recorder("count"),
+		add : new Recorder("add"),
+	};
+
+	this.get = function(key){
+		this.recorders.get.invokedWith([key]);
+	};
+
+	this.count = function(key){
+		this.recorders.count.invokedWith([key]);
+		return this.countResults();
+	};
+
+	this.add = function(value){
+		this.recorders.add.invokedWith([value]);
 	};
 }
 

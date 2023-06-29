@@ -1,4 +1,5 @@
 import {createGame} from "../web/snake_game.js";
+import {createPlayer, UP_ARROW_KEY_CODE} from "../web/snake_player.js";
 
 "use strict";
 

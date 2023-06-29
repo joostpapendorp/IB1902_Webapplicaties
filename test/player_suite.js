@@ -1,3 +1,11 @@
+import {
+	createPlayer,
+	LEFT_ARROW_KEY_CODE,
+	UP_ARROW_KEY_CODE,
+	RIGHT_ARROW_KEY_CODE,
+	DOWN_ARROW_KEY_CODE
+} from "../web/snake_player.js";
+
 "use strict";
 
 QUnit.module("Player");

@@ -683,5 +683,7 @@ https://stackoverflow.com/questions/73813721/syntaxerror-ambiguous-indirect-expo
 Nope. It means: you typed createGame as creategame.
 Uncaught JoostError: ambiguous illegible error message
 
+[v] convert snake_player
+
 
 ### TODO

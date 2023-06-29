@@ -1,11 +1,11 @@
 "use strict";
 
-const LEFT_ARROW_KEY_CODE = 37;
-const UP_ARROW_KEY_CODE = 38;
-const RIGHT_ARROW_KEY_CODE = 39;
-const DOWN_ARROW_KEY_CODE = 40;
+export const LEFT_ARROW_KEY_CODE = 37;
+export const UP_ARROW_KEY_CODE = 38;
+export const RIGHT_ARROW_KEY_CODE = 39;
+export const DOWN_ARROW_KEY_CODE = 40;
 
-function createPlayer(){
+export function createPlayer(){
 	return {
 		receive : function(code){
 			switch (code) {

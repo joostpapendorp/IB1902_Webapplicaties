@@ -1,6 +1,7 @@
 "use strict";
 
 import {createGame} from "./snake_game.js";
+import {createPlayer} from "./snake_player.js";
 
 export const SNAKE_CANVAS_ID = "mySnakeCanvas";
 

@@ -199,7 +199,7 @@ QUnit.test("Difficulties provides all the rule sets in ascending order of diffic
 
 
 QUnit.test("Winning the game writes the score.",
-	assert => {
+	async function(assert) {
 		assert.expect(6);
 
 		const WINS = 2, LOSSES = 1;
@@ -209,7 +209,7 @@ QUnit.test("Winning the game writes the score.",
 			withHighScores(mockHighScores).
 			basic();
 
-		let actual = subject.gameWon();
+		let actual = await subject.gameWon();
 
 		let add = mockHighScores.recorders.add;
 		assert.equal(add.timesInvoked(), 1, "Stores the result");
@@ -227,7 +227,7 @@ QUnit.test("Winning the game writes the score.",
 
 
 QUnit.test("Losing the game writes the score.",
-	assert => {
+	async function(assert) {
 		assert.expect(6);
 
 		const WINS = 1, LOSSES = 2;
@@ -237,7 +237,7 @@ QUnit.test("Losing the game writes the score.",
 			withHighScores(mockHighScores).
 			basic();
 
-		let actual = subject.gameLost();
+		let actual = await subject.gameLost();
 
 		let add = mockHighScores.recorders.add;
 		assert.equal(add.timesInvoked(), 1, "Stores the result");

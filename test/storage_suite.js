@@ -75,7 +75,7 @@ QUnit.test("Opening the storage creates a request to open a database with the gi
 
 QUnit.test("Opening the storage for the first time uses a callback to initialize the storages in the new database.",
 	assert => {
-		assert.expect(4);
+		assert.expect(7);
 
 		let mockRequest = {};
 		let subject = buildStorage().
@@ -88,13 +88,20 @@ QUnit.test("Opening the storage for the first time uses a callback to initialize
     assert.ok(callBack, "Database is prepped for upgrade.")
 
 		// mocks within mocks within mocks, because of the unavoidable native API.
-		let mockIndexedDB = new MockIndexedDB();
+		let mockObjectStore = new MockObjectStore();
+		let mockIndexedDB = new MockIndexedDB(mockObjectStore);
 		callBack({ target : { result : mockIndexedDB }});
 
 		let createObjectStore = mockIndexedDB.recorders.createObjectStore;
 		assert.equal(createObjectStore.timesInvoked(), 2, "Creates a store for each of the storages");
 		assert.equal(createObjectStore.invocations[0].arguments[0], TEST_STORAGE_HANDLE_ONE, "first storage is created");
 		assert.equal(createObjectStore.invocations[1].arguments[0], TEST_STORAGE_HANDLE_TWO, "second storage is created");
+
+		// index is still hard coded
+		let createIndex = mockObjectStore.recorders.createIndex;
+		assert.equal(createIndex.timesInvoked(), 2, "Creates an index on each of the object stores");
+		assert.propEqual(createIndex.invocations[0].arguments, ["result", "result", {unique: false} ], "first index is hard coded");
+		assert.propEqual(createIndex.invocations[1].arguments, ["result", "result", {unique: false} ], "second index is hard coded");
 	}
 );
 

@@ -194,7 +194,7 @@ QUnit.test("Winning the game writes the win.",
 
 
 QUnit.test("Winning the game reports a win.",
-	assert => {
+	async function(assert) {
 		assert.expect(3);
 		let expected = "MOCK_TALLY_WIN_RESULTS";
 		let mockRules = new MockRuleSet(GAME_WON_STATE, expected);
@@ -205,7 +205,7 @@ QUnit.test("Winning the game reports a win.",
 			withBoard(mockBoard).
 			build();
 
-		subject.tick();
+		await subject.tick();
 
 		let gameWon = mockRules.recorders.gameWon;
 		assert.equal(gameWon.timesInvoked(), 1, "Uses rules to update wins/losses");
@@ -213,12 +213,12 @@ QUnit.test("Winning the game reports a win.",
 		let writeAt = mockBoard.recorders.writeAt;
 		assert.equal(writeAt.timesInvoked(), 1, "Writes text on the board");
 		assert.equal(writeAt.invocations[0].arguments[1], expected, "Write the tallied results")
-}
+	}
 );
 
 
 QUnit.test("Losing the game reports a loss.",
-	assert => {
+	async function(assert) {
 		assert.expect(3);
 
 		let expected = "MOCK_TALLY_LOSS_RESULTS";
@@ -230,7 +230,7 @@ QUnit.test("Losing the game reports a loss.",
 			withBoard(mockBoard).
 			build();
 
-		subject.tick();
+		await subject.tick();
 
 		let gameLost = mockRules.recorders.gameLost;
 		assert.equal(gameLost.timesInvoked(), 1, "Uses rules to update wins/losses");

@@ -32,18 +32,18 @@ function createEngineFactory(board, timer, splashScreen){
 				case GAME_OVER_STATE:
 					this.halt();
 					splashScreen.writeGameOver(board);
-					writeTalliedScores(rules.gameLost);
+					writeTalliedScores(this.board, () => rules.gameLost());
 					break;
 
 				case GAME_WON_STATE:
 					this.halt();
 					splashScreen.writeGameWon(board);
-					writeTalliedScores(rules.gameWon);
+					writeTalliedScores(this.board, () => rules.gameWon());
 					break;
 			}
 		};
 
-		async function writeTalliedScores(tally){
+		async function writeTalliedScores(board, tally){
 			let tallyText = await tally();
 			board.writeAt(CENTRAL_TILE, tallyText);
 		}

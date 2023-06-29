@@ -373,13 +373,14 @@ function MockRequest(){
 }
 
 
-function MockIndexedDB(){
+function MockIndexedDB(objectStore){
 	this.recorders = {
 		createObjectStore : new Recorder("createObjectStore")
 	};
 
 	this.createObjectStore = function(name, options){
 		this.recorders.createObjectStore.invokedWith([name, options]);
+		return objectStore || new MockObjectStore();
 	};
 }
 
@@ -399,18 +400,24 @@ function MockObjectStore(counts){
 	this.countResults = counts || (() => 0);
 
 	this.recorders = {
+		createIndex : new Recorder("createIndex"),
+
 		get : new Recorder("get"),
 		count : new Recorder("count"),
 		add : new Recorder("add"),
+	};
+
+	this.createIndex = function(name, column, props){
+		this.recorders.createIndex.invokedWith([name, column, props]);
 	};
 
 	this.get = function(key){
 		this.recorders.get.invokedWith([key]);
 	};
 
-	this.count = function(key){
+	this.count = async function(key){
 		this.recorders.count.invokedWith([key]);
-		return this.countResults();
+		return Promise.resolve(this.countResults());
 	};
 
 	this.add = function(value){

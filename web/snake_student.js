@@ -9,6 +9,7 @@ import {createEngineFactory} from "./snake_engine.js";
 import {SNAKE_DATABASE_HANDLE, openStorage} from "./snake_storage.js";
 import {createTimer} from "./snake_timer.js";
 import {random} from "./snake_random.js";
+import {createCanvas} from "./snake_canvas.js";
 
 export const SNAKE_CANVAS_ID = "mySnakeCanvas";
 

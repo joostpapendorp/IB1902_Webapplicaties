@@ -1,3 +1,5 @@
+import {createCanvas} from "../web/snake_canvas.js";
+
 "use strict";
 
 QUnit.module("Canvas");

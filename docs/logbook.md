@@ -707,6 +707,9 @@ Uncaught JoostError: ambiguous illegible error message
 
 http://localhost:8080/test/snake_unit_test_suite.html
 
+(P 13)
+[v] convert snake_canvas
+
 [ ] convert snake_board
 
 

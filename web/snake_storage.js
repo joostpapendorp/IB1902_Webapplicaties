@@ -79,4 +79,4 @@ function openStorage(indexedDBConnection, databaseHandle, storageHandles) {
 	return {
 		requestStorage : (storageHandle) => requestStorage(storageHandle)
 	}
-};
+}

@@ -1,6 +1,6 @@
 "use strict";
 
-function createGame(
+export function createGame(
 	difficulties,
 	prepareEngineWith,
 	player,

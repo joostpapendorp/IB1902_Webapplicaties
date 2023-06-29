@@ -1,3 +1,5 @@
+import {createGame} from "../web/snake_game.js";
+
 "use strict";
 
 QUnit.module("Game");

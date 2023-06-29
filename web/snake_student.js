@@ -1,5 +1,7 @@
 "use strict";
 
+import {createGame} from "./snake_game.js";
+
 export const SNAKE_CANVAS_ID = "mySnakeCanvas";
 
 $(document).ready(function() {

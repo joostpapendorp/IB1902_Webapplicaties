@@ -674,6 +674,14 @@ https://stackoverflow.com/questions/3302959/how-to-restart-a-node-js-server
 
 It is official: Javascript is madness. Fucking kut cache.
 
+[v] convert snake_game
+
+    Uncaught SyntaxError: ambiguous indirect export: creategame
+
+https://stackoverflow.com/questions/73813721/syntaxerror-ambiguous-indirect-export-default-error-when-importing-my-own-clas
+
+Nope. It means: you typed createGame as creategame.
+Uncaught JoostError: ambiguous illegible error message
 
 
 ### TODO

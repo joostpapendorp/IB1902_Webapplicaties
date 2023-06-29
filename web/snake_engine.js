@@ -1,8 +1,14 @@
+import {
+	GAME_RUNNING_STATE,
+	GAME_OVER_STATE,
+	GAME_WON_STATE
+} from "./snake_rule_set.js"
+
 "use strict";
 
 const CENTRAL_TILE = createLocation(BOARD_SIZE/2, BOARD_SIZE/2)
 
-function createEngineFactory(board, timer, splashScreen){
+export function createEngineFactory(board, timer, splashScreen){
 
 	function Engine(board, timer, rules){
 		this.board = board;

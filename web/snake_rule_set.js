@@ -1,17 +1,23 @@
 "use strict";
 
-const INITIAL_DIRECTION = UP;
-const NUMBER_OF_FOODS_PER_BASIC_GAME = 5;
+import {
+	SNAKE_MOVED,
+	SNAKE_DIED,
+	SNAKE_ATE,
+} from "./snake_snake.js";
 
-const NEW_GAME_STATE = createGameState("New game");
-const GAME_RUNNING_STATE = createGameState("Game running");
-const GAME_OVER_STATE = createGameState("Game over");
-const GAME_WON_STATE = createGameState("Game won");
+export const INITIAL_DIRECTION = UP;
+export const NUMBER_OF_FOODS_PER_BASIC_GAME = 5;
 
-const GAME_RESULT_WIN = {result:"win"};
-const GAME_RESULT_LOSS = {result:"loss"};
+export const NEW_GAME_STATE = createGameState("New game");
+export const GAME_RUNNING_STATE = createGameState("Game running");
+export const GAME_OVER_STATE = createGameState("Game over");
+export const GAME_WON_STATE = createGameState("Game won");
 
-function ruleSets(createSnake, foodPlanter) {
+export const GAME_RESULT_WIN = {result:"win"};
+export const GAME_RESULT_LOSS = {result:"loss"};
+
+export function ruleSets(createSnake, foodPlanter) {
 
 	function BasicRuleSet(createSnake, foodPlanter, highScores){
 		this.createSnake = createSnake;
@@ -118,7 +124,7 @@ function createGameState(description){
 	return state;
 }
 
-function difficulties(ruleSets){
+export function difficulties(ruleSets){
 	function Difficulty(name, description, ruleSet){
 		this.name = name;
 		this.description = description;

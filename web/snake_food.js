@@ -1,9 +1,9 @@
 "use strict";
 
-const FOOD_ENTITY = createElementEntity("Food");
-const FOOD_TYPE = createElementType("Olive", FOOD_ENTITY);
+export const FOOD_ENTITY = createElementEntity("Food");
+export const FOOD_TYPE = createElementType("Olive", FOOD_ENTITY);
 
-function foodPlanter(board, randomizeLocation) {
+export function foodPlanter(board, randomizeLocation) {
 	function plant() {
 		let foodLocation = randomizeLocation();
 

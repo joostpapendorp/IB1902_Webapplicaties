@@ -1,4 +1,13 @@
+import {
+	FOOD_ENTITY,
+	FOOD_TYPE,
+
+	foodPlanter
+} from "../web/snake_food.js";
+
 "use strict";
+
+const MOCK_TYPE = {type: {color:"COLOR", entity:"ENTITY"}};
 
 QUnit.module("Food");
 
@@ -37,7 +46,7 @@ QUnit.test("Food planter retries until a free space is found.",
 		let mockBoard = new MockBoard();
 		mockBoard.elementAtReturns = function(location) {
 			return location === MOCK_LOCATION ?
-				{ type : SNAKE_HEAD_TYPE } :
+				{ type : MOCK_TYPE } :
 				{ type : FREE_SPACE_TYPE };
 		};
 

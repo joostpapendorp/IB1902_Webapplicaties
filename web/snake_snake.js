@@ -1,20 +1,23 @@
+import {
+	FOOD_ENTITY
+} from "./snake_food.js";
+
 "use strict";
 
-const SNAKE_ENTITY = createElementEntity("Snake");
+export const SNAKE_ENTITY = createElementEntity("Snake");
 
-const SNAKE_HEAD_TYPE = createElementType("DarkOrange", SNAKE_ENTITY);
-const SNAKE_BODY_TYPE = createElementType("DarkRed", SNAKE_ENTITY);
+export const SNAKE_HEAD_TYPE = createElementType("DarkOrange", SNAKE_ENTITY);
+export const SNAKE_BODY_TYPE = createElementType("DarkRed", SNAKE_ENTITY);
 
-const DEAD_SNAKE_BODY_TYPE = createElementType("Black", SNAKE_ENTITY);
-const DEAD_SNAKE_HEAD_TYPE = createElementType("DarkGrey", SNAKE_ENTITY);
+export const DEAD_SNAKE_BODY_TYPE = createElementType("Black", SNAKE_ENTITY);
+export const DEAD_SNAKE_HEAD_TYPE = createElementType("DarkGrey", SNAKE_ENTITY);
 
-const SNAKE_MOVED = "Snake moved";
-const SNAKE_DIED = "Snake died";
-const SNAKE_ATE = "Snake ate";
-
+export const SNAKE_MOVED = "Snake moved";
+export const SNAKE_DIED = "Snake died";
+export const SNAKE_ATE = "Snake ate";
 
 // GoF factory pattern for snake creation
-function createSnakeFactory(){
+export function createSnakeFactory(){
 	function createSnake(board, locations){
 		/**
 			@constructor Snake

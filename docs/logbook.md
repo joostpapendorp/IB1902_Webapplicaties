@@ -685,5 +685,15 @@ Uncaught JoostError: ambiguous illegible error message
 
 [v] convert snake_player
 
+(P 10)
+
+[v] convert snake_engine
+[v] convert snake_food
+[v] convert snake_rule_set
+[v] convert snake_snake
+
+Dependencies only apply to CONSTANTS: no code dependencies, so nothing circular.
+
+
 
 ### TODO

@@ -1,3 +1,25 @@
+import {createEngineFactory} from "../web/snake_engine.js";
+
+import {
+	SNAKE_MOVED,
+	SNAKE_DIED,
+	SNAKE_ATE
+} from "../web/snake_snake.js"
+
+import {
+	NUMBER_OF_FOODS_PER_BASIC_GAME,
+
+	NEW_GAME_STATE,
+	GAME_RUNNING_STATE,
+	GAME_OVER_STATE,
+	GAME_WON_STATE,
+} from "../web/snake_rule_set.js";
+
+
+import {
+	buildRules
+} from "./rule_set_suite.js";
+
 "use strict";
 
 QUnit.module("Engine");

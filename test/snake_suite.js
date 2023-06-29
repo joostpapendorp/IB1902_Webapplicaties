@@ -1,3 +1,21 @@
+import {
+	FOOD_TYPE
+} from "../web/snake_food.js";
+
+import {
+	SNAKE_ENTITY,
+
+	SNAKE_HEAD_TYPE,
+	SNAKE_BODY_TYPE,
+	DEAD_SNAKE_BODY_TYPE,
+	DEAD_SNAKE_HEAD_TYPE,
+
+	SNAKE_MOVED,
+	SNAKE_DIED,
+	SNAKE_ATE,
+
+	createSnakeFactory
+} from "../web/snake_snake.js";
 "use strict";
 
 QUnit.module("Snake");

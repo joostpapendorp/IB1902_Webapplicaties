@@ -2,6 +2,10 @@
 
 import {createGame} from "./snake_game.js";
 import {createPlayer} from "./snake_player.js";
+import {createSnakeFactory} from "./snake_snake.js";
+import {foodPlanter} from "./snake_food.js";
+import {ruleSets, difficulties} from "./snake_rule_set.js";
+import {createEngineFactory} from "./snake_engine.js";
 
 export const SNAKE_CANVAS_ID = "mySnakeCanvas";
 

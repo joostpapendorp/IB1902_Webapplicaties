@@ -1,8 +1,30 @@
+import {
+	SNAKE_MOVED,
+	SNAKE_DIED,
+	SNAKE_ATE
+} from "../web/snake_snake.js"
+
+import {
+	INITIAL_DIRECTION,
+	NUMBER_OF_FOODS_PER_BASIC_GAME,
+
+	NEW_GAME_STATE,
+	GAME_RUNNING_STATE,
+	GAME_OVER_STATE,
+	GAME_WON_STATE,
+
+	GAME_RESULT_WIN,
+	GAME_RESULT_LOSS,
+
+	ruleSets,
+	difficulties
+} from "../web/snake_rule_set.js"
+
 "use strict";
 
 QUnit.module("Rule Set");
 
-function buildRules() {
+export function buildRules() {
 	return new RuleSetBuilder();
 }
 

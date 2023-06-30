@@ -8,11 +8,17 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "eslint web"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.40.0"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 8,
+      "sourceType": "module"
+    }
   }
 }

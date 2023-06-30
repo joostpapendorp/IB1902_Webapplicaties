@@ -592,4 +592,156 @@ https://stackoverflow.com/questions/51119821/query-objects-on-index-idb?rq=3
 (P 1, 2, 3)
 [v] ADR
 
+(P 4, 5)
+Story _017-Modularization_
+[v] module diagram
+
+(P 6, 7)
+[v] introduce module Canvas, 
+
+test graduality ===> HAHAHAHAHA Nope.
+--> eerst as-is, dan split
+
+    Module source URI is not allowed in this document: “file:///E:/files/studie/OU/Webapplicaties/Opdrachten/Opdracht2/IB1902_Webapplicaties/test/canvas_suite.js”.
+
+en 
+
+    Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at file:///E:/files/studie/OU/Webapplicaties/Opdrachten/Opdracht2/IB1902_Webapplicaties/web/snake_canvas.js. (Reason: CORS request not http).
+
+https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSRequestNotHttp?utm_source=devtools&utm_medium=firefox-cors-errors&utm_campaign=default
+
+Textboek pp 187:
+    
+    In de eerste plaats kunnen we het HTML-bestand niet meer via het filesysteem bekijken. We hebben een lokale webserver nodig.
+
+cursussite:
+
+    Een simpele webserver
+
+    De oplossing: een heel simpele HTTP-server.
+    Installeer https://nodejs.org/en/
+    Je hoeft daarbij niet aan te vinken dat er méér dan alleen nodejs geïnstalleerd wordt.
+    
+    Dan geef je, in een PowerShell (die hoort op het systeem te staan, en is anders te vinden in de Microsoft app) die je als adminustrator draait, het commando:
+    
+    npm install --global http-server
+    
+    Je wandelt nu in een powershell (dat hoeft niet als administrator) naar de directory met het HTML-bestand dat je wilt zien. Geef daar het commando:
+    
+    http-server
+    
+    Je kunt nu in je browser het bestand bekijken met:
+    
+    http://localhost:8080/index.html
+    
+    Uitgebreidere documentatie (die je eigenlijk niet nodig hebt) vind je op https://www.npmjs.com/package/http-server.
+
+==> HTTPS werkt niet
+[v] start locale webserver.
+
+??? kan het geleidelijk? e.g. kunnen we modules importeren in niet-modules?
+
+    Uncaught SyntaxError: import declarations may only appear at top level of a module
+
+==> Nope. Can't import as non-module.
+??? Ok, kan het dan zonder import?
+==> Nope:
+
+    jQuery.Deferred exception: createCanvas is not defined buildInjectionContext@http://localhost:8080/web/snake_student.js:23:1
+
+Soooo. All or nothing. Either all modules or no modules. No gentle change. Why did I even expect different?
+
+Oja, _wel_ even na ELKE FUCKING CHANGE de webserver herstarten. @W#$#$^%
+==> OK, harde cache refresh CTRL-SHIFT-R werkt ook. Soms. Misschien.
+
+https://stackoverflow.com/questions/3302959/how-to-restart-a-node-js-server
+
+??? OK, maar andersom dan? dus van buiten naar binnen? Kan een module dependen op niet-modules?
+==> Ja! Zowaar. Thank the gods for small favors.
+    ===> Convert outside in. 
+
+(P 8)
+[v] convert snake_student en tests.
+
+
+*(&@#^%*&) 016 testen falen. Niet opgemerkt vanwege cache vervuiling.
+
+(P 9)
+[v] fix testen
+
+    "Madness is trying the same thing twice and expect different results."
+    -- Albert Einstein
+
+It is official: Javascript is madness. Fucking kut cache.
+
+[v] convert snake_game
+
+    Uncaught SyntaxError: ambiguous indirect export: creategame
+
+https://stackoverflow.com/questions/73813721/syntaxerror-ambiguous-indirect-export-default-error-when-importing-my-own-clas
+
+Nope. It means: you typed createGame as creategame.
+Uncaught JoostError: ambiguous illegible error message
+
+[v] convert snake_player
+
+(P 10)
+
+[v] convert snake_engine
+[v] convert snake_food
+[v] convert snake_rule_set
+[v] convert snake_snake
+
+Dependencies only apply to CONSTANTS: no code dependencies, so nothing circular.
+
+(p 11)
+[v] convert snake_storage
+
+    Loading module from “http://localhost:8080/test/snake_storage.js” was blocked because of a disallowed MIME type (“”).
+
+Nope. It means: you forgot to adjust the directory.
+Uncaught JoostError: ambiguous illegible error message
+
+[v] convert snake_timer
+[v] convert snake_random
+
+http://localhost:8080/test/snake_unit_test_suite.html
+
+(P 13)
+[v] convert snake_canvas
+
+
+### 2023-06-30
+(P 1, 2)
+[v] convert and break up mocks
+
+(P 3)
+[v] convert snake_board
+[v] convert mocks to module
+
+(P 4)
+[v] convert snake_element
+
+(P 5)
+[v] convert snake_location
+
+(P 6, 7)
+[v] linting
+Linting died (for each file):
+
+    1:1  error  Parsing error: 'import' and 'export' may appear only with 'sourceType: module'
+
+https://github.com/eslint/eslint/issues/5552
+
+    You need to add sourceType: "module" to your config. There is no way for us to identify automatically what's a script and what's a module, so you have to provide that information in config file. For more details look in the documentation
+
+https://eslint.org/docs/latest/use/configure/#specifying-parser-options
+https://medium.com/tektalks/use-package-json-for-eslint-configurations-1208d5bcd0eb
+
+fix: define command line parser options:
+https://eslint.org/docs/latest/use/command-line-interface#--parser-options
+
+(P 8)
+[v] MVC ADR
+
 ### TODO

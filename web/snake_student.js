@@ -1,6 +1,20 @@
 "use strict";
 
-const SNAKE_CANVAS_ID = "mySnakeCanvas";
+import {createLocation} from "./snake_location.js";
+import {createElementFactory, createElementType, createElementEntity} from "./snake_element.js";
+import {createCanvas} from "./snake_canvas.js";
+import {createBoard, FREE_SPACE_TYPE} from "./snake_board.js";
+import {createTimer} from "./snake_timer.js";
+import {createEngineFactory} from "./snake_engine.js";
+import {random} from "./snake_random.js";
+import {foodPlanter} from "./snake_food.js";
+import {createSnakeFactory} from "./snake_snake.js";
+import {ruleSets, difficulties} from "./snake_rule_set.js";
+import {SNAKE_DATABASE_HANDLE, openStorage} from "./snake_storage.js";
+import {createPlayer} from "./snake_player.js";
+import {createGame} from "./snake_game.js";
+
+export const SNAKE_CANVAS_ID = "mySnakeCanvas";
 
 $(document).ready(function() {
 	// note: we MUST construct the context onDocumentReady, since we need the html canvas JQuery object.
@@ -15,19 +29,21 @@ $(document).ready(function() {
   });
 });
 
-function buildInjectionContext(){
+export function buildInjectionContext(){
 	let canvasDOMElement = $("#"+SNAKE_CANVAS_ID);
 	let board = createBoard(
 		createCanvas(canvasDOMElement),
 		createElementFactory()
 	);
 
-	let snakeFactory = createSnakeFactory(board);
 	let engineFactory = createEngineFactory(board, createTimer(), createSplashScreen());
 
 	let planter = foodPlanter(board,random(Math).randomizeLocation);
+	let snakeFactory = createSnakeFactory(board);
+
 	let rules = ruleSets(snakeFactory.createSnake, planter);
 	let difficultyLevels = difficulties(rules);
+
 	let storage = openStorage(
 		window.indexedDB,
 		SNAKE_DATABASE_HANDLE,

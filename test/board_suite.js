@@ -1,4 +1,65 @@
+import {createLocation} from "../web/snake_location.js";
+import {
+	BOARD_SIZE,
+	OFF_THE_BOARD_ENTITY,
+	FREE_SPACE_ENTITY,
+	FREE_SPACE_TYPE,
+	createBoard
+} from "../web/snake_board.js";
+import {createElementFactory} from "../web/snake_element.js";
+
+import {Recorder} from "./mocks.js";
+import {MOCK_TYPE, SECOND_MOCK_TYPE} from "./element_suite.js";
+import {MockCanvas} from "./canvas_suite.js";
+
+
 "use strict";
+
+
+export function MockBoard(){
+	this.recorders = {
+		createElement : new Recorder("createElement"),
+		replace : new Recorder("replace"),
+		remove : new Recorder("remove"),
+		clear : new Recorder("clear"),
+		redraw : new Recorder("redraw"),
+		elementAt : new Recorder("elementAt"),
+		writeAt : new Recorder("writeAt")
+	};
+
+	this.createElement = function(location, type){
+		this.recorders.createElement.invokedWith([location,type]);
+	};
+
+	this.replace = function(element){
+		this.recorders.replace.invokedWith([element]);
+	};
+
+	this.remove = function(element){
+		this.recorders.remove.invokedWith([element]);
+	};
+
+	this.clear = function(){
+		this.recorders.clear.invoked();
+	};
+
+	this.redraw = function(){
+		this.recorders.redraw.invoked();
+	};
+
+	this.elementAtReturns = function(location) {
+		return { type : FREE_SPACE_TYPE };
+	};
+
+	this.elementAt = function(location){
+		this.recorders.elementAt.invokedWith([location]);
+		return this.elementAtReturns(location);
+	};
+
+	this.writeAt = function(location, text){
+		this.recorders.writeAt.invokedWith([location, text]);
+	};
+}
 
 QUnit.module("Board");
 

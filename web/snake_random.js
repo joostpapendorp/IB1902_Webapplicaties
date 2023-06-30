@@ -1,6 +1,10 @@
+import {createLocation} from "./snake_location.js";
+import {BOARD_SIZE} from "./snake_board.js";
+
 "use strict";
 
-function random(math) {
+
+export function random(math) {
 	/**
 		@function getRandomInt(min: number, max: number) -> number
 		@desc Opleveren van random geheel getal tussen [min, max>

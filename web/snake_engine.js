@@ -1,8 +1,17 @@
+import {createLocation} from "./snake_location.js";
+import {BOARD_SIZE} from "./snake_board.js";
+import {
+	GAME_RUNNING_STATE,
+	GAME_OVER_STATE,
+	GAME_WON_STATE
+} from "./snake_rule_set.js"
+
 "use strict";
+
 
 const CENTRAL_TILE = createLocation(BOARD_SIZE/2, BOARD_SIZE/2)
 
-function createEngineFactory(board, timer, splashScreen){
+export function createEngineFactory(board, timer, splashScreen){
 
 	function Engine(board, timer, rules){
 		this.board = board;
@@ -32,18 +41,18 @@ function createEngineFactory(board, timer, splashScreen){
 				case GAME_OVER_STATE:
 					this.halt();
 					splashScreen.writeGameOver(board);
-					writeTalliedScores(rules.gameLost);
+					writeTalliedScores(this.board, () => rules.gameLost());
 					break;
 
 				case GAME_WON_STATE:
 					this.halt();
 					splashScreen.writeGameWon(board);
-					writeTalliedScores(rules.gameWon);
+					writeTalliedScores(this.board, () => rules.gameWon());
 					break;
 			}
 		};
 
-		async function writeTalliedScores(tally){
+		async function writeTalliedScores(board, tally){
 			let tallyText = await tally();
 			board.writeAt(CENTRAL_TILE, tallyText);
 		}

@@ -1,9 +1,13 @@
+import {FREE_SPACE_TYPE} from "./snake_board.js";
+import {createElementType, createElementEntity} from "./snake_element.js";
+
+
 "use strict";
 
-const FOOD_ENTITY = createElementEntity("Food");
-const FOOD_TYPE = createElementType("Olive", FOOD_ENTITY);
+export const FOOD_ENTITY = createElementEntity("Food");
+export const FOOD_TYPE = createElementType("Olive", FOOD_ENTITY);
 
-function foodPlanter(board, randomizeLocation) {
+export function foodPlanter(board, randomizeLocation) {
 	function plant() {
 		let foodLocation = randomizeLocation();
 

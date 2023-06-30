@@ -1,4 +1,54 @@
+import {createEngineFactory} from "../web/snake_engine.js";
+import {
+	SNAKE_MOVED,
+	SNAKE_DIED,
+	SNAKE_ATE
+} from "../web/snake_snake.js"
+import {
+	NUMBER_OF_FOODS_PER_BASIC_GAME,
+
+	NEW_GAME_STATE,
+	GAME_RUNNING_STATE,
+	GAME_OVER_STATE,
+	GAME_WON_STATE,
+} from "../web/snake_rule_set.js";
+import {MOVE_UP, MOVE_LEFT} from "../web/snake_player.js";
+
+import {Recorder} from "./mocks.js";
+import {MockBoard} from "./board_suite.js";
+import {MockSnake} from "./snake_suite.js";
+import {buildRules, MockRuleSet} from "./rule_set_suite.js";
+import {MockTimer} from "./timer_suite.js";
+import {MockSplashScreen} from "./snake_student_suite.js";
+
+
 "use strict";
+
+
+export function MockEngine(){
+	this.recorders = {
+		start : new Recorder("start"),
+		tick : new Recorder("tick"),
+		steer : new Recorder("tick"),
+		shutDown : new Recorder("shut down")
+	};
+
+	this.start = function(){
+		this.recorders.start.invoked();
+	};
+
+	this.tick = function(direction){
+		this.recorders.tick.invokedWith([direction]);
+	};
+
+	this.steer = function(direction){
+		this.recorders.steer.invokedWith([direction]);
+	};
+
+	this.shutDown = function(){
+		this.recorders.shutDown.invoked();
+	};
+}
 
 QUnit.module("Engine");
 
@@ -70,10 +120,10 @@ QUnit.test("Tick pushes the snake and repaints the board",
 		assert.expect(3);
 
 		let mockBoard = new MockBoard();
+		let mockSnake = new MockSnake(SNAKE_MOVED);
 		let rules = buildRules()
 	    .withSnakeFactory(() => mockSnake)
 	    .basic();
-		let mockSnake = new MockSnake(SNAKE_MOVED);
 
 		let subject = buildEngine().
 			withBoard(mockBoard).
@@ -85,7 +135,7 @@ QUnit.test("Tick pushes the snake and repaints the board",
 		let push = mockSnake.recorders.push;
 		assert.equal(push.timesInvoked(), 1, "Snake is pushed once.");
 		let actual = push.invocations[0].arguments[0];
-		assert.equal(actual, UP, "Direction is passed on.")
+		assert.equal(actual, MOVE_UP, "Direction is passed on.")
 
 		let redraw = mockBoard.recorders.redraw;
 		assert.equal(redraw.timesInvoked(), 1, "Board is redrawn");
@@ -194,7 +244,7 @@ QUnit.test("Winning the game writes the win.",
 
 
 QUnit.test("Winning the game reports a win.",
-	assert => {
+	async function(assert) {
 		assert.expect(3);
 		let expected = "MOCK_TALLY_WIN_RESULTS";
 		let mockRules = new MockRuleSet(GAME_WON_STATE, expected);
@@ -205,7 +255,7 @@ QUnit.test("Winning the game reports a win.",
 			withBoard(mockBoard).
 			build();
 
-		subject.tick();
+		await subject.tick();
 
 		let gameWon = mockRules.recorders.gameWon;
 		assert.equal(gameWon.timesInvoked(), 1, "Uses rules to update wins/losses");
@@ -213,12 +263,12 @@ QUnit.test("Winning the game reports a win.",
 		let writeAt = mockBoard.recorders.writeAt;
 		assert.equal(writeAt.timesInvoked(), 1, "Writes text on the board");
 		assert.equal(writeAt.invocations[0].arguments[1], expected, "Write the tallied results")
-}
+	}
 );
 
 
 QUnit.test("Losing the game reports a loss.",
-	assert => {
+	async function(assert) {
 		assert.expect(3);
 
 		let expected = "MOCK_TALLY_LOSS_RESULTS";
@@ -230,7 +280,7 @@ QUnit.test("Losing the game reports a loss.",
 			withBoard(mockBoard).
 			build();
 
-		subject.tick();
+		await subject.tick();
 
 		let gameLost = mockRules.recorders.gameLost;
 		assert.equal(gameLost.timesInvoked(), 1, "Uses rules to update wins/losses");
@@ -368,12 +418,12 @@ QUnit.test("Steering a snake starts moving the snake in the provided direction."
 			withRules(rules).
 			build();
 
-		subject.steer(LEFT);
+		subject.steer(MOVE_LEFT);
 		subject.tick();
 
 		let push = mockSnake.recorders.push;
 		assert.equal(push.timesInvoked(),1,"Tick pushes snake")
 		let actual = push.invocations[0].arguments[0];
-		assert.equal(actual, LEFT, "Snake is pushed in the steered direction")
+		assert.equal(actual, MOVE_LEFT, "Snake is pushed in the steered direction")
 	}
 );

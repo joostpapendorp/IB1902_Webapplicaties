@@ -1,3 +1,11 @@
+import {createGame} from "../web/snake_game.js";
+import {createPlayer, UP_ARROW_KEY_CODE, MOVE_UP} from "../web/snake_player.js";
+import {MockEngine} from "./engine_suite.js";
+
+import {iterateReturnValuesOver, MockFactory} from "./mocks.js";
+import {MockRuleSet} from "./rule_set_suite.js";
+import {MockSnakeStorage} from "./storage_suite.js";
+
 "use strict";
 
 QUnit.module("Game");
@@ -167,7 +175,7 @@ QUnit.test("Receiving key input translates the key code into a direction to stee
 		assert.equal(steer.timesInvoked(), 1, "receiving valid input steers the engine");
 
 		let actual = steer.invocations[0].arguments[0];
-		assert.equal(actual, UP, "valid input is translated into corresponding direction")
+		assert.equal(actual, MOVE_UP, "valid input is translated into corresponding direction")
 	}
 );
 

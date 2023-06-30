@@ -1,6 +1,6 @@
 "use strict";
 
-function createCanvas(mySnakeCanvas){
+export function createCanvas(mySnakeCanvas){
 	let width = mySnakeCanvas.prop("width");
 	let height = mySnakeCanvas.prop("height");
 

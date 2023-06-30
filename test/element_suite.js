@@ -1,4 +1,11 @@
+import {createLocation} from "../web/snake_location.js";
+import {createElementFactory, createElementType, createElementEntity} from "../web/snake_element.js";
+
 "use strict";
+
+
+export const MOCK_TYPE = createElementType("MOCK_COLOR", createElementEntity("MOCK_TYPE"));
+export const SECOND_MOCK_TYPE = createElementType("SECOND_MOCK_TYPE", createElementEntity("SECOND_MOCK_TYPE"));
 
 QUnit.module("Elements");
 

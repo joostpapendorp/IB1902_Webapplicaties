@@ -1,8 +1,26 @@
-"use strict";
+import {TICK_SLEEP_TIME_IN_MILLIS, createTimer} from "../web/snake_timer.js";
 
+import {Recorder} from "./mocks.js";
+
+"use strict";
 
 const MOCK_CALLBACK = () => {console.log("tick.");};
 const MOCK_INTERVAL = "MOCK_INTERVAL";
+
+export function MockTimer(){
+	this.recorders = {
+		start : new Recorder("startTimer"),
+		stop : new Recorder("stopTimer")
+	};
+
+	this.start = function(callBack){
+		this.recorders.start.invokedWith([callBack]);
+	};
+
+	this.stop = function(){
+		this.recorders.stop.invoked();
+	};
+}
 
 
 QUnit.module("Timer");

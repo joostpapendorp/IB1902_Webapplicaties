@@ -1,15 +1,93 @@
+import {createLocation} from "../web/snake_location.js";
+import {
+	SNAKE_MOVED,
+	SNAKE_DIED,
+	SNAKE_ATE
+} from "../web/snake_snake.js"
+
+import {
+	INITIAL_DIRECTION,
+	NUMBER_OF_FOODS_PER_BASIC_GAME,
+
+	NEW_GAME_STATE,
+	GAME_RUNNING_STATE,
+	GAME_OVER_STATE,
+	GAME_WON_STATE,
+
+	GAME_RESULT_WIN,
+	GAME_RESULT_LOSS,
+
+	ruleSets,
+	difficulties
+} from "../web/snake_rule_set.js"
+
+import {iterateReturnValuesOver, MockFactory, Recorder, Invocation} from "./mocks.js";
+import {MockBoard} from "./board_suite.js";
+import {MockSnake} from "./snake_suite.js";
+import {MockFood} from "./food_suite.js";
+import {MockSnakeStorage, MockSnakeStore} from "./storage_suite.js";
+import {MOVE_UP} from "../web/snake_player.js";
+
 "use strict";
 
-QUnit.module("Rule Set");
 
-function buildRules() {
+export function MockRuleSet(stateToReturn, tallyText){
+	this.recorders = {
+		prepare : new Recorder("prepare"),
+		initialDirection : new Recorder("initialDirection"),
+		createStartSnake : new Recorder("createStartSnake"),
+		start : new Recorder("start"),
+		update : new Recorder("update"),
+		gameWon : new Recorder("gameWon"),
+		gameLost : new Recorder("gameLost"),
+	};
+
+	this.stateToReturn = stateToReturn;
+
+	this.prepare = function(){
+		this.recorders.prepare.invoked();
+		return stateToReturn;
+	}
+
+	this.initialDirection = function(){
+		this.recorders.initialDirection.invoked();
+		return stateToReturn;
+	}
+
+	this.createStartSnake = function(board){
+		this.recorders.createStartSnake.invokedWith([board]);
+		return new MockSnake();
+	}
+
+	this.start = function(){
+		this.recorders.start.invoked();
+		return stateToReturn;
+	}
+
+	this.update = function(result){
+		this.recorders.update.invokedWith([result]);
+		return stateToReturn;
+	}
+
+	this.gameWon = function(){
+		this.recorders.gameWon.invoked();
+		return tallyText;
+	}
+
+	this.gameLost = function(){
+		this.recorders.gameLost.invoked();
+		return tallyText;
+	}
+}
+
+export function buildRules() {
 	return new RuleSetBuilder();
 }
 
 function RuleSetBuilder(){
 	this.snakeFactory = (locations) => new MockSnake();
 	this.foodPlanter = new MockFood();
-	this.highScores = new MockObjectStore();
+	this.highScores = new MockSnakeStore();
 
 	this.basic = function(){
 		return ruleSets(
@@ -34,11 +112,14 @@ function RuleSetBuilder(){
 	};
 }
 
+
+QUnit.module("Rule Set");
+
 QUnit.test("Constant values",
 	assert => {
 		assert.expect(8);
 
-		assert.equal(INITIAL_DIRECTION, UP, "Snake initial direction is up");
+		assert.equal(INITIAL_DIRECTION, MOVE_UP, "Snake initial direction is up");
 		assert.equal(NUMBER_OF_FOODS_PER_BASIC_GAME, 5, "Basic game places 5 units of food");
 
 		assert.equal(NEW_GAME_STATE.description, "New game", "New game has not been initialized");
@@ -199,17 +280,17 @@ QUnit.test("Difficulties provides all the rule sets in ascending order of diffic
 
 
 QUnit.test("Winning the game writes the score.",
-	assert => {
+	async function(assert) {
 		assert.expect(6);
 
 		const WINS = 2, LOSSES = 1;
-		let mockHighScores = new MockObjectStore(iterateReturnValuesOver([WINS, LOSSES]));
+		let mockHighScores = new MockSnakeStore(iterateReturnValuesOver([WINS, LOSSES]));
 
 		let subject = buildRules().
 			withHighScores(mockHighScores).
 			basic();
 
-		let actual = subject.gameWon();
+		let actual = await subject.gameWon();
 
 		let add = mockHighScores.recorders.add;
 		assert.equal(add.timesInvoked(), 1, "Stores the result");
@@ -227,17 +308,17 @@ QUnit.test("Winning the game writes the score.",
 
 
 QUnit.test("Losing the game writes the score.",
-	assert => {
+	async function(assert) {
 		assert.expect(6);
 
 		const WINS = 1, LOSSES = 2;
-		let mockHighScores = new MockObjectStore(iterateReturnValuesOver([WINS, LOSSES]));
+		let mockHighScores = new MockSnakeStore(iterateReturnValuesOver([WINS, LOSSES]));
 
 		let subject = buildRules().
 			withHighScores(mockHighScores).
 			basic();
 
-		let actual = subject.gameLost();
+		let actual = await subject.gameLost();
 
 		let add = mockHighScores.recorders.add;
 		assert.equal(add.timesInvoked(), 1, "Stores the result");

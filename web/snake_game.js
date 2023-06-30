@@ -1,6 +1,9 @@
+import {NO_LOCATION} from "./snake_location.js";
+
 "use strict";
 
-function createGame(
+
+export function createGame(
 	difficulties,
 	prepareEngineWith,
 	player,

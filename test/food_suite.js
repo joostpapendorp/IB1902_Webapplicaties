@@ -1,4 +1,29 @@
+import {
+	FOOD_ENTITY,
+	FOOD_TYPE,
+
+	foodPlanter
+} from "../web/snake_food.js";
+import {FREE_SPACE_TYPE} from "../web/snake_board.js";
+
+import {Recorder} from "./mocks.js";
+import {MOCK_LOCATION, SECOND_MOCK_LOCATION} from "./location_suite.js";
+import {MOCK_TYPE} from "./element_suite.js";
+import {MockBoard} from "./board_suite.js";
+import {iterateReturnValuesOver} from "./mocks.js";
+
 "use strict";
+
+export function MockFood(){
+	this.recorders = {
+		plant : new Recorder("plantFood"),
+	};
+
+	this.plant = function(){
+		this.recorders.plant.invoked();
+	};
+}
+
 
 QUnit.module("Food");
 
@@ -37,7 +62,7 @@ QUnit.test("Food planter retries until a free space is found.",
 		let mockBoard = new MockBoard();
 		mockBoard.elementAtReturns = function(location) {
 			return location === MOCK_LOCATION ?
-				{ type : SNAKE_HEAD_TYPE } :
+				{ type : MOCK_TYPE } :
 				{ type : FREE_SPACE_TYPE };
 		};
 

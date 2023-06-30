@@ -1,3 +1,4 @@
+import {createLocation} from "./snake_location.js";
 import {BOARD_SIZE} from "./snake_board.js";
 
 "use strict";

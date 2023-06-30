@@ -1,17 +1,18 @@
 "use strict";
 
-import {createGame} from "./snake_game.js";
-import {createBoard, FREE_SPACE_TYPE} from "./snake_board.js";
-import {createPlayer} from "./snake_player.js";
-import {createSnakeFactory} from "./snake_snake.js";
-import {foodPlanter} from "./snake_food.js";
-import {ruleSets, difficulties} from "./snake_rule_set.js";
-import {createEngineFactory} from "./snake_engine.js";
-import {SNAKE_DATABASE_HANDLE, openStorage} from "./snake_storage.js";
-import {createTimer} from "./snake_timer.js";
-import {random} from "./snake_random.js";
-import {createCanvas} from "./snake_canvas.js";
+import {createLocation} from "./snake_location.js";
 import {createElementFactory, createElementType, createElementEntity} from "./snake_element.js";
+import {createCanvas} from "./snake_canvas.js";
+import {createBoard, FREE_SPACE_TYPE} from "./snake_board.js";
+import {createTimer} from "./snake_timer.js";
+import {createEngineFactory} from "./snake_engine.js";
+import {random} from "./snake_random.js";
+import {foodPlanter} from "./snake_food.js";
+import {createSnakeFactory} from "./snake_snake.js";
+import {ruleSets, difficulties} from "./snake_rule_set.js";
+import {SNAKE_DATABASE_HANDLE, openStorage} from "./snake_storage.js";
+import {createPlayer} from "./snake_player.js";
+import {createGame} from "./snake_game.js";
 
 export const SNAKE_CANVAS_ID = "mySnakeCanvas";
 

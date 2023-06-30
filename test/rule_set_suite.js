@@ -1,3 +1,4 @@
+import {createLocation} from "../web/snake_location.js";
 import {
 	SNAKE_MOVED,
 	SNAKE_DIED,
@@ -25,6 +26,7 @@ import {MockBoard} from "./board_suite.js";
 import {MockSnake} from "./snake_suite.js";
 import {MockFood} from "./food_suite.js";
 import {MockSnakeStorage, MockSnakeStore} from "./storage_suite.js";
+import {MOVE_UP} from "../web/snake_player.js";
 
 "use strict";
 
@@ -117,7 +119,7 @@ QUnit.test("Constant values",
 	assert => {
 		assert.expect(8);
 
-		assert.equal(INITIAL_DIRECTION, UP, "Snake initial direction is up");
+		assert.equal(INITIAL_DIRECTION, MOVE_UP, "Snake initial direction is up");
 		assert.equal(NUMBER_OF_FOODS_PER_BASIC_GAME, 5, "Basic game places 5 units of food");
 
 		assert.equal(NEW_GAME_STATE.description, "New game", "New game has not been initialized");

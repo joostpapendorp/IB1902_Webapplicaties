@@ -721,7 +721,9 @@ http://localhost:8080/test/snake_unit_test_suite.html
 
 (P 4)
 [v] convert snake_element
-[ ] convert snake_location
+
+(P 5)
+[v] convert snake_location
 
 
 

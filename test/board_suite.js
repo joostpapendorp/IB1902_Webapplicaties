@@ -1,3 +1,4 @@
+import {createLocation} from "../web/snake_location.js";
 import {
 	BOARD_SIZE,
 	OFF_THE_BOARD_ENTITY,

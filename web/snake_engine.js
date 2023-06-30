@@ -1,9 +1,10 @@
+import {createLocation} from "./snake_location.js";
+import {BOARD_SIZE} from "./snake_board.js";
 import {
 	GAME_RUNNING_STATE,
 	GAME_OVER_STATE,
 	GAME_WON_STATE
 } from "./snake_rule_set.js"
-import {BOARD_SIZE} from "./snake_board.js";
 
 "use strict";
 

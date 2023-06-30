@@ -1,15 +1,17 @@
+import {createLocation} from "./snake_location.js";
 import {BOARD_SIZE} from "./snake_board.js";
 import {
 	SNAKE_MOVED,
 	SNAKE_DIED,
 	SNAKE_ATE,
 } from "./snake_snake.js";
+import {MOVE_UP} from "./snake_player.js";
 
 
 "use strict";
 
 
-export const INITIAL_DIRECTION = UP;
+export const INITIAL_DIRECTION = MOVE_UP;
 export const NUMBER_OF_FOODS_PER_BASIC_GAME = 5;
 
 export const NEW_GAME_STATE = createGameState("New game");

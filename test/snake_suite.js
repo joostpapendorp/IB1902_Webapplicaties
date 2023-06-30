@@ -1,6 +1,7 @@
-import {
-	FOOD_TYPE
-} from "../web/snake_food.js";
+import {createLocation} from "../web/snake_location.js";
+import {createBoard} from "../web/snake_board.js";
+import {FOOD_TYPE} from "../web/snake_food.js";
+import {MOVE_LEFT, MOVE_UP, MOVE_RIGHT, MOVE_DOWN} from "../web/snake_player.js";
 
 import {
 	SNAKE_ENTITY,
@@ -16,7 +17,6 @@ import {
 
 	createSnakeFactory
 } from "../web/snake_snake.js";
-import {createBoard} from "../web/snake_board.js";
 
 import {Recorder, Invocation} from "./mocks.js";
 import {createElementFactory} from "../web/snake_element.js";
@@ -154,7 +154,7 @@ QUnit.test("When a snake moves, it removes the its last body segment",
 		let recorders = boardSpy.recorders;
 
 
-		let result = subject.push(DOWN);
+		let result = subject.push(MOVE_DOWN);
 
 
 		assert.equal(result, SNAKE_MOVED, "Snake moved down.");
@@ -193,7 +193,7 @@ QUnit.test("When a snake moves, it repaints the previous head segment as a body 
 		let recorders = boardSpy.recorders;
 
 
-		let result = subject.push(DOWN);
+		let result = subject.push(MOVE_DOWN);
 
 		assert.equal(result, SNAKE_MOVED, "Snake moved down.");
 
@@ -233,7 +233,7 @@ QUnit.test("When a snake moves, it adds the new head to the front",
 		let recorders = boardSpy.recorders;
 
 
-		let result = subject.push(DOWN);
+		let result = subject.push(MOVE_DOWN);
 
 
     assert.equal(result, SNAKE_MOVED, "Snake moved down.");
@@ -273,9 +273,9 @@ QUnit.test("When a snake moves, it records its new positions for the next moves"
 		let recorders = boardSpy.recorders;
 
 
-		subject.push(DOWN);
-		subject.push(DOWN);
-		subject.push(DOWN);
+		subject.push(MOVE_DOWN);
+		subject.push(MOVE_DOWN);
+		subject.push(MOVE_DOWN);
 
 
 		let replace = recorders.replace;
@@ -332,10 +332,10 @@ QUnit.test("Moving from the board kills the snake.",
 			build();
 
 		for(const [direction, subject, description] of [
-			[UP, lowerBoundSnake, "top"],
-			[LEFT, lowerBoundSnake, "left"],
-			[DOWN, upperBoundSnake, "bottom"],
-			[RIGHT, upperBoundSnake, "right"]
+			[MOVE_UP, lowerBoundSnake, "top"],
+			[MOVE_LEFT, lowerBoundSnake, "left"],
+			[MOVE_DOWN, upperBoundSnake, "bottom"],
+			[MOVE_RIGHT, upperBoundSnake, "right"]
 		]){
 			let result = subject.push(direction);
 			assert.equal(result, SNAKE_DIED, `Snake was killed moving off the ${description} of the board.`)
@@ -357,7 +357,7 @@ QUnit.test("Moving onto its own body kills the snake.",
 			]).
 			build();
 
-		let result = subject.push(DOWN);
+		let result = subject.push(MOVE_DOWN);
 		assert.equal(result, SNAKE_DIED, "Snake was killed by moving onto its own body.");
 	}
 );
@@ -385,7 +385,7 @@ QUnit.test("When a snake dies, it turns black.",
 			withLocations(expectedLocations).
 			build();
 
-		subject.push(UP);
+		subject.push(MOVE_UP);
 
 		assert.propEqual(
 			invocations[0].arguments,
@@ -429,7 +429,7 @@ QUnit.test("When a snake eats, it grows by one segment.",
 		board.createElement(createLocation(0,2), FOOD_TYPE);
 
 
-		let result = subject.push(DOWN);
+		let result = subject.push(MOVE_DOWN);
 
 
 		assert.equal(result, SNAKE_ATE, "Snake ate the food");
@@ -464,7 +464,7 @@ QUnit.test("When a snake eats, it repaints the previous head segment as a body s
 		let recorders = boardSpy.recorders;
 
 
-		let result = subject.push(DOWN);
+		let result = subject.push(MOVE_DOWN);
 
 
 		assert.equal(result, SNAKE_ATE, "Snake ate the food");

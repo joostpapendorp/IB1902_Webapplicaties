@@ -1,38 +1,16 @@
+import {createLocation, NO_LOCATION} from "../web/snake_location.js";
+
 "use strict";
 
 
-const MOCK_LOCATION = createLocation(1, 2);
-const SECOND_MOCK_LOCATION = createLocation(2, 1);
+export const MOCK_LOCATION = createLocation(1, 2);
+export const SECOND_MOCK_LOCATION = createLocation(2, 1);
 
 QUnit.module("Location and directions");
 
 QUnit.test("Constants",
 	assert => {
-		assert.expect(5);
-
-		assert.propEqual(
-			UP,
-			createLocation(0, -1),
-			"UP moves negative y"
-		);
-
-		assert.propEqual(
-			DOWN,
-			createLocation(0, 1),
-			"UP moves positive y"
-		);
-
-		assert.propEqual(
-			LEFT,
-			createLocation(-1, 0),
-			"LEFT moves negative x"
-		);
-
-		assert.propEqual(
-			RIGHT,
-			createLocation(1, 0),
-			"LEFT moves positive x"
-		);
+		assert.expect(1);
 
 		assert.propEqual(
 			NO_LOCATION,

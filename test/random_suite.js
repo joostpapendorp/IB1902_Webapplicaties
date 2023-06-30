@@ -1,5 +1,7 @@
+import {createLocation} from "../web/snake_location.js";
 import {random} from "../web/snake_random.js";
 import { BOARD_SIZE } from "../web/snake_board.js";
+
 import {iterateReturnValuesOver} from "./mocks.js";
 import {MockMath} from "./mock_adapters.js";
 

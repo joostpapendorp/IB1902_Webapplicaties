@@ -1,3 +1,4 @@
+import {createLocation} from "../web/snake_location.js";
 import {createElementFactory, createElementType, createElementEntity} from "../web/snake_element.js";
 
 "use strict";

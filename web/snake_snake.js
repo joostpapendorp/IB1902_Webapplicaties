@@ -110,15 +110,15 @@ export function createSnakeFactory(){
 
 		function buildFrom(positions){
 			let elements = [];
-			for(let i = 0; i < locations.length - 1; i++ ){
+			for(let i = 0; i < positions.length - 1; i++ ){
 				let bodyElement = board.createElement(
-					locations[i],
+					positions[i],
 					SNAKE_BODY_TYPE);
 				elements.push(bodyElement);
 			}
 
 			let headElement = board.createElement(
-				locations[ locations.length -1],
+				positions[ positions.length -1],
 				SNAKE_HEAD_TYPE);
 			elements.push(headElement)
 

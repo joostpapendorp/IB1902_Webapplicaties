@@ -8,7 +8,9 @@ We will apply uniform simple styling to the project. We will lint te project usi
 * *html* http://validator.w3.org/
 * *css* http://jigsaw.w3.org/css-validator/ en http://csslint.net/
 * *javascript* ESLint https://eslint.org/docs/latest/
-Run using _"npx eslint ./web > eslint_output.txt"_
+  Run using 
+
+      npx eslint --parser-options sourceType:module ./web > eslint_output.txt
 
 ## Context
 

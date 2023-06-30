@@ -725,6 +725,22 @@ http://localhost:8080/test/snake_unit_test_suite.html
 (P 5)
 [v] convert snake_location
 
+(P 6, 7)
+[v] linting
+Linting died (for each file):
 
+    1:1  error  Parsing error: 'import' and 'export' may appear only with 'sourceType: module'
+
+https://github.com/eslint/eslint/issues/5552
+
+    You need to add sourceType: "module" to your config. There is no way for us to identify automatically what's a script and what's a module, so you have to provide that information in config file. For more details look in the documentation
+
+https://eslint.org/docs/latest/use/configure/#specifying-parser-options
+https://medium.com/tektalks/use-package-json-for-eslint-configurations-1208d5bcd0eb
+
+fix: define command line parser options:
+https://eslint.org/docs/latest/use/command-line-interface#--parser-options
+
+[ ] MVC ARD
 
 ### TODO

@@ -741,6 +741,7 @@ https://medium.com/tektalks/use-package-json-for-eslint-configurations-1208d5bcd
 fix: define command line parser options:
 https://eslint.org/docs/latest/use/command-line-interface#--parser-options
 
-[ ] MVC ARD
+(P 8)
+[v] MVC ADR
 
 ### TODO

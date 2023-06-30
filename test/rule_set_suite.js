@@ -20,9 +20,61 @@ import {
 	difficulties
 } from "../web/snake_rule_set.js"
 
+import {MockSnake} from "./snake_suite.js";
+import {MockFood} from "./food_suite.js";
+import {MockSnakeStorage, MockSnakeStore} from "./storage_suite.js";
+
 "use strict";
 
-QUnit.module("Rule Set");
+
+export function MockRuleSet(stateToReturn, tallyText){
+	this.recorders = {
+		prepare : new Recorder("prepare"),
+		initialDirection : new Recorder("initialDirection"),
+		createStartSnake : new Recorder("createStartSnake"),
+		start : new Recorder("start"),
+		update : new Recorder("update"),
+		gameWon : new Recorder("gameWon"),
+		gameLost : new Recorder("gameLost"),
+	};
+
+	this.stateToReturn = stateToReturn;
+
+	this.prepare = function(){
+		this.recorders.prepare.invoked();
+		return stateToReturn;
+	}
+
+	this.initialDirection = function(){
+		this.recorders.initialDirection.invoked();
+		return stateToReturn;
+	}
+
+	this.createStartSnake = function(board){
+		this.recorders.createStartSnake.invokedWith([board]);
+		return new MockSnake();
+	}
+
+	this.start = function(){
+		this.recorders.start.invoked();
+		return stateToReturn;
+	}
+
+	this.update = function(result){
+		this.recorders.update.invokedWith([result]);
+		return stateToReturn;
+	}
+
+	this.gameWon = function(){
+		this.recorders.gameWon.invoked();
+		return tallyText;
+	}
+
+	this.gameLost = function(){
+		this.recorders.gameLost.invoked();
+		return tallyText;
+	}
+}
 
 export function buildRules() {
 	return new RuleSetBuilder();
@@ -31,7 +83,7 @@ export function buildRules() {
 function RuleSetBuilder(){
 	this.snakeFactory = (locations) => new MockSnake();
 	this.foodPlanter = new MockFood();
-	this.highScores = new MockObjectStore();
+	this.highScores = new MockSnakeStore();
 
 	this.basic = function(){
 		return ruleSets(
@@ -55,6 +107,9 @@ function RuleSetBuilder(){
 		return this;
 	};
 }
+
+
+QUnit.module("Rule Set");
 
 QUnit.test("Constant values",
 	assert => {
@@ -225,7 +280,7 @@ QUnit.test("Winning the game writes the score.",
 		assert.expect(6);
 
 		const WINS = 2, LOSSES = 1;
-		let mockHighScores = new MockObjectStore(iterateReturnValuesOver([WINS, LOSSES]));
+		let mockHighScores = new MockSnakeStore(iterateReturnValuesOver([WINS, LOSSES]));
 
 		let subject = buildRules().
 			withHighScores(mockHighScores).
@@ -253,7 +308,7 @@ QUnit.test("Losing the game writes the score.",
 		assert.expect(6);
 
 		const WINS = 1, LOSSES = 2;
-		let mockHighScores = new MockObjectStore(iterateReturnValuesOver([WINS, LOSSES]));
+		let mockHighScores = new MockSnakeStore(iterateReturnValuesOver([WINS, LOSSES]));
 
 		let subject = buildRules().
 			withHighScores(mockHighScores).

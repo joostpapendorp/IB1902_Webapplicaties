@@ -15,12 +15,38 @@ import {
 	GAME_WON_STATE,
 } from "../web/snake_rule_set.js";
 
-
-import {
-	buildRules
-} from "./rule_set_suite.js";
+import {MockSnake} from "./snake_suite.js";
+import {buildRules, MockRuleSet} from "./rule_set_suite.js";
+import {MockTimer} from "./timer_suite.js";
+import {MockSplashScreen} from "./snake_student_suite.js";
 
 "use strict";
+
+
+export function MockEngine(){
+	this.recorders = {
+		start : new Recorder("start"),
+		tick : new Recorder("tick"),
+		steer : new Recorder("tick"),
+		shutDown : new Recorder("shut down")
+	};
+
+	this.start = function(){
+		this.recorders.start.invoked();
+	};
+
+	this.tick = function(direction){
+		this.recorders.tick.invokedWith([direction]);
+	};
+
+	this.steer = function(direction){
+		this.recorders.steer.invokedWith([direction]);
+	};
+
+	this.shutDown = function(){
+		this.recorders.shutDown.invoked();
+	};
+}
 
 QUnit.module("Engine");
 
@@ -92,10 +118,10 @@ QUnit.test("Tick pushes the snake and repaints the board",
 		assert.expect(3);
 
 		let mockBoard = new MockBoard();
+		let mockSnake = new MockSnake(SNAKE_MOVED);
 		let rules = buildRules()
 	    .withSnakeFactory(() => mockSnake)
 	    .basic();
-		let mockSnake = new MockSnake(SNAKE_MOVED);
 
 		let subject = buildEngine().
 			withBoard(mockBoard).

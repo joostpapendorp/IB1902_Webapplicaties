@@ -710,7 +710,15 @@ http://localhost:8080/test/snake_unit_test_suite.html
 (P 13)
 [v] convert snake_canvas
 
+
+### 2023-06-30
+(P 1, 2)
+[v] convert and break up mocks
+
+
 [ ] convert snake_board
+[ ] convert snake_element
+[ ] convert snake_location
 
 
 

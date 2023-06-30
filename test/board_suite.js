@@ -1,5 +1,51 @@
 "use strict";
 
+
+function MockBoard(){
+	this.recorders = {
+		createElement : new Recorder("createElement"),
+		replace : new Recorder("replace"),
+		remove : new Recorder("remove"),
+		clear : new Recorder("clear"),
+		redraw : new Recorder("redraw"),
+		elementAt : new Recorder("elementAt"),
+		writeAt : new Recorder("writeAt")
+	};
+
+	this.createElement = function(location, type){
+		this.recorders.createElement.invokedWith([location,type]);
+	};
+
+	this.replace = function(element){
+		this.recorders.replace.invokedWith([element]);
+	};
+
+	this.remove = function(element){
+		this.recorders.remove.invokedWith([element]);
+	};
+
+	this.clear = function(){
+		this.recorders.clear.invoked();
+	};
+
+	this.redraw = function(){
+		this.recorders.redraw.invoked();
+	};
+
+	this.elementAtReturns = function(location) {
+		return { type : FREE_SPACE_TYPE };
+	};
+
+	this.elementAt = function(location){
+		this.recorders.elementAt.invokedWith([location]);
+		return this.elementAtReturns(location);
+	};
+
+	this.writeAt = function(location, text){
+		this.recorders.writeAt.invokedWith([location, text]);
+	};
+}
+
 QUnit.module("Board");
 
 QUnit.test("Constant values",

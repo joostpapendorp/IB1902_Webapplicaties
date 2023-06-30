@@ -1,10 +1,9 @@
 import {createCanvas} from "../web/snake_canvas.js";
+import {MockHTMLCanvas, withHTMLCanvasUsing, MOCK_CANVAS_ID} from "./mock_adapters.js";
 
 "use strict";
 
 QUnit.module("Canvas");
-
-const MOCK_CANVAS_ID = "MOCK_CANVAS_ID";
 
 QUnit.test("Canvas size is taken from .html",
 	assert => {
@@ -92,18 +91,3 @@ QUnit.test("Canvas draws text on html object",
 		)
 	}
 );
-
-
-// loan pattern to isolate html-fixture setup and tear down
-function withHTMLCanvasUsing(props, testFunction){
-		let mockCanvas  = $(document.createElement("canvas")).
-			prop("id", props.id || MOCK_CANVAS_ID).
-			prop("width", props.width || 0).
-			prop("height", props.height || 0);
-
-		$("#"+FIXTURE_ELEMENT_ID).append(mockCanvas);
-
-		testFunction(mockCanvas);
-
-		mockCanvas.remove();
-}

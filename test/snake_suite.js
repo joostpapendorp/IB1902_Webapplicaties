@@ -16,7 +16,28 @@ import {
 
 	createSnakeFactory
 } from "../web/snake_snake.js";
+
 "use strict";
+
+
+export function MockSnake(returnValue){
+	this.recorders = {
+		push : new Recorder("push"),
+		head : new Recorder("head")
+	};
+	this.returnValue = returnValue || SNAKE_MOVED;
+
+	this.push = function(direction){
+		this.recorders.push.invokedWith([direction]);
+		return returnValue;
+	};
+
+	this.head = function(){
+		this.recorders.head.invoked();
+		return returnValue;
+	};
+}
+
 
 QUnit.module("Snake");
 

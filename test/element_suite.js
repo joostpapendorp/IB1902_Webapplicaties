@@ -1,5 +1,9 @@
 "use strict";
 
+
+const MOCK_TYPE = createElementType("MOCK_COLOR", createElementEntity("MOCK_TYPE"));
+const SECOND_MOCK_TYPE = createElementType("SECOND_MOCK_TYPE", createElementEntity("SECOND_MOCK_TYPE"));
+
 QUnit.module("Elements");
 
 QUnit.test("Elements know their location on the board",

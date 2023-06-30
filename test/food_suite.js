@@ -7,6 +7,17 @@ import {
 
 "use strict";
 
+export function MockFood(){
+	this.recorders = {
+		plant : new Recorder("plantFood"),
+	};
+
+	this.plant = function(){
+		this.recorders.plant.invoked();
+	};
+}
+
+
 QUnit.module("Food");
 
 QUnit.test("Constant values",

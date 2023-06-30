@@ -1,9 +1,9 @@
 import {random} from "../web/snake_random.js";
+import {MockMath} from "./mock_adapters.js";
 
 "use strict";
 
 QUnit.module("Random");
-
 
 QUnit.test("Random location uses the math functions",
 	assert => {

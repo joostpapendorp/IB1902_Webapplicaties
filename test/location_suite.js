@@ -1,5 +1,9 @@
 "use strict";
 
+
+const MOCK_LOCATION = createLocation(1, 2);
+const SECOND_MOCK_LOCATION = createLocation(2, 1);
+
 QUnit.module("Location and directions");
 
 QUnit.test("Constants",

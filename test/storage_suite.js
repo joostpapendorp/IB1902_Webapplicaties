@@ -4,13 +4,45 @@ import {
 	openStorage
 } from "../web/snake_storage.js";
 
+import {MockIndexedDBConnection, MockRequest, MockIndexedDB, MockObjectStore} from "./mock_adapters.js";
+
 "use strict";
 
-QUnit.module("Storage");
 
 const TEST_DATABASE_HANDLE = "TestDatabase";
 const TEST_STORAGE_HANDLE_ONE = "FirstTestStorageHandle";
 const TEST_STORAGE_HANDLE_TWO = "SecondTestStorageHandle";
+
+export function MockSnakeStorage(){
+	this.recorders = {
+		requestStorage : new Recorder("requestStorage"),
+	};
+
+	this.requestStorage = function(handle){
+		this.recorders.requestStorage.invokedWith([handle]);
+	};
+}
+
+export function MockSnakeStore(counts){
+	this.countResults = counts || (() => 0);
+
+	this.recorders = {
+		count : new Recorder("count"),
+		add : new Recorder("add"),
+	};
+
+	this.count = async function(key){
+		this.recorders.count.invokedWith([key]);
+		return Promise.resolve(this.countResults());
+	};
+
+	this.add = function(value){
+		this.recorders.add.invokedWith([value]);
+	};
+}
+
+
+QUnit.module("Storage");
 
 function buildStorage() {
 	return new StorageBuilder();

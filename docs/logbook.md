@@ -717,6 +717,7 @@ http://localhost:8080/test/snake_unit_test_suite.html
 
 (P 3)
 [v] convert snake_board
+[v] convert mocks to module
 
 [ ] convert snake_element
 [ ] convert snake_location

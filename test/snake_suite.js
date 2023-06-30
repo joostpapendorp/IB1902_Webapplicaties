@@ -18,7 +18,9 @@ import {
 } from "../web/snake_snake.js";
 import {createBoard} from "../web/snake_board.js";
 
+import {Recorder, Invocation} from "./mocks.js";
 import {MockBoard} from "./board_suite.js";
+import {MockCanvas} from "./canvas_suite.js";
 
 "use strict";
 

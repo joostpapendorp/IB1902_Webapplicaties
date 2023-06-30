@@ -1,6 +1,7 @@
 import {SNAKE_CANVAS_ID, buildInjectionContext} from "../web/snake_student.js";
-
 import {createCanvas} from "../web/snake_canvas.js";
+
+import {Recorder} from "./mocks.js";
 
 "use strict";
 

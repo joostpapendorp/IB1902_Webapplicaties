@@ -6,6 +6,9 @@ import {
 	createBoard
 } from "../web/snake_board.js";
 
+import {Recorder} from "./mocks.js";
+import {MockCanvas} from "./canvas_suite.js";
+
 "use strict";
 
 

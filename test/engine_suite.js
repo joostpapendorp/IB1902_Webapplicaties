@@ -15,6 +15,7 @@ import {
 	GAME_WON_STATE,
 } from "../web/snake_rule_set.js";
 
+import {Recorder} from "./mocks.js";
 import {MockBoard} from "./board_suite.js";
 import {MockSnake} from "./snake_suite.js";
 import {buildRules, MockRuleSet} from "./rule_set_suite.js";

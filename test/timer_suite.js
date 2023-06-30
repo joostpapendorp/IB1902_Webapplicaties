@@ -1,5 +1,7 @@
 import {TICK_SLEEP_TIME_IN_MILLIS, createTimer} from "../web/snake_timer.js";
 
+import {Recorder} from "./mocks.js";
+
 "use strict";
 
 const MOCK_CALLBACK = () => {console.log("tick.");};

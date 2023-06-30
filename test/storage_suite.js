@@ -4,6 +4,7 @@ import {
 	openStorage
 } from "../web/snake_storage.js";
 
+import {Recorder} from "./mocks.js";
 import {MockIndexedDBConnection, MockRequest, MockIndexedDB, MockObjectStore} from "./mock_adapters.js";
 
 "use strict";

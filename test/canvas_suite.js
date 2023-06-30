@@ -1,7 +1,40 @@
 import {createCanvas} from "../web/snake_canvas.js";
+
+import {Recorder} from "./mocks.js";
 import {MockHTMLCanvas, withHTMLCanvasUsing, MOCK_CANVAS_ID} from "./mock_adapters.js";
 
 "use strict";
+
+
+export function MockCanvas() {
+	this.recorders = {
+		drawArc : new Recorder("drawArc"),
+		drawText : new Recorder("drawText"),
+		clear: new Recorder("clear"),
+		width: new Recorder("width"),
+		height: new Recorder("height")
+	};
+
+	this.drawArc = function(radius, x, y, color){
+		this.recorders.drawArc.invokedWith([radius, x, y, color]);
+	};
+
+	this.drawText = function(text, x, y){
+		this.recorders.drawText.invokedWith([text, x, y]);
+	};
+
+	this.clear = function(){
+		this.recorders.clear.invoked();
+	};
+
+	this.width = function(){
+		this.recorders.width.invoked();
+	};
+
+	this.height = function(){
+		this.recorders.height.invoked();
+	};
+}
 
 QUnit.module("Canvas");
 

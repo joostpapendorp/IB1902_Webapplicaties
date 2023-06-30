@@ -715,8 +715,9 @@ http://localhost:8080/test/snake_unit_test_suite.html
 (P 1, 2)
 [v] convert and break up mocks
 
+(P 3)
+[v] convert snake_board
 
-[ ] convert snake_board
 [ ] convert snake_element
 [ ] convert snake_location
 

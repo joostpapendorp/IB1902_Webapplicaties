@@ -1,7 +1,15 @@
+import {
+	BOARD_SIZE,
+	OFF_THE_BOARD_ENTITY,
+	FREE_SPACE_ENTITY,
+	FREE_SPACE_TYPE,
+	createBoard
+} from "../web/snake_board.js";
+
 "use strict";
 
 
-function MockBoard(){
+export function MockBoard(){
 	this.recorders = {
 		createElement : new Recorder("createElement"),
 		replace : new Recorder("replace"),

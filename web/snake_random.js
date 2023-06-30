@@ -1,4 +1,7 @@
+import {BOARD_SIZE} from "./snake_board.js";
+
 "use strict";
+
 
 export function random(math) {
 	/**

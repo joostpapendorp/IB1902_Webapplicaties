@@ -3,8 +3,10 @@ import {
 	GAME_OVER_STATE,
 	GAME_WON_STATE
 } from "./snake_rule_set.js"
+import {BOARD_SIZE} from "./snake_board.js";
 
 "use strict";
+
 
 const CENTRAL_TILE = createLocation(BOARD_SIZE/2, BOARD_SIZE/2)
 

@@ -1,6 +1,7 @@
 "use strict";
 
 import {createGame} from "./snake_game.js";
+import {createBoard, FREE_SPACE_TYPE} from "./snake_board.js";
 import {createPlayer} from "./snake_player.js";
 import {createSnakeFactory} from "./snake_snake.js";
 import {foodPlanter} from "./snake_food.js";

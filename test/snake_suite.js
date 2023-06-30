@@ -16,6 +16,9 @@ import {
 
 	createSnakeFactory
 } from "../web/snake_snake.js";
+import {createBoard} from "../web/snake_board.js";
+
+import {MockBoard} from "./board_suite.js";
 
 "use strict";
 

@@ -1,10 +1,13 @@
-"use strict";
-
+import {BOARD_SIZE} from "./snake_board.js";
 import {
 	SNAKE_MOVED,
 	SNAKE_DIED,
 	SNAKE_ATE,
 } from "./snake_snake.js";
+
+
+"use strict";
+
 
 export const INITIAL_DIRECTION = UP;
 export const NUMBER_OF_FOODS_PER_BASIC_GAME = 5;

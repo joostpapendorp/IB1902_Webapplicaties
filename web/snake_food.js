@@ -1,3 +1,6 @@
+import {FREE_SPACE_TYPE} from "./snake_board.js";
+
+
 "use strict";
 
 export const FOOD_ENTITY = createElementEntity("Food");

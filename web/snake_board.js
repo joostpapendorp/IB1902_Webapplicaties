@@ -1,14 +1,14 @@
 "use strict";
 
-const BOARD_SIZE = 18;
+export const BOARD_SIZE = 18;
 
-const OFF_THE_BOARD_ENTITY = createElementEntity("Off the board");
+export const OFF_THE_BOARD_ENTITY = createElementEntity("Off the board");
 const OFF_THE_BOARD_TYPE = createElementType(undefined, OFF_THE_BOARD_ENTITY);
 
-const FREE_SPACE_ENTITY = createElementEntity("Free space");
-const FREE_SPACE_TYPE = createElementType(undefined, FREE_SPACE_ENTITY);
+export const FREE_SPACE_ENTITY = createElementEntity("Free space");
+export const FREE_SPACE_TYPE = createElementType(undefined, FREE_SPACE_ENTITY);
 
-function createBoard(canvas, elementFactory){
+export function createBoard(canvas, elementFactory){
 	function Board(canvas){
 		this.canvas = canvas;
 		this.elementFactory = elementFactory;

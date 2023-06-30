@@ -1,6 +1,6 @@
 "use strict";
 
-function createElementFactory(){
+export function createElementFactory(){
 
 	function Element(location, type) {
 		this.location = location;
@@ -28,7 +28,7 @@ function createElementFactory(){
 	};
 }
 
-function createElementType(color, entity){
+export function createElementType(color, entity){
 	function Type(color, entity){
 		this.color = color;
 		this.entity = entity;
@@ -39,7 +39,7 @@ function createElementType(color, entity){
 	return type;
 }
 
-function createElementEntity(description){
+export function createElementEntity(description){
 	function ElementEntity(description){
 		this.description = description;
 	}

@@ -19,6 +19,7 @@ import {
 import {createBoard} from "../web/snake_board.js";
 
 import {Recorder, Invocation} from "./mocks.js";
+import {createElementFactory} from "../web/snake_element.js";
 import {MockBoard} from "./board_suite.js";
 import {MockCanvas} from "./canvas_suite.js";
 

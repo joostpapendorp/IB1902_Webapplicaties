@@ -5,9 +5,12 @@ import {
 	FREE_SPACE_TYPE,
 	createBoard
 } from "../web/snake_board.js";
+import {createElementFactory} from "../web/snake_element.js";
 
 import {Recorder} from "./mocks.js";
+import {MOCK_TYPE, SECOND_MOCK_TYPE} from "./element_suite.js";
 import {MockCanvas} from "./canvas_suite.js";
+
 
 "use strict";
 

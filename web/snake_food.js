@@ -1,4 +1,5 @@
 import {FREE_SPACE_TYPE} from "./snake_board.js";
+import {createElementType, createElementEntity} from "./snake_element.js";
 
 
 "use strict";

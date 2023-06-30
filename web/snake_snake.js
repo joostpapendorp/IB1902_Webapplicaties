@@ -1,3 +1,4 @@
+import {createElementType, createElementEntity} from "./snake_element.js";
 import {FOOD_ENTITY} from "./snake_food.js";
 import {OFF_THE_BOARD_ENTITY, FREE_SPACE_ENTITY} from "./snake_board.js";
 

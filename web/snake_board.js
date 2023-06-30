@@ -1,3 +1,5 @@
+import {createElementType, createElementEntity} from "./snake_element.js";
+
 "use strict";
 
 export const BOARD_SIZE = 18;

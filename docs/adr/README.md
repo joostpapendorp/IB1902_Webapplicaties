@@ -14,3 +14,4 @@
 * [12. we-use-a-finite-state-machine-to-maintain-game-state](0012-we-use-a-finite-state-machine-to-maintain-game-state.md)
 * [13. we-persist-using-an-indexed-database](0013-we-persist-using-an-indexed-database.md)
 * [14. we-modularize-our-code](0014-we-modularize-our-code.md)
+* [15. we-document-the-what-how-why](0015-we-document-the-what-how-why.md)

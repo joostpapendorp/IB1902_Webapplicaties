@@ -765,7 +765,7 @@ Ach ja.
 
 (P 2)
 
-dit is ons illustere voorbeeld:
+dit is ons illustere voorbeeld uit de uitgangscode dat de standaard neer moet leggen:
 
 	/**
 		@function drawElement(element, canvas) -> void
@@ -775,5 +775,6 @@ dit is ons illustere voorbeeld:
 
 Ik had *nooit* kunnen raden dat een Element typed element een element object is. Nooit. Gelukkig hebben we JSDoc.
 
+(P 3)
 
 ### TODO

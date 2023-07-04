@@ -14,10 +14,6 @@ export function createGame(
 		this.storage = storage;
 		this.player = player;
 
-		/**
-			@function init() -> void
-		  @desc Haal eventueel bestaand voedsel en een bestaande slang weg, cre\"eer een slang, genereer voedsel, en teken alles
-		*/
 		this.start = function() {
 			if(this.engine) {
 				console.log("stopping running game.");

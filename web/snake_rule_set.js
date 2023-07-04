@@ -43,21 +43,15 @@ export function ruleSets(createSnake, foodPlanter) {
 			return NEW_GAME_STATE;
 		};
 
+		this.createStartSnake = function(board) {
+			let centralTile = Math.floor(BOARD_SIZE / 2) - 1;
+			let locations = [
+				createLocation(centralTile, centralTile + 1),
+				createLocation(centralTile, centralTile)
+			];
 
-	/**
-		@function createStartSnake() -> Snake
-		@desc Slang creëren, bestaande uit  twee segmenten, in het midden van het veld
-		@return: slang volgens specificaties
-	*/
-	this.createStartSnake = function(board) {
-		let centralTile = Math.floor(BOARD_SIZE / 2) - 1;
-		let locations = [
-			createLocation(centralTile, centralTile + 1),
-			createLocation(centralTile, centralTile)
-		];
-
-		return createSnake(board, locations);
-	}
+			return createSnake(board, locations);
+		}
 
 		this.start = function() {
 			return GAME_RUNNING_STATE;

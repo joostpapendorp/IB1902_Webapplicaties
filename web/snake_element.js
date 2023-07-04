@@ -3,9 +3,9 @@
 /** @module Element  */
 
 /**
-	@function createElementFactory() -> interface onto element creation
+	@function createElementFactory
 	@desc creates a factory which creates elements
-	@return: {anonymous object} An interface onto the element factory
+	@return: {object} An interface onto the element factory
 */
 export function createElementFactory(){
 
@@ -30,7 +30,7 @@ export function createElementFactory(){
 
 	return {
 		/**
-			@function createElement(location, type) -> Element
+			@function createElement
 			@desc creates an immutable element with the given values
 			@param {Location} location The location to locate the element at
 			@param {Type} type A crocodile. Either that, or the type of the element
@@ -43,7 +43,7 @@ export function createElementFactory(){
 }
 
 /**
-	@function createElementType(color, entity) -> ElementType
+	@function createElementType
 	@desc defines a new type of element
 	@param {string} color The HTML-description of the color of the element
 	@param {ElementEntity} entity The grouping entity to which this type belongs
@@ -61,7 +61,7 @@ export function createElementType(color, entity){
 }
 
 /**
-	@function createElementEntity(description) -> ElementEntity
+	@function createElementEntity
 	@desc defines a new element entity to group element types with. Note that this documentation exceeds the word count of the actual code.
 	@param {string} description A descriptive text. Like this one, but actually informative.
 	@return: {ElementEntity} an immutable entity

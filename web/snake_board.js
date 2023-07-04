@@ -13,11 +13,11 @@ export const FREE_SPACE_ENTITY = createElementEntity("Free space");
 export const FREE_SPACE_TYPE = createElementType(undefined, FREE_SPACE_ENTITY);
 
 /**
-	@function createBoard(canvas, elementFactory) -> interface onto Board
+	@function createBoard
 	@desc creates a board which paints to the given canvas
 	@param {Canvas} canvas Canvas to paint on.
-	@param {anonymous object} elementFactory The element factory created by createElementFactory()
-	@return: {anonymous object} An interface onto the initialized board
+	@param {object} elementFactory The element factory created by createElementFactory()
+	@return: {object} An interface onto the initialized board
 */
 export function createBoard(canvas, elementFactory){
 	function Board(canvas){
@@ -135,8 +135,9 @@ export function createBoard(canvas, elementFactory){
 	let board = new Board(canvas);
 
 	return {
+
 		/**
-			@function createElement(location,type) -> Element
+			@function createElement
 			@desc Creates an element on the board at the specified location, or throws an error if the location is occupied or off the board
 			@param {Location} location The location on the board to create the element at
 			@param {Type} type The type of the element to create
@@ -146,7 +147,7 @@ export function createBoard(canvas, elementFactory){
 		createElement : (location, type) => board.createElement(location, type),
 
 		/**
-			@function replace(element) -> void
+			@function replace
 			@desc places the given element on the board and removes the element present, or throws an error if the location of the element given is not occupied
 			@param {Element} element The element to place
 			@throws: {Error} if the location of the element given is not occupied
@@ -154,7 +155,7 @@ export function createBoard(canvas, elementFactory){
 		replace : (element) => board.replace(element),
 
 		/**
-			@function remove(location) -> void
+			@function remove
 			@desc Removes the element at the specified location, or throws an error if no element is present at that location or if the location is not on the board
 			@param {Location} location A location on the board
 			@throws: {Error} if no element is present at that location or if the location is not on the board
@@ -162,7 +163,7 @@ export function createBoard(canvas, elementFactory){
 		remove : (element) => board.remove(element),
 
 		/**
-			@function elementAt(location) -> Element
+			@function elementAt
 			@desc Retrieves the element on the board at the specified location, or a sentinel if that location does not contain an element, or throws an error if that location is not on the board
 			@param {Location} location The specified location. If anyone is actually reading this, please let me know.
 			@return: {Element} the element at the specified location or a sentinel if that location is unoccupied.
@@ -171,19 +172,19 @@ export function createBoard(canvas, elementFactory){
 		elementAt: (location) => board.elementAt(location),
 
 		/**
-			@function clear() -> void
+			@function clear
 			@desc clears all elements from the board and wipes the canvas
 		*/
 		clear : () => board.clear(),
 
 		/**
-			@function redraw() -> void
+			@function redraw
 			@desc wipes the canvas and draws every element on the board onto the canvas
 		*/
 		redraw : () => board.redraw(),
 
 		/**
-			@function writeAt(location,text) -> void
+			@function writeAt
 			@desc writes the given line of text on the canvas centered on the specified location
 			@param {Location} location the location to center the text on
 			@param {String} text The text to write onto the canvas

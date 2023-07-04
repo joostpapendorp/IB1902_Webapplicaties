@@ -780,6 +780,27 @@ OK, I had enough of this.
 Cut down on the uselessness.
 Restrict to only three modules.
 
-(P 4)
+(P 4, 5)
+
+running tool:
+
+	E:\files\studie\OU\Webapplicaties\Opdrachten\Opdracht2\IB1902_Webapplicaties\web\uitgangscode.js in line 65 with tag title "param" and text "{dom object} canvas het tekenveld": Invalid type expression "dom object": Expected "|" but "o" found.
+
+==> Dit is wéér een focking voorbeeld dat niet klopt!
+
+En nog meer: ELK VOORBEELD is incorrect! Functions worden niet annotated met hun arguments of return types:
+
+https://jsdoc.app/tags-function.html
+
+dus
+	
+	@function createElement
+
+in plaats van
+
+	@function createElement(location type) -> Element
+
+Ben ik blij dat ik 'slechts' drie modules heb vervuild. 
+Hoe durf ik ook te vertrouwen op de voorbeelden? Dom dom dom. Hahaha.
 
 ### TODO

@@ -1,4 +1,12 @@
-import {createEngineFactory, CENTRAL_TILE} from "../web/snake_engine.js";
+import {
+	createEngineFactory,
+	CENTRAL_TILE,
+	GAME_READY_STATE,
+	GAME_RUNNING_STATE,
+	GAME_PAUSED_STATE,
+	GAME_OVER_STATE,
+	GAME_WON_STATE,
+} from "../web/snake_engine.js";
 import {
 	SNAKE_MOVED,
 	SNAKE_DIED,
@@ -6,10 +14,6 @@ import {
 } from "../web/snake_snake.js"
 import {
 	NUMBER_OF_FOODS_PER_BASIC_GAME,
-	GAME_READY_STATE,
-	GAME_RUNNING_STATE,
-	GAME_OVER_STATE,
-	GAME_WON_STATE,
 } from "../web/snake_rule_set.js";
 import {MOVE_UP, MOVE_LEFT} from "../web/snake_player.js";
 
@@ -94,6 +98,19 @@ function EngineBuilder(){
 		return this;
 	};
 }
+
+
+QUnit.test("Constants",
+	assert => {
+		assert.expect(5);
+
+		assert.equal(GAME_READY_STATE.description, "Game ready", "Game ready has not been initialized");
+		assert.equal(GAME_RUNNING_STATE.description, "Game running", "Running game");
+		assert.equal(GAME_PAUSED_STATE.description, "Game paused", "Paused game");
+		assert.equal(GAME_OVER_STATE.description, "Game over", "Losing the game is Game over");
+		assert.equal(GAME_WON_STATE.description, "Game won", "Winning the game is Game won");
+	}
+);
 
 
 QUnit.test("Creating the engine initializes it",

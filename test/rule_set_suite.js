@@ -1,19 +1,6 @@
-import {createLocation} from "../web/snake_location.js";
-import {
-	SNAKE_MOVED,
-	SNAKE_DIED,
-	SNAKE_ATE
-} from "../web/snake_snake.js"
-
 import {
 	INITIAL_DIRECTION,
 	NUMBER_OF_FOODS_PER_BASIC_GAME,
-
-	GAME_READY_STATE,
-	GAME_RUNNING_STATE,
-	GAME_PAUSED_STATE,
-	GAME_OVER_STATE,
-	GAME_WON_STATE,
 
 	GAME_RESULT_WIN,
 	GAME_RESULT_LOSS,
@@ -21,6 +8,18 @@ import {
 	ruleSets,
 	difficulties
 } from "../web/snake_rule_set.js"
+import {createLocation} from "../web/snake_location.js";
+import {
+	SNAKE_MOVED,
+	SNAKE_DIED,
+	SNAKE_ATE
+} from "../web/snake_snake.js"
+import {
+	GAME_READY_STATE,
+	GAME_RUNNING_STATE,
+	GAME_WON_STATE,
+	GAME_OVER_STATE
+} from "../web/snake_engine.js"
 
 import {iterateReturnValuesOver, MockFactory, Recorder, Invocation} from "./mocks.js";
 import {MockBoard} from "./board_suite.js";
@@ -149,16 +148,10 @@ QUnit.module("Rule Set");
 
 QUnit.test("Constant values",
 	assert => {
-		assert.expect(9);
+		assert.expect(4);
 
 		assert.equal(INITIAL_DIRECTION, MOVE_UP, "Snake initial direction is up");
 		assert.equal(NUMBER_OF_FOODS_PER_BASIC_GAME, 5, "Basic game places 5 units of food");
-
-		assert.equal(GAME_READY_STATE.description, "Game ready", "Game ready has not been initialized");
-		assert.equal(GAME_RUNNING_STATE.description, "Game running", "Running game");
-		assert.equal(GAME_PAUSED_STATE.description, "Game paused", "Paused game");
-		assert.equal(GAME_OVER_STATE.description, "Game over", "Losing the game is Game over");
-		assert.equal(GAME_WON_STATE.description, "Game won", "Winning the game is Game won");
 
 		assert.propEqual(GAME_RESULT_WIN, {result:"win"}, "The result of a won game");
 		assert.propEqual(GAME_RESULT_LOSS, {result:"loss"}, "The result of a lost game");

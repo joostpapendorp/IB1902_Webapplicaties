@@ -6,19 +6,18 @@ import {
 	SNAKE_ATE,
 } from "./snake_snake.js";
 import {MOVE_UP} from "./snake_player.js";
-
+import {
+	GAME_READY_STATE,
+	GAME_RUNNING_STATE,
+	GAME_OVER_STATE,
+	GAME_WON_STATE
+} from "./snake_engine.js";
 
 "use strict";
 
 
 export const INITIAL_DIRECTION = MOVE_UP;
 export const NUMBER_OF_FOODS_PER_BASIC_GAME = 5;
-
-export const GAME_READY_STATE = createGameState("Game ready");
-export const GAME_RUNNING_STATE = createGameState("Game running");
-export const GAME_PAUSED_STATE = createGameState("Game paused");
-export const GAME_OVER_STATE = createGameState("Game over");
-export const GAME_WON_STATE = createGameState("Game won");
 
 export const GAME_RESULT_WIN = {result:"win"};
 export const GAME_RESULT_LOSS = {result:"loss"};
@@ -112,16 +111,6 @@ export function ruleSets(createSnake, foodPlanter) {
 	return {
 		basic : (storage) => basic(storage)
 	}
-}
-
-function createGameState(description){
-	function GameState(description){
-		this.description = description;
-	}
-
-	let state = new GameState(description);
-	Object.freeze(state);
-	return state;
 }
 
 export function difficulties(ruleSets){

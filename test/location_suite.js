@@ -1,4 +1,4 @@
-import {createLocation, NO_LOCATION} from "../web/snake_location.js";
+import {createLocation} from "../web/snake_location.js";
 
 "use strict";
 
@@ -7,18 +7,6 @@ export const MOCK_LOCATION = createLocation(1, 2);
 export const SECOND_MOCK_LOCATION = createLocation(2, 1);
 
 QUnit.module("Location and directions");
-
-QUnit.test("Constants",
-	assert => {
-		assert.expect(1);
-
-		assert.propEqual(
-			NO_LOCATION,
-			createLocation(0, 0),
-			"Sentinel for unknown location"
-		);
-	}
-);
 
 QUnit.test("location has accessible coordinates",
 	assert => {

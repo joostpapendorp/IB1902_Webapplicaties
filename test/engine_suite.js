@@ -1,4 +1,12 @@
-import {createEngineFactory} from "../web/snake_engine.js";
+import {
+	createEngineFactory,
+	CENTRAL_TILE,
+	GAME_READY_STATE,
+	GAME_RUNNING_STATE,
+	GAME_PAUSED_STATE,
+	GAME_OVER_STATE,
+	GAME_WON_STATE,
+} from "../web/snake_engine.js";
 import {
 	SNAKE_MOVED,
 	SNAKE_DIED,
@@ -6,18 +14,13 @@ import {
 } from "../web/snake_snake.js"
 import {
 	NUMBER_OF_FOODS_PER_BASIC_GAME,
-
-	NEW_GAME_STATE,
-	GAME_RUNNING_STATE,
-	GAME_OVER_STATE,
-	GAME_WON_STATE,
 } from "../web/snake_rule_set.js";
 import {MOVE_UP, MOVE_LEFT} from "../web/snake_player.js";
 
 import {Recorder} from "./mocks.js";
 import {MockBoard} from "./board_suite.js";
 import {MockSnake} from "./snake_suite.js";
-import {buildRules, MockRuleSet} from "./rule_set_suite.js";
+import {buildRules, buildMockRuleSet} from "./rule_set_suite.js";
 import {MockTimer} from "./timer_suite.js";
 import {MockSplashScreen} from "./snake_student_suite.js";
 
@@ -30,7 +33,8 @@ export function MockEngine(){
 		start : new Recorder("start"),
 		tick : new Recorder("tick"),
 		steer : new Recorder("tick"),
-		shutDown : new Recorder("shut down")
+		shutDown : new Recorder("shut down"),
+		togglePause : new Recorder("toggle pause"),
 	};
 
 	this.start = function(){
@@ -48,6 +52,10 @@ export function MockEngine(){
 	this.shutDown = function(){
 		this.recorders.shutDown.invoked();
 	};
+
+	this.togglePause = function(){
+		this.recorders.togglePause.invoked();
+	};
 }
 
 QUnit.module("Engine");
@@ -60,7 +68,7 @@ function EngineBuilder(){
 	this.board = new MockBoard();
 	this.timer = new MockTimer();
 	this.splashScreen = new MockSplashScreen();
-	this.rules = new MockRuleSet(GAME_RUNNING_STATE);
+	this.rules = buildMockRuleSet().build();
 
 	this.build = function(){
 		return createEngineFactory(
@@ -92,12 +100,27 @@ function EngineBuilder(){
 }
 
 
+QUnit.test("Constants",
+	assert => {
+		assert.expect(5);
+
+		assert.equal(GAME_READY_STATE.description, "Game ready", "Game ready has not been initialized");
+		assert.equal(GAME_RUNNING_STATE.description, "Game running", "Running game");
+		assert.equal(GAME_PAUSED_STATE.description, "Game paused", "Paused game");
+		assert.equal(GAME_OVER_STATE.description, "Game over", "Losing the game is Game over");
+		assert.equal(GAME_WON_STATE.description, "Game won", "Winning the game is Game won");
+	}
+);
+
+
 QUnit.test("Creating the engine initializes it",
 	assert => {
 		assert.expect(4);
 
 		let mockBoard = new MockBoard();
-		let mockRules = new MockRuleSet(NEW_GAME_STATE);
+		let mockRules = buildMockRuleSet().
+			withStateToReturn(GAME_READY_STATE).
+			build();
 
 		/*let ignored =*/ buildEngine().
 			withBoard(mockBoard).
@@ -245,9 +268,13 @@ QUnit.test("Winning the game writes the win.",
 
 QUnit.test("Winning the game reports a win.",
 	async function(assert) {
-		assert.expect(3);
+		assert.expect(4);
 		let expected = "MOCK_TALLY_WIN_RESULTS";
-		let mockRules = new MockRuleSet(GAME_WON_STATE, expected);
+		let mockRules = buildMockRuleSet().
+			withStateToReturn(GAME_WON_STATE).
+			withTallyText(expected).
+			build();
+
 		let mockBoard = new MockBoard();
 
 		let subject = buildEngine().
@@ -262,17 +289,21 @@ QUnit.test("Winning the game reports a win.",
 
 		let writeAt = mockBoard.recorders.writeAt;
 		assert.equal(writeAt.timesInvoked(), 1, "Writes text on the board");
-		assert.equal(writeAt.invocations[0].arguments[1], expected, "Write the tallied results")
+		assert.equal(writeAt.invocations[0].arguments[0], CENTRAL_TILE, "Writes in the center")
+		assert.equal(writeAt.invocations[0].arguments[1], expected, "Writes the tallied results")
 	}
 );
 
 
 QUnit.test("Losing the game reports a loss.",
 	async function(assert) {
-		assert.expect(3);
+		assert.expect(4);
 
 		let expected = "MOCK_TALLY_LOSS_RESULTS";
-		let mockRules = new MockRuleSet(GAME_OVER_STATE, expected);
+		let mockRules = buildMockRuleSet().
+			withStateToReturn(GAME_OVER_STATE).
+			withTallyText(expected).
+			build();
 		let mockBoard = new MockBoard();
 
 		let subject = buildEngine().
@@ -287,7 +318,8 @@ QUnit.test("Losing the game reports a loss.",
 
 		let writeAt = mockBoard.recorders.writeAt;
 		assert.equal(writeAt.timesInvoked(), 1, "Writes text on the board");
-		assert.equal(writeAt.invocations[0].arguments[1], expected, "Write the tallied results")
+		assert.equal(writeAt.invocations[0].arguments[0], CENTRAL_TILE, "Writes in the center")
+		assert.equal(writeAt.invocations[0].arguments[1], expected, "Writes the tallied results")
 	}
 );
 
@@ -425,5 +457,107 @@ QUnit.test("Steering a snake starts moving the snake in the provided direction."
 		assert.equal(push.timesInvoked(),1,"Tick pushes snake")
 		let actual = push.invocations[0].arguments[0];
 		assert.equal(actual, MOVE_LEFT, "Snake is pushed in the steered direction")
+	}
+);
+
+
+QUnit.test("toggling pause on the engine twice stops the timer, then starts it.",
+	assert => {
+		assert.expect(6);
+
+		let mockTimer = new MockTimer();
+		let startTimer = mockTimer.recorders.start;
+		let stopTimer = mockTimer.recorders.stop;
+
+		let subject = buildEngine().
+			withTimer(mockTimer).
+			build();
+
+		subject.start();
+		assert.equal(startTimer.timesInvoked(), 1, "Starting the engine starts the timer.");
+		assert.equal(stopTimer.timesInvoked(), 0, "A running engine does not stop the timer.");
+
+		subject.togglePause();
+		assert.equal(stopTimer.timesInvoked(), 1, "Pausing the engine stops the timer.");
+		assert.equal(startTimer.timesInvoked(), 1, "Pausing the engine does not restart the timer.");
+
+		subject.togglePause();
+		assert.equal(startTimer.timesInvoked(), 2, "Unpausing the engine restarts the timer.");
+		assert.equal(stopTimer.timesInvoked(), 1, "Unpausing the engine does not stop the timer again.");
+	}
+);
+
+
+QUnit.test("Toggling pause on the engine writes *** Game Paused *** on the center of the board.",
+	assert => {
+		assert.expect(3);
+
+		let mockBoard = new MockBoard();
+
+		let subject = buildEngine().
+			withBoard(mockBoard).
+			build();
+
+		subject.start();
+		subject.togglePause();
+
+		let writeAt = mockBoard.recorders.writeAt;
+		assert.equal(writeAt.timesInvoked(), 1, "Engine writes on the board on pause");
+		assert.equal(writeAt.invocations[0].arguments[0], CENTRAL_TILE, "Writes in the center");
+		assert.equal(writeAt.invocations[0].arguments[1], "*** GAME PAUSED ***", "Writes the tallied results")
+	}
+);
+
+
+QUnit.test("Halting the engine while paused does not stop the timer.",
+	assert => {
+		assert.expect(6);
+
+		let mockTimer = new MockTimer();
+		let startTimer = mockTimer.recorders.start;
+		let stopTimer = mockTimer.recorders.stop;
+
+		let subject = buildEngine().
+			withTimer(mockTimer).
+			build();
+
+		subject.start();
+		assert.equal(startTimer.timesInvoked(), 1, "Starting the engine starts the timer.");
+		assert.equal(stopTimer.timesInvoked(), 0, "A running engine does not stop the timer.");
+
+		subject.togglePause();
+		assert.equal(stopTimer.timesInvoked(), 1, "Pausing the engine stops the timer.");
+		assert.equal(startTimer.timesInvoked(), 1, "Pausing the engine does not restart the timer.");
+
+		subject.halt();
+		assert.equal(stopTimer.timesInvoked(), 1, "Halting the engine while paused does not stop the game.");
+		assert.equal(startTimer.timesInvoked(), 1, "Halting the engine never starts the timer.");
+	}
+);
+
+
+QUnit.test("Pausing the engine stops command processing and prevents stray timer calls.",
+	assert => {
+		assert.expect(2);
+
+		let mockSnake = new MockSnake(SNAKE_MOVED);
+		let rules = buildRules()
+	    .withSnakeFactory(() => mockSnake)
+			.basic()
+
+		let subject = buildEngine().
+			withRules(rules).
+			build();
+
+		subject.start();
+		subject.togglePause();
+		subject.steer(MOVE_LEFT);
+		subject.tick();
+		subject.togglePause();
+		subject.tick();
+
+		let push = mockSnake.recorders.push;
+		assert.equal(push.timesInvoked(), 1, "Engine does not execute ticks while paused.");
+		assert.equal(push.invocations[0].arguments[0], MOVE_UP, "Engine does not process steering while paused.");
 	}
 );

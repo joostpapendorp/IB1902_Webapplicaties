@@ -1,18 +1,20 @@
 import {createLocation} from "./snake_location.js";
 import {BOARD_SIZE} from "./snake_board.js";
-import {
-	GAME_RUNNING_STATE,
-	GAME_OVER_STATE,
-	GAME_WON_STATE
-} from "./snake_rule_set.js"
 
 "use strict";
 
 
-const CENTRAL_TILE = createLocation(BOARD_SIZE/2, BOARD_SIZE/2)
+export const GAME_READY_STATE = createGameState("Game ready");
+export const GAME_RUNNING_STATE = createGameState("Game running");
+export const GAME_PAUSED_STATE = createGameState("Game paused");
+export const GAME_OVER_STATE = createGameState("Game over");
+export const GAME_WON_STATE = createGameState("Game won");
+
+export const CENTRAL_TILE = createLocation(BOARD_SIZE/2, BOARD_SIZE/2)
+
+const GAME_PAUSED_TEXT = "*** GAME PAUSED ***"
 
 export function createEngineFactory(board, timer, splashScreen){
-
 	function Engine(board, timer, rules){
 		this.board = board;
 		this.timer = timer;
@@ -29,26 +31,28 @@ export function createEngineFactory(board, timer, splashScreen){
 		};
 
 		this.tick = function(){
-			let result = this.snake.push(this.direction);
-			this.state = this.rules.update(result);
+			if(this.state !== GAME_PAUSED_STATE){
+				let result = this.snake.push(this.direction);
+				this.state = this.rules.update(result);
 
-			this.board.redraw();
+				this.board.redraw();
 
-			switch(this.state) {
-				case GAME_RUNNING_STATE:
-					break;
+				switch(this.state) {
+					case GAME_RUNNING_STATE:
+						break;
 
-				case GAME_OVER_STATE:
-					this.halt();
-					splashScreen.writeGameOver(board);
-					writeTalliedScores(this.board, () => rules.gameLost());
-					break;
+					case GAME_OVER_STATE:
+						this.halt();
+						splashScreen.writeGameOver(board);
+						writeTalliedScores(this.board, () => rules.gameLost());
+						break;
 
-				case GAME_WON_STATE:
-					this.halt();
-					splashScreen.writeGameWon(board);
-					writeTalliedScores(this.board, () => rules.gameWon());
-					break;
+					case GAME_WON_STATE:
+						this.halt();
+						splashScreen.writeGameWon(board);
+						writeTalliedScores(this.board, () => rules.gameWon());
+						break;
+				}
 			}
 		};
 
@@ -58,11 +62,39 @@ export function createEngineFactory(board, timer, splashScreen){
 		}
 
 		this.steer = function(direction){
-			this.direction = direction;
+			if( this.state !== GAME_PAUSED_STATE)
+				this.direction = direction;
 		};
 
+		this.togglePause = function(){
+			switch(this.state) {
+				case GAME_RUNNING_STATE:
+					this.timer.stop();
+					this.board.writeAt(CENTRAL_TILE, GAME_PAUSED_TEXT);
+					this.state = GAME_PAUSED_STATE;
+					break;
+
+				case GAME_PAUSED_STATE:
+					this.timer.start(() => this.tick());
+					this.state = GAME_RUNNING_STATE;
+					break;
+
+				case GAME_READY_STATE:
+				case GAME_OVER_STATE:
+				case GAME_WON_STATE:
+					break;
+			}
+		}
+
 		this.halt = function(){
-			this.timer.stop();
+			switch(this.state){
+				case GAME_PAUSED_STATE:
+					// timer is already stopped, don't stop again.
+					break;
+
+				default:
+					this.timer.stop();
+			}
 		};
 
 		this.shutDown = function(){
@@ -81,11 +113,22 @@ export function createEngineFactory(board, timer, splashScreen){
 			tick: () => engine.tick(), //public for testing
 			steer: (direction) => engine.steer(direction),
 			halt: () => engine.halt(), //public for testing
-			shutDown : () => engine.shutDown()
+			shutDown : () => engine.shutDown(),
+			togglePause : () => engine.togglePause()
 		};
 	}
 
 	return {
 		prepareEngineWith : (rules) => prepareEngineWith(rules)
 	};
+}
+
+function createGameState(description){
+	function GameState(description){
+		this.description = description;
+	}
+
+	let state = new GameState(description);
+	Object.freeze(state);
+	return state;
 }

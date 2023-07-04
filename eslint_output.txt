@@ -1,10 +1,10 @@
 
 E:\files\studie\OU\Webapplicaties\Opdrachten\Opdracht2\IB1902_Webapplicaties\web\snake_student.js
   19:1   error  '$' is not defined  no-undef
-  24:2   error  '$' is not defined  no-undef
+  22:25  error  '$' is not defined  no-undef
   25:2   error  '$' is not defined  no-undef
-  27:2   error  '$' is not defined  no-undef
-  33:25  error  '$' is not defined  no-undef
+  26:2   error  '$' is not defined  no-undef
+  28:2   error  '$' is not defined  no-undef
 
 ✖ 5 problems (5 errors, 0 warnings)
 

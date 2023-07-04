@@ -1,9 +1,9 @@
 import {createGame} from "../web/snake_game.js";
-import {createPlayer, UP_ARROW_KEY_CODE, MOVE_UP} from "../web/snake_player.js";
+import {createPlayer, UP_ARROW_KEY_CODE, MOVE_UP, SPACE_BAR_KEY_CODE} from "../web/snake_player.js";
 import {MockEngine} from "./engine_suite.js";
 
 import {iterateReturnValuesOver, MockFactory} from "./mocks.js";
-import {MockRuleSet} from "./rule_set_suite.js";
+import {buildMockRuleSet} from "./rule_set_suite.js";
 import {MockSnakeStorage} from "./storage_suite.js";
 
 "use strict";
@@ -18,7 +18,7 @@ function GameBuilder(){
 	this.difficulties = [{
 		name:"MOCK_DIFFICULTY",
 		description:"MOCK_DESCRIPTION",
-		ruleSet: (storage) => new MockRuleSet()
+		ruleSet: (storage) => buildMockRuleSet().build()
 	}];
 	this.engineFactory = (board, timer) => new MockEngine();
 	this.player = createPlayer();
@@ -63,7 +63,7 @@ QUnit.test("Starting a game creates the engine with the basic rules.",
 	assert => {
 		assert.expect(3);
 
-		let mockRuleSet = new MockRuleSet();
+		let mockRuleSet = buildMockRuleSet().build();
 		let mockEngineFactory = new MockFactory("Engine")
 		let mockEngine = new MockEngine();
 
@@ -157,7 +157,7 @@ QUnit.test("Stopping a stopped game does not shuts the engine down a second time
 );
 
 
-QUnit.test("Receiving key input translates the key code into a direction to steer the engine.",
+QUnit.test("Receiving arrow key input translates the key code into a direction to steer the engine.",
 	assert => {
 		assert.expect(2);
 
@@ -172,10 +172,30 @@ QUnit.test("Receiving key input translates the key code into a direction to stee
 		subject.receiveKeyInput(UP_ARROW_KEY_CODE);
 
 		let steer = mockEngine.recorders.steer;
-		assert.equal(steer.timesInvoked(), 1, "receiving valid input steers the engine");
+		assert.equal(steer.timesInvoked(), 1, "receiving arrow key input steers the engine");
 
 		let actual = steer.invocations[0].arguments[0];
 		assert.equal(actual, MOVE_UP, "valid input is translated into corresponding direction")
+	}
+);
+
+
+QUnit.test("Receiving space bar key input causes the game to toggle the engine to pause/unpause.",
+	assert => {
+		assert.expect(1);
+
+		let mockEngine = new MockEngine();
+
+		let subject = buildGame().
+      withEngineFactory((rules)=>mockEngine).
+      withPlayer(createPlayer()).
+      build();
+
+		subject.start();
+		subject.receiveKeyInput(SPACE_BAR_KEY_CODE);
+
+		let steer = mockEngine.recorders.togglePause;
+		assert.equal(steer.timesInvoked(), 1, "receiving space bar input pauses the engine");
 	}
 );
 

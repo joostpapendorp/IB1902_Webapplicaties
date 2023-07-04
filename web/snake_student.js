@@ -19,18 +19,19 @@ export const SNAKE_CANVAS_ID = "mySnakeCanvas";
 $(document).ready(function() {
 	// note: we MUST construct the context onDocumentReady, since we need the html canvas JQuery object.
   // It might not be initialized beforehand.
-	let game = buildInjectionContext();
+	let canvasDOMElement = $("#"+SNAKE_CANVAS_ID);
+	let game = buildInjectionContext(canvasDOMElement);
 
 	$("#startSnake").click(()=>game.start());
 	$("#stopSnake").click(()=>game.stop());
 
 	$(document).keydown(function (event) {
+		event.preventDefault();
 		game.receiveKeyInput(event.which);
   });
 });
 
-export function buildInjectionContext(){
-	let canvasDOMElement = $("#"+SNAKE_CANVAS_ID);
+export function buildInjectionContext(canvasDOMElement){
 	let board = createBoard(
 		createCanvas(canvasDOMElement),
 		createElementFactory()

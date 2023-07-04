@@ -1,18 +1,6 @@
-import {createLocation} from "../web/snake_location.js";
-import {
-	SNAKE_MOVED,
-	SNAKE_DIED,
-	SNAKE_ATE
-} from "../web/snake_snake.js"
-
 import {
 	INITIAL_DIRECTION,
 	NUMBER_OF_FOODS_PER_BASIC_GAME,
-
-	NEW_GAME_STATE,
-	GAME_RUNNING_STATE,
-	GAME_OVER_STATE,
-	GAME_WON_STATE,
 
 	GAME_RESULT_WIN,
 	GAME_RESULT_LOSS,
@@ -20,6 +8,18 @@ import {
 	ruleSets,
 	difficulties
 } from "../web/snake_rule_set.js"
+import {createLocation} from "../web/snake_location.js";
+import {
+	SNAKE_MOVED,
+	SNAKE_DIED,
+	SNAKE_ATE
+} from "../web/snake_snake.js"
+import {
+	GAME_READY_STATE,
+	GAME_RUNNING_STATE,
+	GAME_WON_STATE,
+	GAME_OVER_STATE
+} from "../web/snake_engine.js"
 
 import {iterateReturnValuesOver, MockFactory, Recorder, Invocation} from "./mocks.js";
 import {MockBoard} from "./board_suite.js";
@@ -31,7 +31,36 @@ import {MOVE_UP} from "../web/snake_player.js";
 "use strict";
 
 
-export function MockRuleSet(stateToReturn, tallyText){
+export function buildMockRuleSet(){
+	return new MockRuleSetBuilder();
+}
+
+function MockRuleSetBuilder(){
+	this.stateToReturn = GAME_RUNNING_STATE;
+	this.initialDirection = MOVE_UP;
+	this.tallyText = "MOCK_TALLY_TEXT";
+
+	this.withStateToReturn = function(state){
+		this.stateToReturn = state;
+		return this;
+	};
+
+	this.withInitialDirection = function(direction){
+		this.initialDirection = direction;
+		return this;
+	};
+
+	this.withTallyText = function(text){
+		this.tallyText = text;
+		return this;
+	};
+
+	this.build = function(){
+		return new MockRuleSet(this.stateToReturn, this.initialDirection, this.tallyText);
+	};
+}
+
+function MockRuleSet(stateToReturn, initialDirection, tallyText){
 	this.recorders = {
 		prepare : new Recorder("prepare"),
 		initialDirection : new Recorder("initialDirection"),
@@ -42,17 +71,19 @@ export function MockRuleSet(stateToReturn, tallyText){
 		gameLost : new Recorder("gameLost"),
 	};
 
-	this.stateToReturn = stateToReturn;
+	this.stateToReturn = GAME_READY_STATE;
+	this.tallyText = "MOCK_TALLY_TEXT";
+	this.initialDirection = MOVE_UP;
 
 	this.prepare = function(){
 		this.recorders.prepare.invoked();
 		return stateToReturn;
-	}
+	};
 
 	this.initialDirection = function(){
 		this.recorders.initialDirection.invoked();
 		return stateToReturn;
-	}
+	};
 
 	this.createStartSnake = function(board){
 		this.recorders.createStartSnake.invokedWith([board]);
@@ -62,22 +93,22 @@ export function MockRuleSet(stateToReturn, tallyText){
 	this.start = function(){
 		this.recorders.start.invoked();
 		return stateToReturn;
-	}
+	};
 
 	this.update = function(result){
 		this.recorders.update.invokedWith([result]);
 		return stateToReturn;
-	}
+	};
 
 	this.gameWon = function(){
 		this.recorders.gameWon.invoked();
 		return tallyText;
-	}
+	};
 
 	this.gameLost = function(){
 		this.recorders.gameLost.invoked();
 		return tallyText;
-	}
+	};
 }
 
 export function buildRules() {
@@ -117,15 +148,10 @@ QUnit.module("Rule Set");
 
 QUnit.test("Constant values",
 	assert => {
-		assert.expect(8);
+		assert.expect(4);
 
 		assert.equal(INITIAL_DIRECTION, MOVE_UP, "Snake initial direction is up");
 		assert.equal(NUMBER_OF_FOODS_PER_BASIC_GAME, 5, "Basic game places 5 units of food");
-
-		assert.equal(NEW_GAME_STATE.description, "New game", "New game has not been initialized");
-		assert.equal(GAME_RUNNING_STATE.description, "Game running", "Running game");
-		assert.equal(GAME_OVER_STATE.description, "Game over", "Losing the game is Game over");
-		assert.equal(GAME_WON_STATE.description, "Game won", "Winning the game is Game won");
 
 		assert.propEqual(GAME_RESULT_WIN, {result:"win"}, "The result of a won game");
 		assert.propEqual(GAME_RESULT_LOSS, {result:"loss"}, "The result of a lost game");
@@ -179,7 +205,7 @@ QUnit.test("Preparing initializes the game.",
 
 		let subject = buildRules().basic();
 
-		assert.equal(subject.prepare(), NEW_GAME_STATE, "Preparing yields the new game state");
+		assert.equal(subject.prepare(), GAME_READY_STATE, "Preparing yields the new game state");
 	}
 );
 

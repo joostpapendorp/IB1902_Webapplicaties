@@ -1,7 +1,5 @@
 "use strict";
 
-export const NO_LOCATION = createLocation(0,0);
-
 export function createLocation(xCoordinate,yCoordinate){
 	function Location(x,y){
 		this.x = x;

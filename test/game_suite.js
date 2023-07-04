@@ -3,7 +3,7 @@ import {createPlayer, UP_ARROW_KEY_CODE, MOVE_UP, SPACE_BAR_KEY_CODE} from "../w
 import {MockEngine} from "./engine_suite.js";
 
 import {iterateReturnValuesOver, MockFactory} from "./mocks.js";
-import {MockRuleSet} from "./rule_set_suite.js";
+import {buildMockRuleSet} from "./rule_set_suite.js";
 import {MockSnakeStorage} from "./storage_suite.js";
 
 "use strict";
@@ -18,7 +18,7 @@ function GameBuilder(){
 	this.difficulties = [{
 		name:"MOCK_DIFFICULTY",
 		description:"MOCK_DESCRIPTION",
-		ruleSet: (storage) => new MockRuleSet()
+		ruleSet: (storage) => buildMockRuleSet().build()
 	}];
 	this.engineFactory = (board, timer) => new MockEngine();
 	this.player = createPlayer();
@@ -63,7 +63,7 @@ QUnit.test("Starting a game creates the engine with the basic rules.",
 	assert => {
 		assert.expect(3);
 
-		let mockRuleSet = new MockRuleSet();
+		let mockRuleSet = buildMockRuleSet().build();
 		let mockEngineFactory = new MockFactory("Engine")
 		let mockEngine = new MockEngine();
 

@@ -821,10 +821,18 @@ https://www.freecodecamp.org/news/javascript-keycode-list-keypress-event-key-cod
 [v] game processes pause commands
 [v] clean up NO_LOCATION
 [v] engine stops/starts timer
+[v] button captures space bar ==> focus on canvas
+https://stackoverflow.com/questions/1829586/how-do-i-give-an-html-canvas-the-keyboard-focus-using-jquery
 
-[ ] engine freezes input processing on pause
-[ ] handle pausing on other game states
-[ ] engine state GAME_READY_STATE
+(p 11)
+[v] engine state GAME_READY_STATE
+[v] write paused on canvas
+
+(p 12)
+[v] handle game halt on paused game
+[v] engine freezes input processing on pause
+
+(p 13)
 [ ] move states from rule set to engine
 
 ### TODO

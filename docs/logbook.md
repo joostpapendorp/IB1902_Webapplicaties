@@ -820,6 +820,11 @@ https://www.freecodecamp.org/news/javascript-keycode-list-keypress-event-key-cod
 [v] player converts space to pause command
 [v] game processes pause commands
 [v] clean up NO_LOCATION
-[ ] engine stops/starts timer, freezes input processing
+[v] engine stops/starts timer
+
+[ ] engine freezes input processing on pause
+[ ] handle pausing on other game states
+[ ] engine state GAME_READY_STATE
+[ ] move states from rule set to engine
 
 ### TODO

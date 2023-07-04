@@ -2,6 +2,7 @@ import {createLocation} from "./snake_location.js";
 import {BOARD_SIZE} from "./snake_board.js";
 import {
 	GAME_RUNNING_STATE,
+	GAME_PAUSED_STATE,
 	GAME_OVER_STATE,
 	GAME_WON_STATE
 } from "./snake_rule_set.js"
@@ -61,6 +62,24 @@ export function createEngineFactory(board, timer, splashScreen){
 			this.direction = direction;
 		};
 
+		this.togglePause = function(){
+			switch(this.state) {
+				case GAME_RUNNING_STATE:
+					this.timer.stop();
+					this.state = GAME_PAUSED_STATE;
+					break;
+
+				case GAME_PAUSED_STATE:
+					this.timer.start(() => this.tick());
+					this.state = GAME_PAUSED_STATE;
+					break;
+
+				case GAME_OVER_STATE:
+				case GAME_WON_STATE:
+					break;
+			}
+		}
+
 		this.halt = function(){
 			this.timer.stop();
 		};
@@ -82,7 +101,7 @@ export function createEngineFactory(board, timer, splashScreen){
 			steer: (direction) => engine.steer(direction),
 			halt: () => engine.halt(), //public for testing
 			shutDown : () => engine.shutDown(),
-			togglePause : () => {}
+			togglePause : () => engine.togglePause()
 		};
 	}
 

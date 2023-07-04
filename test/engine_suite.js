@@ -432,3 +432,30 @@ QUnit.test("Steering a snake starts moving the snake in the provided direction."
 		assert.equal(actual, MOVE_LEFT, "Snake is pushed in the steered direction")
 	}
 );
+
+
+QUnit.test("toggling pause on the engine twice stops the timer, then starts it.",
+	assert => {
+		assert.expect(6);
+
+		let mockTimer = new MockTimer();
+		let startTimer = mockTimer.recorders.start;
+		let stopTimer = mockTimer.recorders.stop;
+
+		let subject = buildEngine().
+			withTimer(mockTimer).
+			build();
+
+		subject.start();
+		assert.equal(startTimer.timesInvoked(), 1, "Starting the engine starts the timer.");
+		assert.equal(stopTimer.timesInvoked(), 0, "A running game does not stop the timer.");
+
+		subject.togglePause();
+		assert.equal(stopTimer.timesInvoked(), 1, "Pausing the engine stops the timer.");
+		assert.equal(startTimer.timesInvoked(), 1, "Pausing the engine does not restart the timer.");
+
+		subject.togglePause();
+		assert.equal(startTimer.timesInvoked(), 2, "Unpausing the engine restarts the timer.");
+		assert.equal(stopTimer.timesInvoked(), 1, "Unpausing the engine does not stop the timer again.");
+	}
+);

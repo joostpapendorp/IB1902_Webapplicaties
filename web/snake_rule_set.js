@@ -16,6 +16,7 @@ export const NUMBER_OF_FOODS_PER_BASIC_GAME = 5;
 
 export const NEW_GAME_STATE = createGameState("New game");
 export const GAME_RUNNING_STATE = createGameState("Game running");
+export const GAME_PAUSED_STATE = createGameState("Game paused");
 export const GAME_OVER_STATE = createGameState("Game over");
 export const GAME_WON_STATE = createGameState("Game won");
 

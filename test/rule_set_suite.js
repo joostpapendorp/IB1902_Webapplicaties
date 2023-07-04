@@ -11,6 +11,7 @@ import {
 
 	NEW_GAME_STATE,
 	GAME_RUNNING_STATE,
+	GAME_PAUSED_STATE,
 	GAME_OVER_STATE,
 	GAME_WON_STATE,
 
@@ -117,13 +118,14 @@ QUnit.module("Rule Set");
 
 QUnit.test("Constant values",
 	assert => {
-		assert.expect(8);
+		assert.expect(9);
 
 		assert.equal(INITIAL_DIRECTION, MOVE_UP, "Snake initial direction is up");
 		assert.equal(NUMBER_OF_FOODS_PER_BASIC_GAME, 5, "Basic game places 5 units of food");
 
 		assert.equal(NEW_GAME_STATE.description, "New game", "New game has not been initialized");
 		assert.equal(GAME_RUNNING_STATE.description, "Game running", "Running game");
+		assert.equal(GAME_PAUSED_STATE.description, "Game paused", "Paused game");
 		assert.equal(GAME_OVER_STATE.description, "Game over", "Losing the game is Game over");
 		assert.equal(GAME_WON_STATE.description, "Game won", "Winning the game is Game won");
 

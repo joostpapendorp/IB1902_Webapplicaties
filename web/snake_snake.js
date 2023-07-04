@@ -19,10 +19,6 @@ export const SNAKE_ATE = "Snake ate";
 // GoF factory pattern for snake creation
 export function createSnakeFactory(){
 	function createSnake(board, locations){
-		/**
-			@constructor Snake
-			@param {[Element] segments een array met aaneengesloten slangsegmenten Het laatste element van segments wordt de kop van de slang
-		*/
 		function Snake(segments) {
 
 			this.segments = segments;

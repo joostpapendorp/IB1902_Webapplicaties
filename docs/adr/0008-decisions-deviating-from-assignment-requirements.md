@@ -15,15 +15,17 @@ We are aware these choices might be controversial, hence our attempt to explain 
 ## Overview of deviations
 
 1. We won't use JSLint. Instead, we use ESLint. 
-2. We won't be following the template in calculating the positions of elements on the board. In stead, we separate board and canvas into two different concerns.
+2. We won't be following the template in calculating the positions of elements on the board. Instead, we separate board and canvas into two different concerns.
+3. We won't implement an MVC architecture. Instead, we adhere to the locality principle and modularize our hexagonal architecture.
+4. We do not document every function with JSDoc. Instead, we name clearly to document the _what_, use clean code to document the _how_ and use ADR's to document the _why_. 
 
 
-## 1. We won't use JSLint
+### 1. We won't use JSLint
 
 See [ARD 007](0007-code-is-neatly-styled..md) for this discussion.
 
 
-## 2. We separate board and canvas.
+### 2. We separate board and canvas.
 
 The canvas offers constant declarations for the radius and diameter of the elements. Also, it asked to retrieve dimensions from the canvas HTML element. This left the board size, i.e. the number of elements that fit on the board in any dimension, implicit.
 This raises interesting questions, like
@@ -32,6 +34,12 @@ This raises interesting questions, like
 
 We concluded that the _game board_ and the _representation_ are two different concerns, and we introduced a separate _board_ entity. Since the values retrieved from the canvas are non-constant, we can't and shouldn't maintain fixed sizes for the game pieces. The constants given in the template are no longer sufficient, and we deleted them. We chose to calculate the size of the pieces from a fixed board size instead.
 
-## 3. We won't implement an MVC design.
 
-See [ADR 14](./0014-we-modularize-our-code.md) for this discussion.
+### 3. We won't implement an MVC design.
+
+See [ADR 014](./0014-we-modularize-our-code.md) for this discussion.
+
+
+### 4. We do not document every function with JSDoc.
+
+See [ADR 015](./0015-we-document-the-what-how-why.md) for this discussion.

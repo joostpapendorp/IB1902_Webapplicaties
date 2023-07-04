@@ -73,45 +73,74 @@ The need for the comment evaporates with expressive names. Furthermore, comments
 
 The assignment requires us to use JSDoc to document our functions. The given starting code gives the following example:
     
-    /**
-        @function move(direction) -> void
-        @desc Beweeg slang in aangegeven richting
-        tenzij slang uit canvas zou verdwijnen  
-        @param   {string} direction de richting (een van de constanten UP, DOWN, LEFT of RIGHT)
-    */
-    function move(direction) {
+	/**
+	  @function move(direction) -> void
+	  @desc Beweeg slang in aangegeven richting
+	  tenzij slang uit canvas zou verdwijnen  
+	  @param   {string} direction de richting (een van de constanten UP, DOWN, LEFT of RIGHT)
+	*/
+	function move(direction) {
 
 Now let's ask ourselves: who is this information for? In general, it is good practice to document endpoints that other parties have to consume. However, this app has no endpoints. All its functions are for internal use. This means that all the documentation is for _its own developers_, who could just as easily look at the code and the tests.
 
 Secondly, let's ask ourselves: What information does this documentation _actually_ provide? Firstly, it mainly states its function's signature and the types of the arguments. In Java, this would be evident from the declaration alone:
     
-    void move( String direction )
+	void move( String direction )
 
 So we're just fighting against the language again. Secondly, it tells us that we can only input certain values. This is a design constraint, which can be solved using well-chosen types. Consider our alternative:
 
 
-			this.push = function(direction){
-				let newLocation = this.head().location.translated(direction);
-				let elementPresent = board.elementAt(newLocation);
-
-				switch(elementPresent.entity()){
-					case OFF_THE_BOARD_ENTITY:
-					case SNAKE_ENTITY:
-						return this.die();
-
-					case FOOD_ENTITY:
-						return this.eat(elementPresent);
-
-					case FREE_SPACE_ENTITY:
-						return this.move(direction);
-				}
-			};
+	this.push = function(direction){
+		let newLocation = this.head().location.translated(direction);
+		let elementPresent = board.elementAt(newLocation);
+	
+		switch(elementPresent.entity()){
+			case OFF_THE_BOARD_ENTITY:
+			case SNAKE_ENTITY:
+				return this.die();
+	
+			case FOOD_ENTITY:
+				return this.eat(elementPresent);
+	
+			case FREE_SPACE_ENTITY:
+				return this.move(direction);
+		}
+	};
 
 All the information is already present, in a single glance. No need for comments, and with further information available in the tests.     
 
-In short, JSDoc comments are bland, tedious, polluting and, when they inevitably go out of sync, actively harmful.
+Even worse, sometimes the examples given actually *obscure* the clarity of the code, as in the example below.
+Please note, this example is from the example code and is supposed to set the standard to which we are held. 
+It omits a parameter (!) and it doesn't specify how the element is used or which defaults are chosen in the write-through. 
+Finally, the documentation is nearly as long as the code itself.
+Please ask yourselves: how does this contribute? What is this supposed to add?
 
-However, we do wish to demonstrate our proficiency with the tool. Therefore, we will, in addition to the method outlined above, document (only) the exported functions of every module with JSDoc. 
+	/**
+		@function drawElement(element, canvas) -> void
+		@desc Een element tekenen
+		@param {Element} element een Element object
+		@param  {dom object} canvas het tekenveld
+	*/
+	function drawElement(element, canvas) {
+		canvas.drawArc({
+			draggable : false,
+			fillStyle : element.color,
+			x : element.x,
+			y : element.y,
+			radius : element.radius
+		});
+	}
+
+In short, JSDoc comments are bland, tedious, polluting and, when they inevitably go out of sync like in the example above, actively harmful.
+
+However, we do wish to demonstrate our proficiency with the tool for evaluation purposes. 
+Therefore, we will, in addition to the methods outlined above, document (only) the exported functions of the following three modules with JSDoc:
+
+* snake_board.js,
+* snake_canvas.js and
+* snake_element.js.
+
+This should demonstrate our proficiency adequately, while cutting down on the tedious mind-numbing uselessness of documenting *every* exported function. 
 
 
 ### References

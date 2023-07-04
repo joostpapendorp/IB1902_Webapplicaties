@@ -776,5 +776,10 @@ dit is ons illustere voorbeeld uit de uitgangscode dat de standaard neer moet le
 Ik had *nooit* kunnen raden dat een Element typed element een element object is. Nooit. Gelukkig hebben we JSDoc.
 
 (P 3)
+OK, I had enough of this.
+Cut down on the uselessness.
+Restrict to only three modules.
+
+(P 4)
 
 ### TODO

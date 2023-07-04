@@ -765,4 +765,15 @@ Ach ja.
 
 (P 2)
 
+dit is ons illustere voorbeeld:
+
+	/**
+		@function drawElement(element, canvas) -> void
+		@desc Tekent een element op het canvas
+		@param {Element} element een Element object
+	*/
+
+Ik had *nooit* kunnen raden dat een Element typed element een element object is. Nooit. Gelukkig hebben we JSDoc.
+
+
 ### TODO

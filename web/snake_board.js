@@ -11,7 +11,7 @@ export const FREE_SPACE_ENTITY = createElementEntity("Free space");
 export const FREE_SPACE_TYPE = createElementType(undefined, FREE_SPACE_ENTITY);
 
 /**
-	@function createBoard(canvas, elementFactory) -> Board
+	@function createBoard(canvas, elementFactory) -> interface onto Board
 	@desc creates a board which paints to the given canvas
 	@param {Canvas} canvas Canvas to paint on.
 	@param {anonymous object} elementFactory The element factory created by createElementFactory()

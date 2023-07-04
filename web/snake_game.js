@@ -52,6 +52,7 @@ export function createGame(
 					break;
 
 				case PAUSE_COMMAND_TYPE:
+					this.engine.togglePause();
 					break;
 
 				case NO_COMMAND_TYPE:

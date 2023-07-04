@@ -814,10 +814,12 @@ https://www.freecodecamp.org/news/javascript-keycode-list-keypress-event-key-cod
 [v] define pause command 
 
 (P 9)
-[ ] game switches on a command type iso location
-[ ] player converts space to pause command
-[ ] game processes pause commands
-[ ] clean up NO_LOCATION
+[v] game switches on a command type iso location
+
+(P 10)
+[v] player converts space to pause command
+[v] game processes pause commands
+[v] clean up NO_LOCATION
 [ ] engine stops/starts timer, freezes input processing
 
 ### TODO

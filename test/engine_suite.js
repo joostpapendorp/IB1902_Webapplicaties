@@ -30,7 +30,8 @@ export function MockEngine(){
 		start : new Recorder("start"),
 		tick : new Recorder("tick"),
 		steer : new Recorder("tick"),
-		shutDown : new Recorder("shut down")
+		shutDown : new Recorder("shut down"),
+		togglePause : new Recorder("toggle pause"),
 	};
 
 	this.start = function(){
@@ -47,6 +48,10 @@ export function MockEngine(){
 
 	this.shutDown = function(){
 		this.recorders.shutDown.invoked();
+	};
+
+	this.togglePause = function(){
+		this.recorders.togglePause.invoked();
 	};
 }
 

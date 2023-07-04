@@ -1,4 +1,4 @@
-import {createLocation, NO_LOCATION} from "./snake_location.js";
+import {createLocation} from "./snake_location.js";
 
 "use strict";
 
@@ -38,6 +38,9 @@ export function createPlayer(){
 
 				case DOWN_ARROW_KEY_CODE:
 					return createSteerCommand(MOVE_DOWN);
+
+				case SPACE_BAR_KEY_CODE:
+					return PAUSE_COMMAND;
 
 				default:
 					return NO_COMMAND;

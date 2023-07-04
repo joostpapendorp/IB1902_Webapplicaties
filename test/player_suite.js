@@ -102,6 +102,18 @@ QUnit.test("Player converts arrow key codes into steering directions",
 );
 
 
+QUnit.test("Player converts space bar code into pause command",
+	assert => {
+	  assert.expect(1);
+
+		let subject = createPlayer();
+
+		let actualCommand = subject.receive(SPACE_BAR_KEY_CODE);
+		assert.equal(actualCommand, PAUSE_COMMAND, "player converts space bar code to sentinel command" );
+	}
+);
+
+
 QUnit.test("Player converts unknown codes into sentinel value",
 	assert => {
 	  assert.expect(1);

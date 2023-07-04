@@ -81,7 +81,8 @@ export function createEngineFactory(board, timer, splashScreen){
 			tick: () => engine.tick(), //public for testing
 			steer: (direction) => engine.steer(direction),
 			halt: () => engine.halt(), //public for testing
-			shutDown : () => engine.shutDown()
+			shutDown : () => engine.shutDown(),
+			togglePause : () => {}
 		};
 	}
 

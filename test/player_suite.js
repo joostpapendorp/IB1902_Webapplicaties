@@ -1,8 +1,10 @@
-import {createLocation, NO_LOCATION} from "../web/snake_location.js";
+import {createLocation} from "../web/snake_location.js";
 import {
-	createPlayer,
-	LEFT_ARROW_KEY_CODE, UP_ARROW_KEY_CODE, RIGHT_ARROW_KEY_CODE, DOWN_ARROW_KEY_CODE,
-	MOVE_LEFT, MOVE_UP, MOVE_RIGHT, MOVE_DOWN
+	createPlayer, createSteerCommand,
+	LEFT_ARROW_KEY_CODE, UP_ARROW_KEY_CODE, RIGHT_ARROW_KEY_CODE, DOWN_ARROW_KEY_CODE, SPACE_BAR_KEY_CODE,
+	MOVE_LEFT, MOVE_UP, MOVE_RIGHT, MOVE_DOWN,
+	STEER_COMMAND_TYPE, PAUSE_COMMAND_TYPE, NO_COMMAND_TYPE,
+	PAUSE_COMMAND, NO_COMMAND
 } from "../web/snake_player.js";
 
 "use strict";
@@ -10,9 +12,9 @@ import {
 
 QUnit.module("Player");
 
-QUnit.test("Constants",
+QUnit.test("Constant values",
 	assert => {
-		assert.expect(4);
+		assert.expect(14);
 
 		assert.propEqual(
 			MOVE_UP,
@@ -37,22 +39,47 @@ QUnit.test("Constants",
 			createLocation(1, 0),
 			"LEFT moves positive x"
 		);
-	}
-);
 
-QUnit.test("Constant values",
-	assert => {
-	  assert.expect(4);
+		assert.propEqual(
+			STEER_COMMAND_TYPE.description,
+			"STEER COMMAND",
+			"Command type used to group commands that steer the snake"
+		);
+
+		assert.propEqual(
+			PAUSE_COMMAND_TYPE.description,
+			"PAUSE COMMAND",
+			"Command type used to group commands that pause the game"
+		);
+
+		assert.propEqual(
+			NO_COMMAND_TYPE.description,
+			"NO COMMAND",
+			"Command type used to group commands to handle unknown key inputs"
+		);
+
+		assert.propEqual(
+			PAUSE_COMMAND,
+			{type:PAUSE_COMMAND_TYPE, target: {}},
+			"Sentinel command used to pause the game"
+		);
+
+		assert.propEqual(
+			NO_COMMAND,
+			{type: NO_COMMAND_TYPE, target: {}},
+			"Sentinel command used to indicate unknown key input"
+		);
 
 	  assert.equal(LEFT_ARROW_KEY_CODE, 37, "ASCII left arrow key code");
 	  assert.equal(UP_ARROW_KEY_CODE, 38, "ASCII up arrow key code");
 	  assert.equal(RIGHT_ARROW_KEY_CODE, 39, "ASCII right arrow key code");
 	  assert.equal(DOWN_ARROW_KEY_CODE, 40, "ASCII down arrow key code");
+	  assert.equal(SPACE_BAR_KEY_CODE, 32, "ASCII space bar key code");
 	}
 );
 
 
-QUnit.test("Player converts key codes into steering directions",
+QUnit.test("Player converts arrow key codes into steering directions",
 	assert => {
 	  assert.expect(4);
 
@@ -64,8 +91,12 @@ QUnit.test("Player converts key codes into steering directions",
 			[RIGHT_ARROW_KEY_CODE, MOVE_RIGHT],
 			[DOWN_ARROW_KEY_CODE, MOVE_DOWN]
 		]){
-			let actualDirection = subject.receive(code);
-			assert.equal(actualDirection, expectedDirection, `player converts ${code} to ${expectedDirection.describe()}` );
+			let actualCommand = subject.receive(code);
+			let expectedCommand = createSteerCommand(expectedDirection)
+			assert.propEqual(
+				actualCommand,
+				expectedCommand,
+				`player converts ${code} to ${actualCommand.type.description} in direction ${expectedDirection.describe()}` );
 		}
 	}
 );
@@ -79,7 +110,7 @@ QUnit.test("Player converts unknown codes into sentinel value",
 
 		let subject = createPlayer();
 
-		let actualDirection = subject.receive(UNKNOWN_CODE);
-		assert.equal(actualDirection, NO_LOCATION, "player converts unknown codes to NO_LOCATION" );
+		let actualCommand = subject.receive(UNKNOWN_CODE);
+		assert.equal(actualCommand, NO_COMMAND, "player converts unknown codes to NO_COMMAND" );
 	}
 );

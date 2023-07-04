@@ -157,7 +157,7 @@ QUnit.test("Stopping a stopped game does not shuts the engine down a second time
 );
 
 
-QUnit.test("Receiving key input translates the key code into a direction to steer the engine.",
+QUnit.test("Receiving arrow key input translates the key code into a direction to steer the engine.",
 	assert => {
 		assert.expect(2);
 

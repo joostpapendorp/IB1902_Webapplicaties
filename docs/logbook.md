@@ -776,11 +776,11 @@ dit is ons illustere voorbeeld uit de uitgangscode dat de standaard neer moet le
 Ik had *nooit* kunnen raden dat een Element typed element een element object is. Nooit. Gelukkig hebben we JSDoc.
 
 (P 3)
-OK, I had enough of this.
+OK, I've had enough of this.
 Cut down on the uselessness.
 Restrict to only three modules.
 
-(P 4, 5)
+(P 4, 5, 6)
 
 running tool:
 
@@ -802,5 +802,22 @@ in plaats van
 
 Ben ik blij dat ik 'slechts' drie modules heb vervuild. 
 Hoe durf ik ook te vertrouwen op de voorbeelden? Dom dom dom. Hahaha.
+
+
+(p 7)
+story _019-EXTRA-Pauzing_the_game_
+
+https://www.freecodecamp.org/news/javascript-keycode-list-keypress-event-key-codes/
+
+(P 8)
+[v] player wraps directions in commands
+[v] define pause command 
+
+(P 9)
+[ ] game switches on a command type iso location
+[ ] player converts space to pause command
+[ ] game processes pause commands
+[ ] clean up NO_LOCATION
+[ ] engine stops/starts timer, freezes input processing
 
 ### TODO

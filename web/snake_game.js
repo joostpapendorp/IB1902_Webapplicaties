@@ -1,4 +1,4 @@
-import {NO_LOCATION} from "./snake_location.js";
+import {STEER_COMMAND_TYPE, PAUSE_COMMAND_TYPE, NO_COMMAND_TYPE} from "./snake_player.js";
 
 "use strict";
 
@@ -44,9 +44,19 @@ export function createGame(
 		};
 
 		this.receiveKeyInput = function(keyCode) {
-			let direction = player.receive(keyCode);
-			if(direction !== NO_LOCATION)
-				this.engine.steer(direction);
+			let command = player.receive(keyCode);
+
+			switch(command.type){
+				case STEER_COMMAND_TYPE:
+					this.engine.steer(command.target);
+					break;
+
+				case PAUSE_COMMAND_TYPE:
+					break;
+
+				case NO_COMMAND_TYPE:
+					break;
+			}
 		};
 	}
 

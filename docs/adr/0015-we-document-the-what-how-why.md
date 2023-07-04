@@ -4,7 +4,7 @@ Date: 2023-07-01
 
 ## Context
 
-The assignment requires us to documenet our code. The course textbook advocates JSDoc as a documentation tool. We are committed to [documenting our decisions using ADR](./0002-keep-architectural-decision-records.md). We write clear and concise tests. We write clean code. 
+The assignment requires us to document our code. The course textbook advocates JSDoc as a documentation tool. We are committed to [documenting our decisions using ADR](./0002-keep-architectural-decision-records.md). We write clear and concise tests. We write clean code. 
 
 ## Decision
 
@@ -22,8 +22,8 @@ The requirements of the code should be apparent from the function names we use i
 In short, if one is interested in what a piece of code is supposed to do, one should look at the accompanying test suite. As a simple example of a documenting test, consider the following (from [player_suite.js](../../test/player_suite.js):
 
     QUnit.test("Player converts unknown codes into sentinel value",
-    assert => {
-    assert.expect(1);
+        assert => {
+            assert.expect(1);
     
             const UNKNOWN_CODE = -1;
     

@@ -4,7 +4,7 @@
 ### 2022-12-08
 
 Afgesproken om Trello en Git te gebruiken. Rinaldo maakt bord en Joost maakt repo aan.
-Afgesproken om Rinaldo's uitwerking te gebruiken als basis voor de site. 
+Afgesproken om Rinaldo's uitwerking te gebruiken als basis voor de site.
 Zie mails dd. 7-12 (thread dd. 22-11)
 
 
@@ -18,12 +18,12 @@ Bord staat.
 
 Rinaldo heeft aangegeven niet verder te willen. Joost heeft Sylvia gemaild. Joost gaat alleen verder.
 Zie mails dd. 17-01.
-    
+
 
 ### 2023-01-24
 
-ADR tooling geïnstalleerd. 
-Log book aangemaakt. 
+ADR tooling geïnstalleerd.
+Log book aangemaakt.
 Readme links aangepast.
 
 
@@ -76,8 +76,8 @@ updated npm to 9.6.5
 
 [ v ] copy code to clean file when needed, clearing the template slowly.
 
-#### ??? Waar komt jcanvas vandaan? 
-Index.html heeft geen js nodig, stond fout in templates. Ik denk dat het deze is (???) 
+#### ??? Waar komt jcanvas vandaan?
+Index.html heeft geen js nodig, stond fout in templates. Ik denk dat het deze is (???)
 
 https://projects.calebevans.me/jcanvas/docs/
 
@@ -102,7 +102,7 @@ Ik weet niet hoe ik dit oplos, het kost tijd en is niet essentieel: Revert JCanv
 (Pomodoro 3)
 
 [ v ] import js module of via html?
-    LEH 7 pp 163
+LEH 7 pp 163
 
 (Pomodoro 4)
 
@@ -192,11 +192,11 @@ Introduce loan pattern to isolate tests (story _010-Mocking_and_modularize_testi
 Create a board and inject the canvas.
 
 ? Moet een element een referentie hebben naar het board, of moet het tekenen van het element het board meekrijgen?
-===> Een element wordt altijd gecreerd op het board, dus laat het board de elementen maken. 
+===> Een element wordt altijd gecreerd op het board, dus laat het board de elementen maken.
 
     "No elements possible without a board, yet an empty board has no elements."
 
-Maakt dat element een internal van board? ===> ja, wel zelfde package, exports alleen de gecreeerde elements. 
+Maakt dat element een internal van board? ===> ja, wel zelfde package, exports alleen de gecreeerde elements.
 
 Dit lost ook de plaatsing van de constanten E_R, E_D en H_G_S/ V_G_S op.
 
@@ -262,7 +262,7 @@ Use factory pattern for snake.
 
 (Pomodoro 1+2)
 
-    
+
 WTF? function reference werkt _toch wel_ met een closure over het board argument??
 
     return{
@@ -271,7 +271,7 @@ WTF? function reference werkt _toch wel_ met een closure over het board argument
 
 (Pomodoro 3)
 
-Om te testen of snake de elementen manipuleert, moet het board mocks terug gaan geven van de elementen. Deep mocking is 
+Om te testen of snake de elementen manipuleert, moet het board mocks terug gaan geven van de elementen. Deep mocking is
 frowned upon:
 
     "when a mock returns a mock, a fairy dies."
@@ -284,17 +284,17 @@ referenties beheert. Moving an element is replacing an element b/c of immutabili
 
 ==> on that note: is board niet gewoon ook de factory voor snake?? ==> Nee. Board interactions worden afgetest.
 ==> kunnen we dan niet hetzelfde truukje uithalen voor element? e.g:
-    
+
     createElementFactory(board).createElement(location, color)
 
-Vergelijk het gebruik van de snake in game: 
-    
+Vergelijk het gebruik van de snake in game:
+
     function createStartSnake(snakeFactory)
     ...
 	    return snakeFactory.createSnake(locations);
 
 dit is gemocked als:
-    
+
     createStartSnake(mockSnakeFactory);
 
 in essentie is de createElementFactory gelijk aan createBoard. Het probleem gaat daar ook ontstaan als we aankomen bij
@@ -341,7 +341,7 @@ Normaal zou de test local access hebben in Snake, zodat het de factory omzeilt. 
 (P 1, 2, 3)
 [v] add the engine
 
-==> ik = dropje: factory pattern is redundant in 'functionele' taal: simply pass functions in. 
+==> ik = dropje: factory pattern is redundant in 'functionele' taal: simply pass functions in.
 Maar hoe kunnen we dit dan recorden?
 
 [v] replace factory patterns with functions.
@@ -372,7 +372,7 @@ story _013-kill_a_snake_
 
 (P 1)
 
-Feature envy: 
+Feature envy:
 
     let newLocation = snake.head().location.translated(direction);
 
@@ -380,11 +380,11 @@ maar snake zit al zo vol
 
 (P 2)
 
-??? Engine als aparte entiteit? of re-integreren in Game? 
-    ==> engine is apart v/w de snake vs. snakeFactory.
+??? Engine als aparte entiteit? of re-integreren in Game?
+==> engine is apart v/w de snake vs. snakeFactory.
 
-??? move spul van game naar engine? 
-        ==> timer, direction
+??? move spul van game naar engine?
+==> timer, direction
 
 (P 3, 4, 5)
 [v] move timer, direction van Game naar Engine
@@ -421,8 +421,8 @@ story _014-feed_a_snake_
 ??? what 'element' is an out-of-bounds element?
 ??? wrapper around element? 'square'? ==> Square(Element(Location(Int,Int),String),Type())
 
-==> No. use type as wrapper for color. Define types as constants in the appropriate places. This is simply a more elegant 
-way than to switch directly on the colors. 
+==> No. use type as wrapper for color. Define types as constants in the appropriate places. This is simply a more elegant
+way than to switch directly on the colors.
 
     const SNAKE_HEAD_COLOR = "DarkOrange";
     const SNAKE_BODY_COLOR = "DarkRed";
@@ -431,7 +431,7 @@ way than to switch directly on the colors.
     const DEAD_SNAKE_HEAD_COLOR = "DarkGrey";
 
 ??? These are all snake types. Unify? diversify? Property 'class'?
-    ==> introduce concept of 'entity'. Entity is the game concept the element is part of, e.g. snake, food, wall
+==> introduce concept of 'entity'. Entity is the game concept the element is part of, e.g. snake, food, wall
 
 (P 3)
 
@@ -459,7 +459,7 @@ way than to switch directly on the colors.
 Got the shit working untested, including the ending. Now we must integrate story _015- end the game_ into this one.
 [v] paint the text (canvas)
 
-(P 2) 
+(P 2)
 
     for (let x = 0; x < BOARD_SIZE; x++)
         for (let y = 0; y < BOARD_SIZE; y++){
@@ -469,10 +469,10 @@ Got the shit working untested, including the ending. Now we must integrate story
         }
     };
 
-Inefficient! 
+Inefficient!
 ??? Can we use flatmap to just iterate the set elements?
-    ==> we already have the verification:
-        
+==> we already have the verification:
+
     assert.equal(drawArc.timesInvoked(), 2, "redraw draws both elements");
 
 [v] use flatMap to iterate the board
@@ -505,7 +505,7 @@ Story _015-End_the_game_
 (P 10, 11)
 [v] Dead snake ends the game
 [v] Eating all food ends the game
-[v] Engine calls rule set for updates on state. 
+[v] Engine calls rule set for updates on state.
 
 
 #### 2023-06-13
@@ -543,7 +543,7 @@ Story _016-scoring_
 (P 1)
 
 ??? Hoe weet ik of een DB al bestaat?
-    ==> kan niet. dus niet testen. Gebruik mock om callbacks af te vangen.
+==> kan niet. dus niet testen. Gebruik mock om callbacks af te vangen.
 [ ] define local storage facade.
 
 
@@ -597,21 +597,21 @@ Story _017-Modularization_
 [v] module diagram
 
 (P 6, 7)
-[v] introduce module Canvas, 
+[v] introduce module Canvas,
 
 test graduality ===> HAHAHAHAHA Nope.
 --> eerst as-is, dan split
 
     Module source URI is not allowed in this document: “file:///E:/files/studie/OU/Webapplicaties/Opdrachten/Opdracht2/IB1902_Webapplicaties/test/canvas_suite.js”.
 
-en 
+en
 
     Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at file:///E:/files/studie/OU/Webapplicaties/Opdrachten/Opdracht2/IB1902_Webapplicaties/web/snake_canvas.js. (Reason: CORS request not http).
 
 https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSRequestNotHttp?utm_source=devtools&utm_medium=firefox-cors-errors&utm_campaign=default
 
 Textboek pp 187:
-    
+
     In de eerste plaats kunnen we het HTML-bestand niet meer via het filesysteem bekijken. We hebben een lokale webserver nodig.
 
 cursussite:
@@ -658,7 +658,7 @@ https://stackoverflow.com/questions/3302959/how-to-restart-a-node-js-server
 
 ??? OK, maar andersom dan? dus van buiten naar binnen? Kan een module dependen op niet-modules?
 ==> Ja! Zowaar. Thank the gods for small favors.
-    ===> Convert outside in. 
+===> Convert outside in.
 
 (P 8)
 [v] convert snake_student en tests.
@@ -743,5 +743,26 @@ https://eslint.org/docs/latest/use/command-line-interface#--parser-options
 
 (P 8)
 [v] MVC ADR
+
+### 2023-07-04
+
+(P 1)
+http://localhost:8080/web/snake.html
+http://localhost:8080/test/snake_unit_test_suite.html
+
+
+/**
+	@function func(x,y) -> Return
+	@desc
+	@param {Type} name desc
+	@return: {Type} desc
+	@throws: {Type} desc
+*/
+
+
+We are required to say to return void from a command, even if void does not exist in Javascript (should be undefined)
+Ach ja.
+
+(P 2)
 
 ### TODO

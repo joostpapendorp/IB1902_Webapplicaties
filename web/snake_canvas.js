@@ -1,5 +1,7 @@
 "use strict";
 
+/** @module Canvas  */
+
 /**
 	@function createCanvas(createCanvas) -> interface onto the HTML-canvas
 	@desc Creates a canvas that simplifies painting onto the HTML canvas

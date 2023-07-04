@@ -1,5 +1,7 @@
 "use strict";
 
+/** @module Element  */
+
 /**
 	@function createElementFactory() -> interface onto element creation
 	@desc creates a factory which creates elements

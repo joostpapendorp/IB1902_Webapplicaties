@@ -10,7 +10,7 @@ We will apply uniform simple styling to the project. We will lint te project usi
 * *javascript* ESLint https://eslint.org/docs/latest/
   Run using 
 
-      npx eslint --parser-options sourceType:module ./web > eslint_output.txt
+      npx eslint ./web > eslint_output.txt
 
 ## Context
 

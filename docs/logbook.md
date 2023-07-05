@@ -805,7 +805,7 @@ Hoe durf ik ook te vertrouwen op de voorbeelden? Dom dom dom. Hahaha.
 
 
 (p 7)
-story _019-EXTRA-Pauzing_the_game_
+story _019-EXTRA-Pausing_the_game_
 
 https://www.freecodecamp.org/news/javascript-keycode-list-keypress-event-key-codes/
 
@@ -833,6 +833,29 @@ https://stackoverflow.com/questions/1829586/how-do-i-give-an-html-canvas-the-key
 [v] engine freezes input processing on pause
 
 (p 13)
-[ ] move states from rule set to engine
+[v] move states from rule set to engine
+
+(p 14)
+story _020-EXTRA-Splash_screen_
+[v] start command from enter
+
+
+### 2023-07-05
+
+(P 1)
+[ ] game does not start engine until start command
+
+game is started with new engine.
+split? restart engine?
+	==> reinitialize engine:
+[ ] initialization with rule set after engine creation.
+No op rule set as default
+[ ] add gameFinished() check to state to allow engine to process the START_COMMAND
+[ ] game calls start() on engine on START_COMMAND
+	[ ] remove rules from constructor
+	[ ] add rules to start
+	[ ] build full engine and build game with engine.
+	[ ] introduce app states explicitly
+
 
 ### TODO

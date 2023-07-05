@@ -1,10 +1,10 @@
 import {createLocation} from "../web/snake_location.js";
 import {
 	createPlayer, createSteerCommand,
-	LEFT_ARROW_KEY_CODE, UP_ARROW_KEY_CODE, RIGHT_ARROW_KEY_CODE, DOWN_ARROW_KEY_CODE, SPACE_BAR_KEY_CODE,
+	LEFT_ARROW_KEY_CODE, UP_ARROW_KEY_CODE, RIGHT_ARROW_KEY_CODE, DOWN_ARROW_KEY_CODE, SPACE_BAR_KEY_CODE, ENTER_KEY_CODE,
 	MOVE_LEFT, MOVE_UP, MOVE_RIGHT, MOVE_DOWN,
-	STEER_COMMAND_TYPE, PAUSE_COMMAND_TYPE, NO_COMMAND_TYPE,
-	PAUSE_COMMAND, NO_COMMAND
+	STEER_COMMAND_TYPE, PAUSE_COMMAND_TYPE, START_COMMAND_TYPE, NO_COMMAND_TYPE,
+	PAUSE_COMMAND, START_COMMAND, NO_COMMAND
 } from "../web/snake_player.js";
 
 "use strict";
@@ -14,7 +14,7 @@ QUnit.module("Player");
 
 QUnit.test("Constant values",
 	assert => {
-		assert.expect(14);
+		assert.expect(17);
 
 		assert.propEqual(
 			MOVE_UP,
@@ -53,6 +53,12 @@ QUnit.test("Constant values",
 		);
 
 		assert.propEqual(
+			START_COMMAND_TYPE.description,
+			"START COMMAND",
+			"Command type used to group commands that start the game"
+		);
+
+		assert.propEqual(
 			NO_COMMAND_TYPE.description,
 			"NO COMMAND",
 			"Command type used to group commands to handle unknown key inputs"
@@ -62,6 +68,12 @@ QUnit.test("Constant values",
 			PAUSE_COMMAND,
 			{type:PAUSE_COMMAND_TYPE, target: {}},
 			"Sentinel command used to pause the game"
+		);
+
+		assert.propEqual(
+			START_COMMAND,
+			{type:START_COMMAND_TYPE, target: {}},
+			"Sentinel command used to start the game"
 		);
 
 		assert.propEqual(
@@ -75,6 +87,7 @@ QUnit.test("Constant values",
 	  assert.equal(RIGHT_ARROW_KEY_CODE, 39, "ASCII right arrow key code");
 	  assert.equal(DOWN_ARROW_KEY_CODE, 40, "ASCII down arrow key code");
 	  assert.equal(SPACE_BAR_KEY_CODE, 32, "ASCII space bar key code");
+	  assert.equal(ENTER_KEY_CODE, 13, "ASCII enter key code");
 	}
 );
 
@@ -110,6 +123,18 @@ QUnit.test("Player converts space bar code into pause command",
 
 		let actualCommand = subject.receive(SPACE_BAR_KEY_CODE);
 		assert.equal(actualCommand, PAUSE_COMMAND, "player converts space bar code to sentinel command" );
+	}
+);
+
+
+QUnit.test("Player converts enter code into start command",
+	assert => {
+	  assert.expect(1);
+
+		let subject = createPlayer();
+
+		let actualCommand = subject.receive(ENTER_KEY_CODE);
+		assert.equal(actualCommand, START_COMMAND, "player converts enter code to sentinel command" );
 	}
 );
 

@@ -846,6 +846,8 @@ story _020-EXTRA-Splash_screen_
 [v] BUG pause before game start => engine not defined
 [v] introduce app states explicitly
 
+(P 3, 4, 5)
+[v] engine should also shut down when game is paused.
 [ ] game does not start engine until start command
 
 game is started with new engine.

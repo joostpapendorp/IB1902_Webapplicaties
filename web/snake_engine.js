@@ -11,9 +11,9 @@ export const GAME_PAUSED_STATE = createState("Game paused");
 export const GAME_OVER_STATE = createState("Game over");
 export const GAME_WON_STATE = createState("Game won");
 
-export const CENTRAL_TILE = createLocation(BOARD_SIZE/2, BOARD_SIZE/2)
+export const CENTRAL_TILE = createLocation(BOARD_SIZE/2, BOARD_SIZE/2);
 
-const GAME_PAUSED_TEXT = "*** GAME PAUSED ***"
+const GAME_PAUSED_TEXT = "*** GAME PAUSED ***";
 
 export function createEngineFactory(board, timer, splashScreen){
 	function Engine(board, timer, rules){
@@ -32,29 +32,46 @@ export function createEngineFactory(board, timer, splashScreen){
 		};
 
 		this.tick = function(){
-			if(this.state !== GAME_PAUSED_STATE){
-				let result = this.snake.push(this.direction);
-				this.state = this.rules.update(result);
+			switch(this.state){
+				case GAME_RUNNING_STATE:
+					this.act();
+					break;
 
-				this.board.redraw();
-
-				switch(this.state) {
-					case GAME_RUNNING_STATE:
-						break;
-
-					case GAME_OVER_STATE:
-						this.halt();
-						splashScreen.writeGameOver(board);
-						writeTalliedScores(this.board, () => rules.gameLost());
-						break;
-
-					case GAME_WON_STATE:
-						this.halt();
-						splashScreen.writeGameWon(board);
-						writeTalliedScores(this.board, () => rules.gameWon());
-						break;
-				}
+				default:
+					break;
 			}
+		};
+
+		this.act = function(){
+			let result = this.snake.push(this.direction);
+			this.state = this.rules.update(result);
+
+			this.board.redraw();
+
+			switch(this.state) {
+				case GAME_OVER_STATE:
+					this.gameOver();
+					break;
+
+				case GAME_WON_STATE:
+					this.gameWon();
+					break;
+
+				default:
+					break;
+			}
+		};
+
+		this.gameOver = function(){
+			this.halt();
+			splashScreen.writeGameOver(board);
+			writeTalliedScores(this.board, () => rules.gameLost());
+		};
+
+		this.gameWon = function(){
+			this.halt();
+			splashScreen.writeGameWon(board);
+			writeTalliedScores(this.board, () => rules.gameWon());
 		};
 
 		async function writeTalliedScores(board, tally){
@@ -63,29 +80,42 @@ export function createEngineFactory(board, timer, splashScreen){
 		}
 
 		this.steer = function(direction){
-			if( this.state !== GAME_PAUSED_STATE)
-				this.direction = direction;
+			switch(this.state) {
+				case GAME_RUNNING_STATE:
+					this.direction = direction;
+					break;
+
+				default:
+					break;
+			}
 		};
 
 		this.togglePause = function(){
 			switch(this.state) {
 				case GAME_RUNNING_STATE:
-					this.timer.stop();
-					this.board.writeAt(CENTRAL_TILE, GAME_PAUSED_TEXT);
-					this.state = GAME_PAUSED_STATE;
+					this.pause();
 					break;
 
 				case GAME_PAUSED_STATE:
-					this.timer.start(() => this.tick());
-					this.state = GAME_RUNNING_STATE;
+					this.unpause();
 					break;
 
-				case GAME_READY_STATE:
-				case GAME_OVER_STATE:
-				case GAME_WON_STATE:
+				default:
 					break;
 			}
-		}
+		};
+
+		this.pause = function(){
+			this.timer.stop();
+			this.board.writeAt(CENTRAL_TILE, GAME_PAUSED_TEXT);
+			this.state = GAME_PAUSED_STATE;
+		};
+
+		this.unpause = function(){
+			this.timer.start(() => this.tick());
+			this.board.redraw();
+	    this.state = GAME_RUNNING_STATE;
+		};
 
 		this.halt = function(){
 			switch(this.state){
@@ -95,12 +125,20 @@ export function createEngineFactory(board, timer, splashScreen){
 
 				default:
 					this.timer.stop();
+					break;
 			}
 		};
 
 		this.shutDown = function(){
-			if(this.state === GAME_RUNNING_STATE)
-				this.halt();
+			switch(this.state){
+				case GAME_RUNNING_STATE:
+				case GAME_PAUSED_STATE:
+					this.halt();
+					break;
+
+				default:
+					break;
+			}
 
 			this.board.clear();
 		};

@@ -153,6 +153,7 @@ QUnit.test("Tick pushes the snake and repaints the board",
 			withRules(rules).
 			build();
 
+		subject.start();
 		subject.tick();
 
 		let push = mockSnake.recorders.push;
@@ -161,7 +162,7 @@ QUnit.test("Tick pushes the snake and repaints the board",
 		assert.equal(actual, MOVE_UP, "Direction is passed on.")
 
 		let redraw = mockBoard.recorders.redraw;
-		assert.equal(redraw.timesInvoked(), 1, "Board is redrawn");
+		assert.equal(redraw.timesInvoked(), 2, "Board is redrawn once at the start and once per tick");
 	}
 );
 
@@ -181,6 +182,7 @@ QUnit.test("Killing the snake stops the timer.",
 			withRules(rules).
 			build();
 
+		subject.start();
 		subject.tick();
 
 		let stopTimer = mockTimer.recorders.stop;
@@ -206,6 +208,7 @@ QUnit.test("Killing the snake writes the loss.",
 			withRules(rules).
 			build();
 
+		subject.start();
 		subject.tick();
 
 		let writeGameOver = mockSplashScreen.recorders.writeGameOver;
@@ -230,6 +233,7 @@ QUnit.test("Winning the game stops the timer.",
 			withRules(rules).
 			build();
 
+		subject.start();
 		for(let i = 0; i < NUMBER_OF_FOODS_PER_BASIC_GAME; i++ )
 			subject.tick();
 
@@ -256,6 +260,7 @@ QUnit.test("Winning the game writes the win.",
 			withRules(rules).
 			build();
 
+		subject.start();
 		for(let i = 0; i < NUMBER_OF_FOODS_PER_BASIC_GAME; i++ )
 			subject.tick();
 
@@ -282,6 +287,7 @@ QUnit.test("Winning the game reports a win.",
 			withBoard(mockBoard).
 			build();
 
+		subject.start();
 		await subject.tick();
 
 		let gameWon = mockRules.recorders.gameWon;
@@ -311,6 +317,7 @@ QUnit.test("Losing the game reports a loss.",
 			withBoard(mockBoard).
 			build();
 
+		subject.start();
 		await subject.tick();
 
 		let gameLost = mockRules.recorders.gameLost;
@@ -450,6 +457,7 @@ QUnit.test("Steering a snake starts moving the snake in the provided direction."
 			withRules(rules).
 			build();
 
+		subject.start();
 		subject.steer(MOVE_LEFT);
 		subject.tick();
 

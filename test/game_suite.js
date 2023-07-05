@@ -1,5 +1,8 @@
 import {createGame} from "../web/snake_game.js";
-import {createPlayer, UP_ARROW_KEY_CODE, MOVE_UP, SPACE_BAR_KEY_CODE, PAUSE_COMMAND} from "../web/snake_player.js";
+import {createPlayer,
+	UP_ARROW_KEY_CODE, SPACE_BAR_KEY_CODE, ENTER_KEY_CODE,
+	MOVE_UP,
+	PAUSE_COMMAND} from "../web/snake_player.js";
 import {MockEngine} from "./engine_suite.js";
 
 import {iterateReturnValuesOver, MockFactory} from "./mocks.js";
@@ -70,10 +73,12 @@ QUnit.test("Starting a game creates the engine with the basic rules.",
 
 		let subject = buildGame().
 			withRuleSet(mockRuleSet).
+			withPlayer(createPlayer()).
 			withEngineFactory(mockEngineFactory.monadic(mockEngine)).
 			build();
 
 		subject.start();
+		subject.receiveKeyInput(ENTER_KEY_CODE);
 
 		let build = mockEngineFactory.recorders.build;
 		assert.equal(build.timesInvoked(), 1, "Game creates the engine");
@@ -87,16 +92,37 @@ QUnit.test("Starting a game creates the engine with the basic rules.",
 );
 
 
-QUnit.test("Stopping a game shuts the engine down.",
+QUnit.test("Stopping the app while it has started but isn't running a game does nothing with the engine.",
 	assert => {
 		assert.expect(1);
 
 		let mockEngine = new MockEngine();
 		let subject = buildGame().
 			withEngineFactory((rules)=>mockEngine).
+			withPlayer(createPlayer()).
 			build();
 
 		subject.start();
+		subject.stop();
+
+		let recorder = mockEngine.recorders.shutDown;
+		assert.equal(recorder.timesInvoked(), 0, "Engine is not shut down.");
+	}
+);
+
+
+QUnit.test("Stopping the app while a game is running shuts the engine down.",
+	assert => {
+		assert.expect(1);
+
+		let mockEngine = new MockEngine();
+		let subject = buildGame().
+			withEngineFactory((rules)=>mockEngine).
+			withPlayer(createPlayer()).
+			build();
+
+		subject.start();
+		subject.receiveKeyInput(ENTER_KEY_CODE);
 		subject.stop();
 
 		let recorder = mockEngine.recorders.shutDown;
@@ -105,36 +131,28 @@ QUnit.test("Stopping a game shuts the engine down.",
 );
 
 
-QUnit.test("Starting a game while the engine is running first shuts the engine down, then starts a new engine.",
+QUnit.test("Starting the app while a game is running shuts the engine down.",
 	assert => {
-		assert.expect(4);
+		assert.expect(5);
 
-		let firstEngine = new MockEngine();
-		let secondEngine = new MockEngine();
+		let mockEngine = new MockEngine();
 		let mockEngineFactory = new MockFactory("Engine")
 
 		let subject = buildGame().
-			withEngineFactory(
-				mockEngineFactory.recordingFrom( recorder => {
-					let iteration = iterateReturnValuesOver([firstEngine, secondEngine]);
-					return (rules) => {
-						recorder.invokedWith([rules])
-						return iteration(rules);
-					};
-				})
-			).
+			withEngineFactory(mockEngineFactory.monadic(mockEngine)).
 			build();
 
 		subject.start();
+		let build = mockEngineFactory.recorders.build;
+		assert.equal(build.timesInvoked(), 0, "Engine isn't built until game start.");
+
+		subject.receiveKeyInput(ENTER_KEY_CODE);
+		assert.equal(build.timesInvoked(), 1, "Engine is built on game start.");
+		assert.equal(mockEngine.recorders.start.timesInvoked(), 1, "Game starts the engine once");
+
 		subject.start();
-
-		let firstRecorders = firstEngine.recorders;
-		assert.equal(firstRecorders.start.timesInvoked(),1,"Game starts the first engine once");
-		assert.equal(firstRecorders.shutDown.timesInvoked(),1,"Game stops the first engine once");
-
-		let secondRecorders = secondEngine.recorders;
-		assert.equal(secondRecorders.start.timesInvoked(),1,"Game starts the second engine once");
-		assert.equal(secondRecorders.shutDown.timesInvoked(),0,"Game does not stops the second engine yet");
+		assert.equal(mockEngine.recorders.shutDown.timesInvoked(), 1, "Game stops the engine once");
+		assert.equal(build.timesInvoked(), 1, "Engine isn't rebuilt on app restart.");
 	}
 );
 
@@ -146,9 +164,12 @@ QUnit.test("Stopping a stopped game does not shuts the engine down a second time
 		let mockEngine = new MockEngine();
 		let subject = buildGame().
 			withEngineFactory((rules)=>mockEngine).
+			withPlayer(createPlayer()).
 			build();
 
 		subject.start();
+		subject.receiveKeyInput(ENTER_KEY_CODE);
+
 		subject.stop();
 		subject.stop();
 
@@ -170,6 +191,8 @@ QUnit.test("Receiving arrow key input translates the key code into a direction t
       build();
 
 		subject.start();
+		subject.receiveKeyInput(ENTER_KEY_CODE);
+
 		subject.receiveKeyInput(UP_ARROW_KEY_CODE);
 
 		let steer = mockEngine.recorders.steer;
@@ -193,6 +216,8 @@ QUnit.test("Receiving space bar key input causes the game to toggle the engine t
       build();
 
 		subject.start();
+		subject.receiveKeyInput(ENTER_KEY_CODE);
+
 		subject.receiveKeyInput(SPACE_BAR_KEY_CODE);
 
 		let steer = mockEngine.recorders.togglePause;
@@ -223,26 +248,95 @@ QUnit.test("Game filters invalid key inputs.",
 );
 
 
-QUnit.test("Game only processes input when the app is active.",
+QUnit.test("Game only processes pause and steer commands when the app is running a game.",
 	assert => {
 		assert.expect(2);
 
 		let mockEngine = new MockEngine();
-		let mockPlayer = new MockPlayer(PAUSE_COMMAND);
 
 		let subject = buildGame().
       withEngineFactory((rules)=>mockEngine).
-      withPlayer(mockPlayer).
+      withPlayer(createPlayer()).
       build();
 
+		// ignored while app is stopped
 		subject.receiveKeyInput(SPACE_BAR_KEY_CODE);
+		subject.receiveKeyInput(UP_ARROW_KEY_CODE);
 
 		subject.start();
+		// ignored while app is idle
+		subject.receiveKeyInput(SPACE_BAR_KEY_CODE);
+		subject.receiveKeyInput(UP_ARROW_KEY_CODE);
+
+		subject.receiveKeyInput(ENTER_KEY_CODE);
+		// processed while app is running a game
+		subject.receiveKeyInput(SPACE_BAR_KEY_CODE);
+		subject.receiveKeyInput(UP_ARROW_KEY_CODE);
+
 		subject.stop();
 
+		// again ignored while app is stopped
 		subject.receiveKeyInput(SPACE_BAR_KEY_CODE);
+		subject.receiveKeyInput(UP_ARROW_KEY_CODE);
 
-		assert.equal(mockPlayer.recorders.receive.timesInvoked(), 0, "input is not processed while app is stopped");
-		assert.equal(mockEngine.recorders.togglePause.timesInvoked(),0, "engine is not commanded while app is stopped");
+		let recorders = mockEngine.recorders;
+		assert.equal(recorders.togglePause.timesInvoked(), 1, "engine is only paused while app is running a game");
+		assert.equal(recorders.steer.timesInvoked(), 1, "engine is only steered while app is running a game");
+	}
+);
+
+
+QUnit.test("App only process START_NEW_GAME commands while the app is idle.",
+	assert => {
+		assert.expect(2);
+
+		let mockEngine = new MockEngine();
+		let mockEngineFactory = new MockFactory("MockEngineFactory");
+
+		let subject = buildGame().
+      withEngineFactory(mockEngineFactory.monadic(mockEngine)).
+      withPlayer(createPlayer()).
+      build();
+
+		// ignored while app is stopped
+		subject.receiveKeyInput(ENTER_KEY_CODE);
+
+		subject.start();
+		// processed while app is idle
+		subject.receiveKeyInput(ENTER_KEY_CODE);
+
+		// ignored while app is running a game
+		subject.receiveKeyInput(ENTER_KEY_CODE);
+
+		subject.stop();
+
+		// again ignored while app is stopped
+		subject.receiveKeyInput(ENTER_KEY_CODE);
+
+		assert.equal(mockEngineFactory.recorders.build.timesInvoked(), 1, "Engine is only created while app is idle");
+		assert.equal(mockEngine.recorders.start.timesInvoked(), 1, "Engine is only started while app is idle");
+	}
+);
+
+
+QUnit.test("Game doesn't start a new game until the start command is received.",
+	assert => {
+		assert.expect(2);
+
+		let mockEngine = new MockEngine();
+		let mockEngineFactory = new MockFactory("EngineFactory");
+
+		let subject = buildGame().
+      withEngineFactory(mockEngineFactory.monadic(mockEngine)).
+      withPlayer(createPlayer()).
+      build();
+
+		subject.start();
+
+		let build = mockEngineFactory.recorders.build;
+		assert.equal(build.timesInvoked(), 0, "engine isn't created until game start");
+
+		subject.receiveKeyInput(ENTER_KEY_CODE);
+		assert.equal(build.timesInvoked(), 1, "starting a new game creates a new engine");
 	}
 );

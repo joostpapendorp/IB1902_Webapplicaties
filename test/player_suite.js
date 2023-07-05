@@ -3,8 +3,8 @@ import {
 	createPlayer, createSteerCommand,
 	LEFT_ARROW_KEY_CODE, UP_ARROW_KEY_CODE, RIGHT_ARROW_KEY_CODE, DOWN_ARROW_KEY_CODE, SPACE_BAR_KEY_CODE, ENTER_KEY_CODE,
 	MOVE_LEFT, MOVE_UP, MOVE_RIGHT, MOVE_DOWN,
-	STEER_COMMAND_TYPE, PAUSE_COMMAND_TYPE, START_COMMAND_TYPE, NO_COMMAND_TYPE,
-	PAUSE_COMMAND, START_COMMAND, NO_COMMAND
+	STEER_COMMAND_TYPE, PAUSE_COMMAND_TYPE, START_NEW_GAME_COMMAND_TYPE, NO_COMMAND_TYPE,
+	PAUSE_COMMAND, START_NEW_GAME_COMMAND, NO_COMMAND
 } from "../web/snake_player.js";
 
 import {Recorder} from "./mocks.js";
@@ -68,8 +68,8 @@ QUnit.test("Constant values",
 		);
 
 		assert.propEqual(
-			START_COMMAND_TYPE.description,
-			"START COMMAND",
+			START_NEW_GAME_COMMAND_TYPE.description,
+			"START NEW GAME COMMAND",
 			"Command type used to group commands that start the game"
 		);
 
@@ -86,8 +86,8 @@ QUnit.test("Constant values",
 		);
 
 		assert.propEqual(
-			START_COMMAND,
-			{type:START_COMMAND_TYPE, target: {}},
+			START_NEW_GAME_COMMAND,
+			{type:START_NEW_GAME_COMMAND_TYPE, target: {}},
 			"Sentinel command used to start the game"
 		);
 
@@ -149,7 +149,7 @@ QUnit.test("Player converts enter code into start command",
 		let subject = createPlayer();
 
 		let actualCommand = subject.receive(ENTER_KEY_CODE);
-		assert.equal(actualCommand, START_COMMAND, "player converts enter code to sentinel command" );
+		assert.equal(actualCommand, START_NEW_GAME_COMMAND, "player converts enter code to sentinel command" );
 	}
 );
 

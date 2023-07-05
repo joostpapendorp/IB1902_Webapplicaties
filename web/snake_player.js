@@ -17,12 +17,12 @@ export const MOVE_DOWN = createLocation(0,1);
 
 export const STEER_COMMAND_TYPE = createCommandType("STEER COMMAND");
 export const PAUSE_COMMAND_TYPE = createCommandType("PAUSE COMMAND");
-export const START_COMMAND_TYPE = createCommandType("START COMMAND");
+export const START_NEW_GAME_COMMAND_TYPE = createCommandType("START NEW GAME COMMAND");
 export const NO_COMMAND_TYPE = createCommandType("NO COMMAND");
 
 const NO_TARGET = {};
 export const PAUSE_COMMAND = createCommand(PAUSE_COMMAND_TYPE, NO_TARGET);
-export const START_COMMAND = createCommand(START_COMMAND_TYPE, NO_TARGET);
+export const START_NEW_GAME_COMMAND = createCommand(START_NEW_GAME_COMMAND_TYPE, NO_TARGET);
 export const NO_COMMAND = createCommand(NO_COMMAND_TYPE, NO_TARGET);
 
 
@@ -46,7 +46,7 @@ export function createPlayer(){
 					return PAUSE_COMMAND;
 
 				case ENTER_KEY_CODE:
-					return START_COMMAND;
+					return START_NEW_GAME_COMMAND;
 
 				default:
 					return NO_COMMAND;

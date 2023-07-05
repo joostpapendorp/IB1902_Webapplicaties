@@ -846,9 +846,16 @@ story _020-EXTRA-Splash_screen_
 [v] BUG pause before game start => engine not defined
 [v] introduce app states explicitly
 
-(P 3, 4, 5)
+(P 3, 4, 5, 6 ,7)
 [v] engine should also shut down when game is paused.
-[ ] game does not start engine until start command
+[v] game does not start engine until start command
+
+	100 tests completed in 82 milliseconds, with 0 failed, 0 skipped, and 0 todo.
+	248 assertions of 248 passed, 0 failed.
+
+100th test! woohoo!
+
+(P 8)
 
 game is started with new engine.
 split? restart engine?

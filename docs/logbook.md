@@ -842,8 +842,9 @@ story _020-EXTRA-Splash_screen_
 
 ### 2023-07-05
 
-(P 1)
-[ ] BUG pause before game start => engine not defined
+(P 1, 2)
+[v] BUG pause before game start => engine not defined
+[v] introduce app states explicitly
 
 [ ] game does not start engine until start command
 
@@ -857,7 +858,7 @@ No op rule set as default
 	[ ] remove rules from constructor
 	[ ] add rules to start
 	[ ] build full engine and build game with engine.
-	[ ] introduce app states explicitly
+
 
 
 ### TODO

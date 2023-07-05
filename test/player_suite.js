@@ -7,8 +7,23 @@ import {
 	PAUSE_COMMAND, START_COMMAND, NO_COMMAND
 } from "../web/snake_player.js";
 
+import {Recorder} from "./mocks.js";
+
 "use strict";
 
+
+export function MockPlayer(returnValue){
+	this.recorders = {
+		receive : new Recorder("receive"),
+	};
+
+	this.returnValue = returnValue || NO_COMMAND;
+
+	this.receive = function(input){
+		this.recorders.receive.invokedWith([input]);
+		return returnValue;
+	};
+}
 
 QUnit.module("Player");
 

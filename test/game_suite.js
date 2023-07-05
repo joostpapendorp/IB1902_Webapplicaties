@@ -1,10 +1,11 @@
 import {createGame} from "../web/snake_game.js";
-import {createPlayer, UP_ARROW_KEY_CODE, MOVE_UP, SPACE_BAR_KEY_CODE} from "../web/snake_player.js";
+import {createPlayer, UP_ARROW_KEY_CODE, MOVE_UP, SPACE_BAR_KEY_CODE, PAUSE_COMMAND} from "../web/snake_player.js";
 import {MockEngine} from "./engine_suite.js";
 
 import {iterateReturnValuesOver, MockFactory} from "./mocks.js";
 import {buildMockRuleSet} from "./rule_set_suite.js";
 import {MockSnakeStorage} from "./storage_suite.js";
+import {MockPlayer} from "./player_suite.js";
 
 "use strict";
 
@@ -218,5 +219,30 @@ QUnit.test("Game filters invalid key inputs.",
 
 		let steer = mockEngine.recorders.steer;
 		assert.equal(steer.timesInvoked(), 0, "Invalid input is filtered out");
+	}
+);
+
+
+QUnit.test("Game only processes input when the app is active.",
+	assert => {
+		assert.expect(2);
+
+		let mockEngine = new MockEngine();
+		let mockPlayer = new MockPlayer(PAUSE_COMMAND);
+
+		let subject = buildGame().
+      withEngineFactory((rules)=>mockEngine).
+      withPlayer(mockPlayer).
+      build();
+
+		subject.receiveKeyInput(SPACE_BAR_KEY_CODE);
+
+		subject.start();
+		subject.stop();
+
+		subject.receiveKeyInput(SPACE_BAR_KEY_CODE);
+
+		assert.equal(mockPlayer.recorders.receive.timesInvoked(), 0, "input is not processed while app is stopped");
+		assert.equal(mockEngine.recorders.togglePause.timesInvoked(),0, "engine is not commanded while app is stopped");
 	}
 );

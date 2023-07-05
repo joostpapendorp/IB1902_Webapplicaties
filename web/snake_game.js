@@ -1,7 +1,10 @@
 import {STEER_COMMAND_TYPE, PAUSE_COMMAND_TYPE, NO_COMMAND_TYPE} from "./snake_player.js";
+import {createState} from "./snake_state.js";
 
 "use strict";
 
+const APP_STOPPED_STATE = createState("APP STOPPED");
+const APP_STARTED_STATE = createState("APP STARTED");
 
 export function createGame(
 	difficulties,
@@ -13,15 +16,21 @@ export function createGame(
 		this.engine;
 		this.storage = storage;
 		this.player = player;
+		this.state = APP_STOPPED_STATE;
 
 		this.start = function() {
-			if(this.engine) {
-				console.log("stopping running game.");
-				this.stop();
-				console.log("restarting...");
+			switch(this.state)
+			{
+				case APP_STARTED_STATE:
+					console.log("stopping running game.");
+					this.stop();
+					console.log("restarting...");
+					break;
+
+				case APP_STOPPED_STATE:
+					console.log( "starting game...");
+					break;
 			}
-			else
-				console.log( "starting game...");
 
 			let difficulty = difficulties[0];
 			console.log(`initializing engine at ${difficulty.name} difficulty...`)
@@ -30,32 +39,49 @@ export function createGame(
 			console.log("...done.");
 
 			this.engine.start();
+			this.state = APP_STARTED_STATE;
 			console.log("game started.");
 		};
 
 		this.stop = function() {
-			if(this.engine) {
-				this.engine.shutDown();
-				this.engine = undefined;
-				console.log("game stopped.");
+			switch(this.state)
+			{
+				case APP_STARTED_STATE:
+					this.engine.shutDown();
+					this.engine = undefined;
+					this.state = APP_STOPPED_STATE;
+					console.log("game stopped.");
+					break;
+
+				case APP_STOPPED_STATE:
+					console.log("nothing to stop.")
+					break;
 			}
-			else
-				console.log("nothing to stop.")
 		};
 
 		this.receiveKeyInput = function(keyCode) {
-			let command = player.receive(keyCode);
+			switch(this.state)
+			{
+				case APP_STARTED_STATE:
+					let command = player.receive(keyCode);
+					console.log(`received ${command.type.description}`);
 
-			switch(command.type){
-				case STEER_COMMAND_TYPE:
-					this.engine.steer(command.target);
+					switch(command.type){
+						case STEER_COMMAND_TYPE:
+							this.engine.steer(command.target);
+							break;
+
+						case PAUSE_COMMAND_TYPE:
+							this.engine.togglePause();
+							break;
+
+						case NO_COMMAND_TYPE:
+							break;
+					}
 					break;
 
-				case PAUSE_COMMAND_TYPE:
-					this.engine.togglePause();
-					break;
-
-				case NO_COMMAND_TYPE:
+				case APP_STOPPED_STATE:
+					console.log("stopped app does not process key commands.")
 					break;
 			}
 		};

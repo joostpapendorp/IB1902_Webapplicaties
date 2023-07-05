@@ -1,14 +1,15 @@
 import {createLocation} from "./snake_location.js";
 import {BOARD_SIZE} from "./snake_board.js";
+import {createState} from "./snake_state.js";
 
 "use strict";
 
 
-export const GAME_READY_STATE = createGameState("Game ready");
-export const GAME_RUNNING_STATE = createGameState("Game running");
-export const GAME_PAUSED_STATE = createGameState("Game paused");
-export const GAME_OVER_STATE = createGameState("Game over");
-export const GAME_WON_STATE = createGameState("Game won");
+export const GAME_READY_STATE = createState("Game ready");
+export const GAME_RUNNING_STATE = createState("Game running");
+export const GAME_PAUSED_STATE = createState("Game paused");
+export const GAME_OVER_STATE = createState("Game over");
+export const GAME_WON_STATE = createState("Game won");
 
 export const CENTRAL_TILE = createLocation(BOARD_SIZE/2, BOARD_SIZE/2)
 
@@ -121,14 +122,4 @@ export function createEngineFactory(board, timer, splashScreen){
 	return {
 		prepareEngineWith : (rules) => prepareEngineWith(rules)
 	};
-}
-
-function createGameState(description){
-	function GameState(description){
-		this.description = description;
-	}
-
-	let state = new GameState(description);
-	Object.freeze(state);
-	return state;
 }

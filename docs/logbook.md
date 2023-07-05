@@ -843,6 +843,8 @@ story _020-EXTRA-Splash_screen_
 ### 2023-07-05
 
 (P 1)
+[ ] BUG pause before game start => engine not defined
+
 [ ] game does not start engine until start command
 
 game is started with new engine.

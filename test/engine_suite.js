@@ -538,7 +538,7 @@ QUnit.test("Halting the engine while paused does not stop the timer.",
 		assert.equal(startTimer.timesInvoked(), 1, "Pausing the engine does not restart the timer.");
 
 		subject.halt();
-		assert.equal(stopTimer.timesInvoked(), 1, "Halting the engine while paused does not stop the game.");
+		assert.equal(stopTimer.timesInvoked(), 1, "Halting the engine while paused does not stop the timer.");
 		assert.equal(startTimer.timesInvoked(), 1, "Halting the engine never starts the timer.");
 	}
 );

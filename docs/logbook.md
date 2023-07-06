@@ -869,6 +869,23 @@ trello ligt eruit
 
 250th assertion! Woohoo!
 
-(P 2)
+(P 2, 3)
+
+story _021-EXTRA-Continuous_play_
+trello still down.
+
+(P 4)
+
+[ ] define difficulty
+	[ ] rule set
+	[ ] keep score
+	[ ] show score on game end
+[ ] show choice screen
+	[ ] define number command
+	[ ] show choices
+	[ ] show controls
+	[ ] pick difficulty
+[ ] high score 
+	[ ] persistence
 
 ### TODO

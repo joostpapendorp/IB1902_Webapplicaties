@@ -153,6 +153,7 @@ QUnit.test("Tick pushes the snake and repaints the board",
 			withRules(rules).
 			build();
 
+		subject.start();
 		subject.tick();
 
 		let push = mockSnake.recorders.push;
@@ -161,7 +162,7 @@ QUnit.test("Tick pushes the snake and repaints the board",
 		assert.equal(actual, MOVE_UP, "Direction is passed on.")
 
 		let redraw = mockBoard.recorders.redraw;
-		assert.equal(redraw.timesInvoked(), 1, "Board is redrawn");
+		assert.equal(redraw.timesInvoked(), 2, "Board is redrawn once at the start and once per tick");
 	}
 );
 
@@ -181,6 +182,7 @@ QUnit.test("Killing the snake stops the timer.",
 			withRules(rules).
 			build();
 
+		subject.start();
 		subject.tick();
 
 		let stopTimer = mockTimer.recorders.stop;
@@ -206,6 +208,7 @@ QUnit.test("Killing the snake writes the loss.",
 			withRules(rules).
 			build();
 
+		subject.start();
 		subject.tick();
 
 		let writeGameOver = mockSplashScreen.recorders.writeGameOver;
@@ -230,6 +233,7 @@ QUnit.test("Winning the game stops the timer.",
 			withRules(rules).
 			build();
 
+		subject.start();
 		for(let i = 0; i < NUMBER_OF_FOODS_PER_BASIC_GAME; i++ )
 			subject.tick();
 
@@ -256,6 +260,7 @@ QUnit.test("Winning the game writes the win.",
 			withRules(rules).
 			build();
 
+		subject.start();
 		for(let i = 0; i < NUMBER_OF_FOODS_PER_BASIC_GAME; i++ )
 			subject.tick();
 
@@ -282,6 +287,7 @@ QUnit.test("Winning the game reports a win.",
 			withBoard(mockBoard).
 			build();
 
+		subject.start();
 		await subject.tick();
 
 		let gameWon = mockRules.recorders.gameWon;
@@ -311,6 +317,7 @@ QUnit.test("Losing the game reports a loss.",
 			withBoard(mockBoard).
 			build();
 
+		subject.start();
 		await subject.tick();
 
 		let gameLost = mockRules.recorders.gameLost;
@@ -374,9 +381,9 @@ QUnit.test("Halting the engine stops the timer.",
 );
 
 
-QUnit.test("Shutting down the engine clears the board.",
+QUnit.test("The board is cleared when the engine is initialized and when it is stopped.",
 	assert => {
-		assert.expect(1);
+		assert.expect(2);
 
 		let mockBoard = new MockBoard();
 		let subject = buildEngine().
@@ -384,10 +391,11 @@ QUnit.test("Shutting down the engine clears the board.",
 			withRules(buildRules().basic()).
 			build();
 
-		subject.shutDown();
-
 		let recorder = mockBoard.recorders.clear;
-		assert.equal(recorder.timesInvoked(), 1, "Invoked clear");
+		assert.equal(recorder.timesInvoked(), 1, "Initializing the engine clears the board");
+
+		subject.shutDown();
+		assert.equal(recorder.timesInvoked(), 2, "Shutting down the engine clears the board");
 	}
 );
 
@@ -450,6 +458,7 @@ QUnit.test("Steering a snake starts moving the snake in the provided direction."
 			withRules(rules).
 			build();
 
+		subject.start();
 		subject.steer(MOVE_LEFT);
 		subject.tick();
 
@@ -530,7 +539,7 @@ QUnit.test("Halting the engine while paused does not stop the timer.",
 		assert.equal(startTimer.timesInvoked(), 1, "Pausing the engine does not restart the timer.");
 
 		subject.halt();
-		assert.equal(stopTimer.timesInvoked(), 1, "Halting the engine while paused does not stop the game.");
+		assert.equal(stopTimer.timesInvoked(), 1, "Halting the engine while paused does not stop the timer.");
 		assert.equal(startTimer.timesInvoked(), 1, "Halting the engine never starts the timer.");
 	}
 );

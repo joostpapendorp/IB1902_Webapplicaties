@@ -77,7 +77,7 @@ function MockRuleSet(stateToReturn, initialDirection, tallyText){
 
 	this.prepare = function(){
 		this.recorders.prepare.invoked();
-		return stateToReturn;
+		return GAME_READY_STATE;
 	};
 
 	this.initialDirection = function(){
@@ -92,7 +92,7 @@ function MockRuleSet(stateToReturn, initialDirection, tallyText){
 
 	this.start = function(){
 		this.recorders.start.invoked();
-		return stateToReturn;
+		return GAME_RUNNING_STATE;
 	};
 
 	this.update = function(result){

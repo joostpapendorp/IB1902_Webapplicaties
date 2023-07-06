@@ -18,6 +18,7 @@ We are aware these choices might be controversial, hence our attempt to explain 
 2. We won't be following the template in calculating the positions of elements on the board. Instead, we separate board and canvas into two different concerns.
 3. We won't implement an MVC architecture. Instead, we adhere to the locality principle and modularize our hexagonal architecture.
 4. We do not document every function with JSDoc. Instead, we name clearly to document the _what_, use clean code to document the _how_ and use ADR's to document the _why_. 
+5. Starting the app does not immediately start the game. Instead, it shows a welcome screen first.
 
 
 ### 1. We won't use JSLint
@@ -43,3 +44,10 @@ See [ADR 014](./0014-we-modularize-our-code.md) for this discussion.
 ### 4. We do not document every function with JSDoc.
 
 See [ADR 015](./0015-we-document-the-what-how-why.md) for this discussion.
+
+
+### 5. Starting the app does not immediately start the game.
+
+Instead, it shows a welcome screen first.
+This is because we planned to add extra difficulty levels.
+To allow for this, we need to select the difficulty first, before starting the game; hence it cannot start immediately. 

@@ -112,6 +112,29 @@ function MockRuleSet(stateToReturn, initialDirection, tallyText){
 	};
 }
 
+export function MockDifficulty(ruleSet){
+	this.recorders = {
+		name : new Recorder("name"),
+		description : new Recorder("description"),
+		ruleSet : new Recorder("ruleSet"),
+	};
+
+	this.name = function(){
+		this.recorders.name.invoked();
+		return "MOCK NAME";
+	};
+
+	this.description = function(){
+		this.recorders.description.invoked();
+		return "MOCK DESCRIPTION";
+	};
+
+	this.ruleSet = function(storage){
+		this.recorders.ruleSet.invoked(storage);
+		return ruleSet || buildMockRuleSet().build();
+	};
+}
+
 export function buildRules() {
 	return new RuleSetBuilder();
 }

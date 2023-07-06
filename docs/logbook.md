@@ -888,16 +888,9 @@ trello still down.
 (P 6, 7)
 [v] add tests (foei)
 
-[ ] pick difficulty
-	[ ] define number command
-	[ ] 
-
-[ ] high score 
-	[ ] persistence
-
-prettify:
-[ ] show choice screen
-	[ ] show choices
-	[ ] show controls
+(P 8, 9)
+[v] pick difficulty
+	[v] define number command
+	[v] game picks correct difficulty
 
 ### TODO

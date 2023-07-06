@@ -1,4 +1,4 @@
-import {START_NEW_GAME_COMMAND_TYPE, STEER_COMMAND_TYPE, PAUSE_COMMAND_TYPE, NO_COMMAND_TYPE} from "./snake_player.js";
+import {START_NEW_GAME_COMMAND_TYPE, STEER_COMMAND_TYPE, PAUSE_COMMAND_TYPE} from "./snake_player.js";
 import {createState} from "./snake_state.js";
 
 "use strict";

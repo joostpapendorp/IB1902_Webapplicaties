@@ -53,7 +53,7 @@ export function buildInjectionContext(canvasDOMElement){
 
 	return createGame(
 		difficultyLevels,
-		engineFactory.prepareEngineWith,
+		(rules) => engineFactory.prepareEngineWith(rules),
 		createPlayer(),
 		storage,
 		() => splashScreen.showIntro(board)
@@ -66,7 +66,7 @@ const LETTER_TYPE = createElementType("Red", LETTER_ENTITY);
 function createSplashScreen(){
 	function showIntro(board){
 		writeDottedText(board, SNAKE_INTRO);
-		board.writeAt(createLocation(9, 10), ">>> Press Enter to start <<<")
+		board.writeAt(createLocation(9, 10), ">>> Choose your difficulty <<<\nPress 1 for Basic\nPress 2 for Continuous")
 	}
 
 	function writeGameOver(board) {

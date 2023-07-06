@@ -869,6 +869,28 @@ trello ligt eruit
 
 250th assertion! Woohoo!
 
-(P 2)
+(P 2, 3)
+
+story _021-EXTRA-Continuous_play_
+trello still down.
+
+(P 4, 5)
+
+[v] define difficulty
+	[v] rule set
+		[v] extract facade
+		[v] add rule set
+		[v] add difficulty
+		[v] prototype common functionality?
+		[v] keep score
+		[v] show score on game end
+
+(P 6, 7)
+[v] add tests (foei)
+
+(P 8, 9)
+[v] pick difficulty
+	[v] define number command
+	[v] game picks correct difficulty
 
 ### TODO

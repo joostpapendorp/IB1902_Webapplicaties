@@ -8,7 +8,8 @@ export const UP_ARROW_KEY_CODE = 38;
 export const RIGHT_ARROW_KEY_CODE = 39;
 export const DOWN_ARROW_KEY_CODE = 40;
 export const SPACE_BAR_KEY_CODE = 32;
-export const ENTER_KEY_CODE = 13;
+export const NUMBER_1_KEY_CODE = 49;
+export const NUMBER_2_KEY_CODE = 50;
 
 export const MOVE_LEFT = createLocation(-1,0);
 export const MOVE_UP = createLocation(0,-1);
@@ -17,12 +18,11 @@ export const MOVE_DOWN = createLocation(0,1);
 
 export const STEER_COMMAND_TYPE = createCommandType("STEER COMMAND");
 export const PAUSE_COMMAND_TYPE = createCommandType("PAUSE COMMAND");
-export const START_NEW_GAME_COMMAND_TYPE = createCommandType("START NEW GAME COMMAND");
+export const START_GAME_COMMAND_TYPE = createCommandType("START NEW GAME COMMAND");
 export const NO_COMMAND_TYPE = createCommandType("NO COMMAND");
 
 const NO_TARGET = {};
 export const PAUSE_COMMAND = createCommand(PAUSE_COMMAND_TYPE, NO_TARGET);
-export const START_NEW_GAME_COMMAND = createCommand(START_NEW_GAME_COMMAND_TYPE, NO_TARGET);
 export const NO_COMMAND = createCommand(NO_COMMAND_TYPE, NO_TARGET);
 
 
@@ -45,8 +45,9 @@ export function createPlayer(){
 				case SPACE_BAR_KEY_CODE:
 					return PAUSE_COMMAND;
 
-				case ENTER_KEY_CODE:
-					return START_NEW_GAME_COMMAND;
+				case NUMBER_1_KEY_CODE:
+				case NUMBER_2_KEY_CODE:
+					return createStartGameCommand(code - NUMBER_1_KEY_CODE);
 
 				default:
 					return NO_COMMAND;
@@ -57,6 +58,10 @@ export function createPlayer(){
 
 export function createSteerCommand(direction){
 	return createCommand(STEER_COMMAND_TYPE, direction);
+}
+
+export function createStartGameCommand(difficulty){
+	return createCommand(START_GAME_COMMAND_TYPE, difficulty);
 }
 
 function createCommand(type, target){

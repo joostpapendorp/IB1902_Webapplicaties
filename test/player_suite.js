@@ -1,10 +1,10 @@
 import {createLocation} from "../web/snake_location.js";
 import {
-	createPlayer, createSteerCommand,
-	LEFT_ARROW_KEY_CODE, UP_ARROW_KEY_CODE, RIGHT_ARROW_KEY_CODE, DOWN_ARROW_KEY_CODE, SPACE_BAR_KEY_CODE, ENTER_KEY_CODE,
+	createPlayer, createSteerCommand, createStartGameCommand,
+	LEFT_ARROW_KEY_CODE, UP_ARROW_KEY_CODE, RIGHT_ARROW_KEY_CODE, DOWN_ARROW_KEY_CODE, SPACE_BAR_KEY_CODE, NUMBER_1_KEY_CODE, NUMBER_2_KEY_CODE,
 	MOVE_LEFT, MOVE_UP, MOVE_RIGHT, MOVE_DOWN,
-	STEER_COMMAND_TYPE, PAUSE_COMMAND_TYPE, START_NEW_GAME_COMMAND_TYPE, NO_COMMAND_TYPE,
-	PAUSE_COMMAND, START_NEW_GAME_COMMAND, NO_COMMAND
+	STEER_COMMAND_TYPE, PAUSE_COMMAND_TYPE, START_GAME_COMMAND_TYPE, NO_COMMAND_TYPE,
+	PAUSE_COMMAND, NO_COMMAND
 } from "../web/snake_player.js";
 
 import {Recorder} from "./mocks.js";
@@ -68,7 +68,7 @@ QUnit.test("Constant values",
 		);
 
 		assert.propEqual(
-			START_NEW_GAME_COMMAND_TYPE.description,
+			START_GAME_COMMAND_TYPE.description,
 			"START NEW GAME COMMAND",
 			"Command type used to group commands that start the game"
 		);
@@ -86,12 +86,6 @@ QUnit.test("Constant values",
 		);
 
 		assert.propEqual(
-			START_NEW_GAME_COMMAND,
-			{type:START_NEW_GAME_COMMAND_TYPE, target: {}},
-			"Sentinel command used to start the game"
-		);
-
-		assert.propEqual(
 			NO_COMMAND,
 			{type: NO_COMMAND_TYPE, target: {}},
 			"Sentinel command used to indicate unknown key input"
@@ -102,10 +96,10 @@ QUnit.test("Constant values",
 	  assert.equal(RIGHT_ARROW_KEY_CODE, 39, "ASCII right arrow key code");
 	  assert.equal(DOWN_ARROW_KEY_CODE, 40, "ASCII down arrow key code");
 	  assert.equal(SPACE_BAR_KEY_CODE, 32, "ASCII space bar key code");
-	  assert.equal(ENTER_KEY_CODE, 13, "ASCII enter key code");
+	  assert.equal(NUMBER_1_KEY_CODE, 49, "ASCII number 1 key code");
+	  assert.equal(NUMBER_2_KEY_CODE, 50, "ASCII number 2 key code");
 	}
 );
-
 
 QUnit.test("Player converts arrow key codes into steering directions",
 	assert => {
@@ -129,6 +123,25 @@ QUnit.test("Player converts arrow key codes into steering directions",
 	}
 );
 
+QUnit.test("Player converts number codes into start command with corresponding difficulty index",
+	assert => {
+	  assert.expect(2);
+
+		let subject = createPlayer();
+
+		for( const [code, expectedIndex] of [
+			[NUMBER_1_KEY_CODE, 0],
+			[NUMBER_2_KEY_CODE, 1]
+		]){
+			let actualCommand = subject.receive(code);
+			let expectedCommand = createStartGameCommand(expectedIndex)
+			assert.propEqual(
+				actualCommand,
+				expectedCommand,
+				`player converts ${code} to ${actualCommand.type.description} with difficulty index ${expectedIndex}` );
+		}
+	}
+);
 
 QUnit.test("Player converts space bar code into pause command",
 	assert => {
@@ -140,19 +153,6 @@ QUnit.test("Player converts space bar code into pause command",
 		assert.equal(actualCommand, PAUSE_COMMAND, "player converts space bar code to sentinel command" );
 	}
 );
-
-
-QUnit.test("Player converts enter code into start command",
-	assert => {
-	  assert.expect(1);
-
-		let subject = createPlayer();
-
-		let actualCommand = subject.receive(ENTER_KEY_CODE);
-		assert.equal(actualCommand, START_NEW_GAME_COMMAND, "player converts enter code to sentinel command" );
-	}
-);
-
 
 QUnit.test("Player converts unknown codes into sentinel value",
 	assert => {

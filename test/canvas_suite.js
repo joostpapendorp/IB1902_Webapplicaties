@@ -115,7 +115,7 @@ QUnit.test("Canvas draws text on html object",
 				y : EXPECTED_Y,
 				text : EXPECTED_TEXT,
 
-				fillStyle: "Black",
+				fillStyle: "Grey",
 				fontStyle: "bold",
 				fontSize: "14pt",
 				fontFamily: "Trebuchet MS, sans-serif"

@@ -1,6 +1,6 @@
 import {
 	INITIAL_DIRECTION,
-	NUMBER_OF_FOODS_PER_BASIC_GAME,
+	NUMBER_OF_FOODS_PER_BASIC_GAME, NUMBER_OF_FOODS_IN_CONTINUOUS_PLAY_GAME,
 
 	GAME_RESULT_WIN,
 	GAME_RESULT_LOSS,
@@ -30,6 +30,7 @@ import {MOVE_UP} from "../web/snake_player.js";
 
 "use strict";
 
+const NUMBER_OF_RULE_SETS = 2;
 
 export function buildMockRuleSet(){
 	return new MockRuleSetBuilder();
@@ -127,6 +128,13 @@ function RuleSetBuilder(){
 		).basic(this.highScores);
 	};
 
+	this.continuousPlay = function(){
+		return ruleSets(
+			this.snakeFactory,
+			this.foodPlanter
+		).continuousPlay(this.highScores);
+	};
+
 	this.withSnakeFactory = function(snakeFactory){
 		this.snakeFactory = snakeFactory;
 		return this;
@@ -143,107 +151,128 @@ function RuleSetBuilder(){
 	};
 }
 
+function forAllRuleSets(test) {
+	[
+		(builder)=>builder.basic(),
+		(builder)=>builder.continuousPlay()
+	].forEach(subjectBuilder => test(subjectBuilder));
+}
+
 
 QUnit.module("Rule Set");
 
 QUnit.test("Constant values",
 	assert => {
-		assert.expect(4);
+		assert.expect(5);
 
 		assert.equal(INITIAL_DIRECTION, MOVE_UP, "Snake initial direction is up");
 		assert.equal(NUMBER_OF_FOODS_PER_BASIC_GAME, 5, "Basic game places 5 units of food");
+		assert.equal(NUMBER_OF_FOODS_IN_CONTINUOUS_PLAY_GAME, 2, "Continuous game keeps 2 units of food on the board");
 
 		assert.propEqual(GAME_RESULT_WIN, {result:"win"}, "The result of a won game");
 		assert.propEqual(GAME_RESULT_LOSS, {result:"loss"}, "The result of a lost game");
 	}
 );
 
-
 QUnit.test("Rule set provides the initial direction",
 	assert => {
-		assert.expect(1);
+		assert.expect(NUMBER_OF_RULE_SETS);
 
-		let subject = buildRules().basic();
+		forAllRuleSets( subjectFrom => {
+			let subject = subjectFrom(buildRules());
 
-		assert.equal(subject.initialDirection(), INITIAL_DIRECTION, "provides the constant as initial direction");
+			assert.equal(subject.initialDirection(), INITIAL_DIRECTION, "provides the constant as initial direction");
+		});
 	}
 );
 
-
 QUnit.test("Starting snake is two segments long, placed left of the center, facing up",
 	assert => {
-		assert.expect(2);
+		assert.expect(NUMBER_OF_RULE_SETS * 2);
 
-		let mockBoard = new MockBoard()
-		let mockSnakeFactory = new MockFactory("Snake");
-		let expectedLocations = [
-			createLocation(8, 9),
-			createLocation(8, 8)
-		];
+		forAllRuleSets( subjectFrom => {
+			let mockBoard = new MockBoard()
+			let mockSnakeFactory = new MockFactory("Snake");
+			let expectedLocations = [
+				createLocation(8, 9),
+				createLocation(8, 8)
+			];
 
-		let subject = buildRules().
-			withSnakeFactory(mockSnakeFactory.dyadic()).
-			basic();
+			let subject = subjectFrom(
+				buildRules().
+				withSnakeFactory(mockSnakeFactory.dyadic())
+			);
 
-		subject.createStartSnake(mockBoard);
+			subject.createStartSnake(mockBoard);
 
-		let recorder = mockSnakeFactory.recorders.build
-		assert.equal(recorder.timesInvoked(), 1, "One snake is created");
+			let recorder = mockSnakeFactory.recorders.build
+			assert.equal(recorder.timesInvoked(), 1, "One snake is created");
 
-		assert.propEqual(
-			recorder.invocations[0],
-			new Invocation([mockBoard,expectedLocations]),
-			"Snake is located left of the center, facing up"
-		);
+			assert.propEqual(
+				recorder.invocations[0],
+				new Invocation([mockBoard,expectedLocations]),
+				"Snake is located left of the center, facing up"
+			);
+		});
 	}
 );
 
 
 QUnit.test("Preparing initializes the game.",
 	assert => {
-		assert.expect(1);
+		assert.expect(NUMBER_OF_RULE_SETS);
 
-		let subject = buildRules().basic();
+		forAllRuleSets( subjectFrom => {
+			let subject = subjectFrom(buildRules());
 
-		assert.equal(subject.prepare(), GAME_READY_STATE, "Preparing yields the new game state");
+			assert.equal(subject.prepare(), GAME_READY_STATE, "Preparing yields the new game state");
+		});
 	}
 );
 
 
 QUnit.test("Starting the game result in it running",
 	assert => {
-		assert.expect(1);
+		assert.expect(NUMBER_OF_RULE_SETS);
 
-		let subject = buildRules().basic();
-		subject.prepare();
+		forAllRuleSets( subjectFrom => {
+			let subject = subjectFrom(buildRules());
+			subject.prepare();
 
-		assert.equal(subject.start(), GAME_RUNNING_STATE, "Starting yields the game running state");
+			assert.equal(subject.start(), GAME_RUNNING_STATE, "Starting yields the game running state");
+		});
 	}
 );
 
 
 QUnit.test("Moving the snake continues the game",
 	assert => {
-		assert.expect(1);
+		assert.expect(NUMBER_OF_RULE_SETS);
 
-		let subject = buildRules().basic();
-		subject.prepare();
-		subject.start();
+		forAllRuleSets( subjectFrom => {
+			let subject = subjectFrom(buildRules());
 
-		assert.equal(subject.update(SNAKE_MOVED), GAME_RUNNING_STATE, "Updating with a moved snake yields the game running state");
+			subject.prepare();
+			subject.start();
+
+			assert.equal(subject.update(SNAKE_MOVED), GAME_RUNNING_STATE, "Updating with a moved snake yields the game running state");
+		});
 	}
 );
 
 
 QUnit.test("Killing the snake loses the game",
 	assert => {
-		assert.expect(1);
+		assert.expect(NUMBER_OF_RULE_SETS);
 
-		let subject = buildRules().basic();
-		subject.prepare();
-		subject.start();
+		forAllRuleSets( subjectFrom => {
+			let subject = subjectFrom(buildRules());
 
-		assert.equal(subject.update(SNAKE_DIED), GAME_OVER_STATE, "Updating with a dead snake yields the game over state");
+			subject.prepare();
+			subject.start();
+
+			assert.equal(subject.update(SNAKE_DIED), GAME_OVER_STATE, "Updating with a dead snake yields the game over state");
+		});
 	}
 );
 
@@ -262,7 +291,6 @@ QUnit.test("In a basic game, eating food while food remains continues the game a
 		assert.equal(subject.update(SNAKE_ATE), GAME_WON_STATE, "Eating the last food yields game won state");
 	}
 );
-
 
 QUnit.test("Basic rule set plants a fixed amount of food",
 	assert => {
@@ -283,11 +311,13 @@ QUnit.test("Basic rule set plants a fixed amount of food",
 
 QUnit.test("Difficulties provides all the rule sets in ascending order of difficulty",
 	assert => {
-		assert.expect(3);
+		assert.expect(6);
 
 		let mockBasicRules = new MockFactory("Basic");
+		let mockContinuousRules = new MockFactory("Continuous");
 		let mockRuleSets = {
-			basic: mockBasicRules.niladic()
+			basic: mockBasicRules.niladic(),
+			continuousPlay : mockContinuousRules.niladic()
 		}
 
 		let subject = difficulties(mockRuleSets);
@@ -301,11 +331,19 @@ QUnit.test("Difficulties provides all the rule sets in ascending order of diffic
 		actualBasic.ruleSet(new MockSnakeStorage());
 		assert.equal(mockBasic.timesInvoked(), 1, "Basic difficulty invokes");
 
+
+		let actualContinuous = subject[1];
+		assert.equal(actualContinuous.name, "Continuous Play", "Continuous difficulty exists");
+		assert.equal(actualContinuous.description, "Eat as many foods as you can.", "Continuous difficulty describes");
+
+		let mockContinuous = mockContinuousRules.recorders.build;
+		actualContinuous.ruleSet(new MockSnakeStorage());
+		assert.equal(mockContinuous.timesInvoked(), 1, "Continuous difficulty invokes");
 	}
 );
 
 
-QUnit.test("Winning the game writes the score.",
+QUnit.test("Winning the basic game writes the score.",
 	async function(assert) {
 		assert.expect(6);
 
@@ -333,7 +371,7 @@ QUnit.test("Winning the game writes the score.",
 );
 
 
-QUnit.test("Losing the game writes the score.",
+QUnit.test("Losing the basic game writes the score.",
 	async function(assert) {
 		assert.expect(6);
 
@@ -357,5 +395,23 @@ QUnit.test("Losing the game writes the score.",
 		assert.equal(count.invocations[1].arguments[0], GAME_RESULT_LOSS, "uses correct query to count losses");
 
 		assert.equal(actual, "*** Wins: 1 *** Losses: 2 ***", "Tallies wins and losses");
+	}
+);
+
+// TODO storage
+QUnit.test("Losing the continuous game writes the score.",
+	async function(assert) {
+		assert.expect(1);
+
+		let subject = buildRules().
+			continuousPlay();
+
+		subject.update(SNAKE_ATE);
+		subject.update(SNAKE_ATE);
+		subject.update(SNAKE_ATE);
+
+		let actual = subject.gameLost();
+
+		assert.equal(actual, "*** You scored: 3 points ***", "Score equals food eaten");
 	}
 );

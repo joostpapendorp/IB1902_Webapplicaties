@@ -874,18 +874,30 @@ trello ligt eruit
 story _021-EXTRA-Continuous_play_
 trello still down.
 
-(P 4)
+(P 4, 5)
 
-[ ] define difficulty
-	[ ] rule set
-	[ ] keep score
-	[ ] show score on game end
-[ ] show choice screen
+[v] define difficulty
+	[v] rule set
+		[v] extract facade
+		[v] add rule set
+		[v] add difficulty
+		[v] prototype common functionality?
+		[v] keep score
+		[v] show score on game end
+
+(P 6, 7)
+[v] add tests (foei)
+
+[ ] pick difficulty
 	[ ] define number command
-	[ ] show choices
-	[ ] show controls
-	[ ] pick difficulty
+	[ ] 
+
 [ ] high score 
 	[ ] persistence
+
+prettify:
+[ ] show choice screen
+	[ ] show choices
+	[ ] show controls
 
 ### TODO

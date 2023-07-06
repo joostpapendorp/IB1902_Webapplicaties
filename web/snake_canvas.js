@@ -40,7 +40,7 @@ export function createCanvas(mySnakeCanvas){
 		*/
 		drawText : function(myText, x, y) {
 			mySnakeCanvas.drawText({
-				fillStyle: 'Black',
+				fillStyle: 'Grey',
 				fontStyle: 'bold',
 				fontSize: '14pt',
 				fontFamily: 'Trebuchet MS, sans-serif',

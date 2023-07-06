@@ -857,17 +857,13 @@ story _020-EXTRA-Splash_screen_
 
 (P 8)
 
-game is started with new engine.
-split? restart engine?
-	==> reinitialize engine:
-[ ] initialization with rule set after engine creation.
-No op rule set as default
-[ ] add gameFinished() check to state to allow engine to process the START_COMMAND
-[ ] game calls start() on engine on START_COMMAND
-	[ ] remove rules from constructor
-	[ ] add rules to start
-	[ ] build full engine and build game with engine.
+### 2023-07-06
 
+(P 1)
+trello ligt eruit
+
+[ ] show splash screen on app start
+==> game has no access to board
 
 
 ### TODO

@@ -27,6 +27,7 @@ function EngineFactory(board, timer, splashScreen){
 	this.splashScreen = splashScreen;
 
 	this.prepareEngineWith = function(rules){
+		this.board.clear();
 		let engine = new Engine(board, timer, splashScreen, rules);
 
 		return {
@@ -44,8 +45,8 @@ function Engine(board, timer, splashScreen, rules){
 	this.board = board;
 	this.timer = timer;
 	this.splashScreen = splashScreen;
-
 	this.rules = rules;
+
 	this.snake = this.rules.createStartSnake(this.board);
 	this.direction = this.rules.initialDirection();
 	this.state = this.rules.prepare();

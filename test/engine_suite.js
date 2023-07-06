@@ -381,9 +381,9 @@ QUnit.test("Halting the engine stops the timer.",
 );
 
 
-QUnit.test("Shutting down the engine clears the board.",
+QUnit.test("The board is cleared when the engine is initialized and when it is stopped.",
 	assert => {
-		assert.expect(1);
+		assert.expect(2);
 
 		let mockBoard = new MockBoard();
 		let subject = buildEngine().
@@ -391,10 +391,11 @@ QUnit.test("Shutting down the engine clears the board.",
 			withRules(buildRules().basic()).
 			build();
 
-		subject.shutDown();
-
 		let recorder = mockBoard.recorders.clear;
-		assert.equal(recorder.timesInvoked(), 1, "Invoked clear");
+		assert.equal(recorder.timesInvoked(), 1, "Initializing the engine clears the board");
+
+		subject.shutDown();
+		assert.equal(recorder.timesInvoked(), 2, "Shutting down the engine clears the board");
 	}
 );
 

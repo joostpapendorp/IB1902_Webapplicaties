@@ -78,7 +78,6 @@ function Difficulty(name, description, ruleSet){
 }
 
 function RuleSetPrototype(){
-
 	this.initialDirection = function(){
 		return INITIAL_DIRECTION;
 	};
@@ -96,7 +95,7 @@ function RuleSetPrototype(){
 	this.start = function() {
 		return GAME_RUNNING_STATE;
 	};
-};
+}
 
 function BasicRuleSet(createSnake, foodPlanter, highScores){
 	this.createSnake = createSnake;

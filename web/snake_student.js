@@ -36,8 +36,8 @@ export function buildInjectionContext(canvasDOMElement){
 		createCanvas(canvasDOMElement),
 		createElementFactory()
 	);
-
-	let engineFactory = createEngineFactory(board, createTimer(), createSplashScreen());
+	let splashScreen = createSplashScreen();
+	let engineFactory = createEngineFactory(board, createTimer(), splashScreen);
 
 	let planter = foodPlanter(board,random(Math).randomizeLocation);
 	let snakeFactory = createSnakeFactory(board);
@@ -55,7 +55,8 @@ export function buildInjectionContext(canvasDOMElement){
 		difficultyLevels,
 		engineFactory.prepareEngineWith,
 		createPlayer(),
-		storage
+		storage,
+		() => splashScreen.showIntro(board)
 	);
 }
 
@@ -65,6 +66,7 @@ const LETTER_TYPE = createElementType("Red", LETTER_ENTITY);
 function createSplashScreen(){
 	function showIntro(board){
 		writeDottedText(board, SNAKE_INTRO);
+		board.writeAt(createLocation(9, 10), ">>> Press Enter to start <<<")
 	}
 
 	function writeGameOver(board) {

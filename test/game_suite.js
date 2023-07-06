@@ -27,13 +27,15 @@ function GameBuilder(){
 	this.engineFactory = (board, timer) => new MockEngine();
 	this.player = createPlayer();
 	this.storage = new MockSnakeStorage();
+	this.splashScreen = ()=>{};
 
 	this.build = function(){
 		return createGame(
 			this.difficulties,
 			this.engineFactory,
 			this.player,
-			this.storage
+			this.storage,
+			this.splashScreen
 		);
 	};
 
@@ -60,7 +62,30 @@ function GameBuilder(){
 		this.storage = storage;
 		return this;
 	};
+
+	this.withSplashScreen = function(splashScreen){
+		this.splashScreen = splashScreen;
+		return this;
+	};
 }
+
+
+QUnit.test("Starting the app shows the splash screen.",
+	assert => {
+		assert.expect(1);
+
+		// (ab)use factory to mock an anonymous function
+		let mockSplashScreen = new MockFactory("SplashScreen");
+
+		let subject = buildGame().
+			withSplashScreen(mockSplashScreen.niladic()).
+			build();
+
+		subject.start();
+
+		assert.equal(mockSplashScreen.recorders.build.timesInvoked(), 1, "Splash screen is shown");
+	}
+);
 
 
 QUnit.test("Starting a game creates the engine with the basic rules.",

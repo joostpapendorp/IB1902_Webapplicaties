@@ -11,7 +11,8 @@ export function createGame(
 	difficulties,
 	prepareEngineWith,
 	player,
-	storage
+	storage,
+	showIntro
 ){
 	function Game(player){
 		this.engine;
@@ -30,10 +31,12 @@ export function createGame(
 					console.log("stopping running game.");
 					this.stopApp();
 					console.log("restarting the app...");
+					showIntro();
 					break;
 
 				case APP_STOPPED_STATE:
 					console.log( "starting the app...");
+					showIntro();
 					break;
 			}
 			this.state = APP_STARTED_STATE;

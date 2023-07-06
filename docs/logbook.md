@@ -862,8 +862,13 @@ story _020-EXTRA-Splash_screen_
 (P 1)
 trello ligt eruit
 
-[ ] show splash screen on app start
-==> game has no access to board
+[v] show splash screen on app start
 
+	101 tests completed in 60 milliseconds, with 0 failed, 0 skipped, and 0 todo.
+	250 assertions of 250 passed, 0 failed.
+
+250th assertion! Woohoo!
+
+(P 2)
 
 ### TODO

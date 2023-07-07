@@ -896,12 +896,16 @@ trello still down.
 
 ### 2023-07-07
 
-(P 1, 2, 3)
+(P 1, 2, 3, 4)
 story _023-package_and_deliver_assignment_
 
 [v] loop opdrachtsdocument door op laatste dingen die moeten gebeuren
 [v] description of modules
 [v] extend motivation of Clean architecture design
+[v] git repo public
+https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/setting-repository-visibility
+[ ] readme.txt
+	[ ] reflection
 
 
 story _022-EXTRA-High_scores_

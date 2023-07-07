@@ -893,4 +893,17 @@ trello still down.
 	[v] define number command
 	[v] game picks correct difficulty
 
+
+### 2023-07-07
+
+(P 1, 2, 3)
+story _023-package_and_deliver_assignment_
+
+[v] loop opdrachtsdocument door op laatste dingen die moeten gebeuren
+[v] description of modules
+[v] extend motivation of Clean architecture design
+
+
+story _022-EXTRA-High_scores_
+
 ### TODO

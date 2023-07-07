@@ -81,13 +81,40 @@ The assignment requires us to use JSDoc to document our functions. The given sta
 	*/
 	function move(direction) {
 
-Now let's ask ourselves: who is this information for? In general, it is good practice to document endpoints that other parties have to consume. However, this app has no endpoints. All its functions are for internal use. This means that all the documentation is for _its own developers_, who could just as easily look at the code and the tests.
 
-Secondly, let's ask ourselves: What information does this documentation _actually_ provide? Firstly, it mainly states its function's signature and the types of the arguments. In Java, this would be evident from the declaration alone:
+#### Given examples are untrustworthy
+
+First of al, please note that this example _does not even compile_! 
+From the documentation of [JSDoc](https://jsdoc.app/tags-function.html) itself
+
+	Syntax
+	@function [<FunctionName>]
+
+is directly apparent that it should have been
+
+	@function move
+
+The course requires us to do better than what it itself provides
+and makes it abundantly clear that we _cannot trust its own examples_.
+This is somewhat of an ongoing theme in this assignment. 
+
+
+#### Useless documentation for no-one
+
+Now let's ask ourselves: who is this information for? 
+In general, it is good practice to document endpoints that other parties have to consume.
+However, this app has no endpoints. 
+All its functions are for internal use. 
+This means that all the documentation is for _its own developers_, who could just as easily look at the code and the tests.
+
+Secondly, let's ask ourselves: What information does this documentation _actually_ provide? \
+Firstly, it mainly states its function's signature and the types of the arguments. In Java, this would be evident from the declaration alone:
     
 	void move( String direction )
 
-So we're just fighting against the language again. Secondly, it tells us that we can only input certain values. This is a design constraint, which can be solved using well-chosen types. Consider our alternative:
+So we're just fighting against the language again. Secondly, it tells us that we can only input certain values. 
+This is a design constraint, which can be solved using well-chosen types.
+Consider our alternative (from [Snake](../../web/snake_snake.js):
 
 
 	this.push = function(direction){
@@ -109,9 +136,13 @@ So we're just fighting against the language again. Secondly, it tells us that we
 
 All the information is already present, in a single glance. No need for comments, and with further information available in the tests.     
 
+
+#### Worse than nothing
+
 Even worse, sometimes the examples given actually *obscure* the clarity of the code, as in the example below.
-Please note, this example is from the example code and is supposed to set the standard to which we are held. 
-It omits a parameter (!) and it doesn't specify how the element is used or which defaults are chosen in the write-through. 
+Please note,
+this example is from the example code (again) and is supposed to set the standard to which we are held (again). 
+It _omits an entire parameter_, and it doesn't specify how the element is used or which defaults are chosen in the write-through. 
 Finally, the documentation is nearly as long as the code itself.
 Please ask yourselves: how does this contribute? What is this supposed to add?
 
@@ -133,6 +164,9 @@ Please ask yourselves: how does this contribute? What is this supposed to add?
 
 In short, JSDoc comments are bland, tedious, polluting and, when they inevitably go out of sync like in the example above, actively harmful.
 
+
+#### We will demonstrate our proficiency in limited examples only
+
 However, we do wish to demonstrate our proficiency with the tool for evaluation purposes. 
 Therefore, we will, in addition to the methods outlined above, document (only) the exported functions of the following three modules with JSDoc:
 
@@ -141,7 +175,7 @@ Therefore, we will, in addition to the methods outlined above, document (only) t
 * snake_element.js.
 
 This should demonstrate our proficiency adequately, while cutting down on the tedious mind-numbing uselessness of documenting *every* exported function. 
-
+This documentation can be found [here](../jsdoc/index.html).
 
 ### References
 
